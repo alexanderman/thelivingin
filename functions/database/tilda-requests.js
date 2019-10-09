@@ -5,7 +5,7 @@ admin.initializeApp(functions.config().firebase);
 const db = admin.firestore();
 const tildaRequestsColl = db.collection('tilda-requests');
 
-const saveRequest = requestBody => tildaRequestsColl.add({ ...requestBody });
+const saveRequest = requestBody => tildaRequestsColl.add({ ...requestBody, createdAt: new Date() });
 
 module.exports = {
     saveRequest
