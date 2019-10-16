@@ -10,6 +10,13 @@
             // "runtimeExecutable": "/Users/alexander/.nvm/versions/node/v8.16.1/bin/node",
             "name": "Launch Program",
             "program": "${file}"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            // "protocol": "inspector",
+            "name": "Attach",
+            "port": 8080
         }
     ]
 }
