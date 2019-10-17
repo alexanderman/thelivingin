@@ -1,5 +1,6 @@
 {
   "projects": {
-    "production": "thelivingin-403f1"
+    "production": "thelivingin-403f1",
+    "staging": "thelivingin-staging"
   }
 }
