@@ -2,6 +2,7 @@
   "projects": {
     "production": "thelivingin-403f1",
     "staging": "thelivingin-staging",
-    "test": "tests-946e2"
+    "test": "tests-946e2",
+    "default": "tests-946e2"
   }
 }
