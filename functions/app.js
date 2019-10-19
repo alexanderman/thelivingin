@@ -23,6 +23,9 @@ app.get('/__db/:collection/:id?', (req, res) => {
     .catch(err => res.status(500).send(err));
 });
 
-
+/**
+ * TODO: 
+ *  split routes for tilda and client
+ */
 
 module.exports = app;
