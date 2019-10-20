@@ -72,6 +72,20 @@ function getUserByEmail(email) {
     });
 }
 
+function getUserById(userId) {
+    return USER_COLL.doc(userId).get()
+    .then(_snapShotToObject);
+}
+
+function getChatById(chatId) {
+    return CHAT_COLL.doc(chatId).get()
+    .then(_snapShotToObject);
+}
+
+function getRequestById(requestId) {
+    return REQUEST_COLL.doc(requestId).get()
+    .then(_snapShotToObject);
+}
 
 function _debugFetch(collection, itemId) {
     if (!itemId) {
@@ -97,6 +111,10 @@ module.exports = {
     createUser,
     getUserByEmail,
     addRequestToUser,
+
+    getChatById,
+    getRequestById,
+    getUserById,
 
     _debugFetch
 }
