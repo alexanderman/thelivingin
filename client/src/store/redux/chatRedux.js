@@ -7,11 +7,11 @@ const INITIAL_STATE = {
 };
 
 export const types = {
-    'send_message': 'send_message',
-    'receive_message': 'receive_message'
+    'SEND_MESSAGE': 'SEND_MESSAGE',
+    'RECEIVE_MESSAGE': 'RECEIVE_MESSAGE'
 }
 
-export default reducer = (state = INITIAL_STATE, action) => {
+export default (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
     switch (type) {
     

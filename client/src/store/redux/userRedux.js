@@ -10,20 +10,20 @@ const INITIAL_STATE = {
 };
 
 export const types = {
-    'auth_request': 'auth_request',
-    'auth_success': 'auth_success',
-    'auth_error': 'auth_error',
+    'AUTH_REQUEST': 'AUTH_REQUEST',
+    'AUTH_SUCCESS': 'AUTH_SUCCESS',
+    'AUTH_ERROR': 'AUTH_ERROR',
 };
 
-export default reducer = (state = INITIAL_STATE, action) => {
+export default (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
     switch (type) {
-        case 'auth_request': 
+        case types.AUTH_REQUEST: 
             /** handle action in middleware to get user from server */
             return { ...state, _inprocess: true };
-        case 'auth_success': 
+        case types.AUTH_SUCCESS: 
             return { ...state, ...payload, _inprocess: false };
-        case 'auth_error': 
+        case types.AUTH_ERROR: 
             return { ...state, error: payload, _inprocess: false };
     }
     return state;
@@ -31,7 +31,7 @@ export default reducer = (state = INITIAL_STATE, action) => {
 
 
 export const actions = {
-    authRequest: payload => ({ type: 'auth_request', payload }),
-    authSuccess: payload => ({ type: 'auth_success', payload }),
-    authError: payload => ({ type: 'auth_error', payload }),
+    authRequest: payload => ({ type: types.AUTH_REQUEST, payload }),
+    authSuccess: payload => ({ type: types.AUTH_SUCCESS, payload }),
+    authError: payload => ({ type: types.AUTH_ERROR, payload }),
 };
