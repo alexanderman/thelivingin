@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import configureStore from './store'
 import './App.css';
 
+import chatInit from './services/twilio-service';
+
 const store = configureStore();
 
 function App() {
