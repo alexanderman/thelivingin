@@ -8,11 +8,18 @@ router.get('/', (req, res) => {
 });
 
 /** TODO: middleware to make sure valid & existing params  */
-router.get('/chats/:chatId/', chatVlidator, (req, res) => {
+router.get('/chats/:chatId/', chatVlidator, (req, res, next) => {
     chatService.getChatData(req.query.userId, req.params.chatId, req.query.requestId)
     .then(result => res.json(result))
-    .catch(err => res.status(500).send(err));
+    // .catch(err => res.status(500).send(err));
+    .catch(next);
 });
 
+router.use((err, req, res, next) => {
+    console.log(err);
+    res.status(500).json({
+        error: err.message
+    });
+});
 
 module.exports = router;

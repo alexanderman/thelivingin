@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const tildaRouter = require('./routes/tilda');
 const clientRouter = require('./routes/client');
+require('./config'); /** preloading configuration */
 
 const app = express();
 app.use(cors({ origin: true }));
