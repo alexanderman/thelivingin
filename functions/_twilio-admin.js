@@ -33,7 +33,10 @@ const deleteUsers = async (val) => {
     if (val == 'ALL') {
         const users = await client.chat.services(config.chatServiceId).users.list({ limit: 10 });
         const proms = [];
-        users.forEach(user => proms.push(user.remove()));
+        users.forEach(user => { 
+            console.log('deleting user', user.sid);
+            proms.push(user.remove())
+        });
         await Promise.all(proms);
         console.log(`${proms.length} users were deleted`);
     }
