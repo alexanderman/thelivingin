@@ -28,7 +28,7 @@ function registerRequest(request) {
             twilioService.createChannel(chatId)
             .then(channel => {
                 chatData.twilio = { sid: channel.sid };
-                store.createChat(chatId, chatData);
+                return store.createChat(chatId, chatData);
             })
         );
 
