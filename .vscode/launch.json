@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch app.js",
             "type": "node",
             "request": "launch",
-            // "runtimeExecutable": "/Users/alexander/.nvm/versions/node/v8.16.1/bin/node",
-            "name": "Launch Program",
-            "program": "${file}"
+            "program": "${workspaceFolder}/functions/debug.js",
+            "cwd": "${workspaceFolder}/functions"
         },
         {
             "type": "node",

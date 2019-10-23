@@ -1,4 +1,5 @@
 const store = require('../database/firestore');
+const twilioService = require('../services/twilio-service');
 
 function registerRequest(request) {
     const { email } = request;
@@ -10,7 +11,6 @@ function registerRequest(request) {
         const userId = userExists ? user._id : store.generateUserId();
         const chatId = store.generateChatId();
         const requestId = store.generateRequestId();
-        console.log(`userId ${userExists}:${userId}; chatId:${chatId}; requestId:${requestId}`);
     
         const promises = [];
 
@@ -24,7 +24,13 @@ function registerRequest(request) {
             issuedBy: userId,
             requestId
         };
-        promises.push(store.createChat(chatId, chatData));
+        promises.push(
+            twilioService.createChannel(chatId)
+            .then(channel => {
+                chatData.twilio = { sid: channel.sid };
+                store.createChat(chatId, chatData);
+            })
+        );
 
         if (userExists) {
             promises.push(store.addRequestToUser(userId, requestId));

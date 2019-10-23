@@ -49,12 +49,20 @@ function addRequestToUser(id, requestId) {
     });
 }
 
+function updateUser(id, fields) {
+    return USER_COLL.doc(id).update(fields);
+}
+
 function createRequest(id, data) {
     return _createData(REQUEST_COLL, id, data);
 }
 
 function createChat(id, data) {
     return _createData(CHAT_COLL, id, data);
+}
+
+function updateChat(id, fields) {
+    return CHAT_COLL.doc(id).update(fields);
 }
 
 function getUserByEmail(email) {
@@ -115,6 +123,8 @@ module.exports = {
     getChatById,
     getRequestById,
     getUserById,
+    updateUser,
+    updateChat,
 
     _debugFetch
 }
