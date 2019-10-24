@@ -1,4 +1,3 @@
-
 const INITIAL_STATE = {
     name: undefined,
     email: undefined,
@@ -25,6 +24,21 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, ...payload, _inprocess: false };
         case types.AUTH_ERROR: 
             return { ...state, error: payload, _inprocess: false };
+
+
+        /** debug code */        
+        case 'startup':
+            console.log('redux startup', action);
+            return state;
+        
+        case 'onMessage':
+            console.log('redux onMessage', action);
+            return state;
+
+        case 'error': /** TODO: handle errors */
+            console.log('redux error', action);
+            return state;
+
     }
     return state;
 }

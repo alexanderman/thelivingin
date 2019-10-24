@@ -1,17 +1,32 @@
 import { ajax } from 'rxjs/ajax'
+import { bindCallback, of, Observable } from 'rxjs/index';
 import { ofType } from 'redux-observable';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, map, mapTo, take, catchError } from 'rxjs/operators';
 import { types } from '../redux/chatRedux';
 
 
-/** simulating message receive */
-import { interval } from 'rxjs';
-// interval(1000).subscribe(x => console.log(x));
+function listen(num, onMessage = () => {}) {
+    let c = 0;
+    const intr = setInterval(() => {
+        if (++c >= num) clearInterval(intr);
+        onMessage(c);
+    }, 200);
+}
 
-export const sendMessage = action$ => action$.pipe(
-    ofType(types.SEND_MESSAGE),
+const listen$ = new Observable(observer => {
+    listen(10, m => {
+        observer.next(m);
+        if (m === 10) observer.complete();
+    });
+});
+
+export const onStartup = action$ => action$.pipe(
+    ofType('startup'),
+    take(1),
     mergeMap(action => {
-        /**  */
-    })
+        console.log('started listening...');
+        return listen$;
+    }),
+    map(message => ({ type: 'onMessage', payload: message })),
+    catchError(err => of({ type: 'error', payload: err.message }))
 );
-

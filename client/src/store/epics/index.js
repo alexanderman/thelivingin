@@ -1,6 +1,6 @@
 import { combineEpics } from 'redux-observable';
-import { sendMessage } from './chatEpic';
+import { onStartup } from './chatEpic';
 
 export default combineEpics(
-    sendMessage
+    onStartup
 );

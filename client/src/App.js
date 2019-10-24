@@ -6,6 +6,7 @@ import './App.css';
 import chatInit from './services/twilio-service';
 
 const store = configureStore();
+store.dispatch({ type: 'startup', payload: 10 });
 
 function App() {
   return (
