@@ -9,9 +9,9 @@ class Connection {
             }
             listenerSet = true;
             channel.on('messageAdded', message => {
-                console.log('messageAdded', message);
-                const { author, body } = message;
-                onMessage({ author, body });
+                console.log('twilio messageAdded', message);
+                const { author, body, channel: { sid: channelSid } } = message;
+                onMessage({ author, body, channelSid });
             });
         };
         this.sendMessage = (message) => {
@@ -20,15 +20,15 @@ class Connection {
     }
 }
 
-function createChannelConnection(channelSid, token, onMessage = () => {}) {
-    console.log('initializing client...');
+export function createChannelConnection(channelSid, token) {
+    console.log('twilio initializing client...');
     
     return Client.create(token).then(client => {
-        console.log('client initialized!', client);
+        console.log('twilio client initialized!', client);
 
-        console.log('finding channel by sid', channelSid);
+        console.log('twilio finding channel by sid', channelSid);
         return client.getChannelBySid(channelSid).then(channel => {
-            console.log('channel found!');
+            console.log('twilio channel found!');
             return channel;
         });
     }).then(channel => {
@@ -39,4 +39,4 @@ function createChannelConnection(channelSid, token, onMessage = () => {}) {
 }
 
 
-export default createChannelConnection;
+

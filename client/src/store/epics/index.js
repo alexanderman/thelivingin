@@ -1,6 +1,8 @@
 import { combineEpics } from 'redux-observable';
-import { onStartup } from './chatEpic';
+import { connect } from './chatEpic';
+import { startup } from './startupEpic';
 
 export default combineEpics(
-    onStartup
+    startup,
+    connect
 );

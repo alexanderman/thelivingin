@@ -1,29 +1,20 @@
 const INITIAL_STATE = {
-    name: undefined,
-    email: undefined,
-    phone: undefined,
-    id: undefined,
-    error: undefined,
-
-    _inprocess: false
+    _isFetching: true
 };
 
 export const types = {
-    'AUTH_REQUEST': 'AUTH_REQUEST',
-    'AUTH_SUCCESS': 'AUTH_SUCCESS',
-    'AUTH_ERROR': 'AUTH_ERROR',
+    INIT_USER: 'INIT_USER'
 };
+
 
 export default (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
     switch (type) {
-        case types.AUTH_REQUEST: 
-            /** handle action in middleware to get user from server */
-            return { ...state, _inprocess: true };
-        case types.AUTH_SUCCESS: 
-            return { ...state, ...payload, _inprocess: false };
-        case types.AUTH_ERROR: 
-            return { ...state, error: payload, _inprocess: false };
+
+        case types.INIT_USER: {
+            console.log('## ', types.INIT_USER);
+            return { ...state, _isFetching: false, ...payload }
+        }
 
 
         /** debug code */        
@@ -45,7 +36,5 @@ export default (state = INITIAL_STATE, action) => {
 
 
 export const actions = {
-    authRequest: payload => ({ type: types.AUTH_REQUEST, payload }),
-    authSuccess: payload => ({ type: types.AUTH_SUCCESS, payload }),
-    authError: payload => ({ type: types.AUTH_ERROR, payload }),
+    initUser: user => ({ type: types.INIT_USER, payload: user }),
 };
