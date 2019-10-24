@@ -16,20 +16,6 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, _isFetching: false, ...payload }
         }
 
-
-        /** debug code */        
-        case 'startup':
-            console.log('redux startup', action);
-            return state;
-        
-        case 'onMessage':
-            console.log('redux onMessage', action);
-            return state;
-
-        case 'error': /** TODO: handle errors */
-            console.log('redux error', action);
-            return state;
-
     }
     return state;
 }
