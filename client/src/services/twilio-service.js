@@ -1,76 +1,42 @@
 import { Client } from 'twilio-chat';
 
-function initChat(username, channelId, token, onMessage) {
-
-    return Client.create(token).then(client => {
-        console.log('chatClient initialized', client);
-
-        return client.getSubscribedChannels().then(getSubscribedChannelsResult => {
-            const { hasNextPage, hasPrevPage, items, nextPage, prevPage } = getSubscribedChannelsResult;
-            /** TODO: paginate all channels and find out if user already joined */
-            console.log('getSubscribedChannelsResult', getSubscribedChannelsResult);
-            
-            return client.getChannelByUniqueName(channelId).then(channel => {
-                console.log('channel found', channel);
-                return channel;
-            }).catch(err => {
-                console.log('channel not found, creating channel ...', err);
-                return client.createChannel({
-                    uniqueName: channelId,
-                    friendlyName: 'Chat ' + channelId,
-                    isPrivate: false  /** TODO: maybe should create private */
-                });
-            });
-
-        }).then(channel => {
-            channel.join().then(channel => {
-                console.log('joined', channel);
-            });
-
+class Connection {
+    constructor(channel) {
+        let listenerSet = false;
+        this.listen = (onMessage) => {
+            if (listenerSet) {
+                throw new Error('listener already set');
+            }
+            listenerSet = true;
             channel.on('messageAdded', message => {
                 console.log('messageAdded', message);
                 const { author, body } = message;
                 onMessage({ author, body });
             });
+        };
+        this.sendMessage = (message) => {
+            return channel.sendMessage(message);
+        };
+    }
+}
 
-            window.channel = channel;
-        }).catch(err => {
-            console.error('err');
-        });
-
-    });
-};
-
-function connectToChannel(channelSid, token, onMessage = () => {}) {
+function createChannelConnection(channelSid, token, onMessage = () => {}) {
     console.log('initializing client...');
     
     return Client.create(token).then(client => {
         console.log('client initialized!', client);
 
-        console.log('finding channel by sid...');
+        console.log('finding channel by sid', channelSid);
         return client.getChannelBySid(channelSid).then(channel => {
             console.log('channel found!');
             return channel;
         });
     }).then(channel => {
 
-        console.log('connected to channel!');
-        channel.on('messageAdded', message => {
-            console.log('messageAdded', message);
-            const { author, body } = message;
-            onMessage({ author, body });
-        });
-        window.channel = channel;
-
+        return new Connection(channel);
 
     }).catch(console.error);
 }
 
-// window.initChat = function(token) {
-//     return initChat('', 'my-channel-private', token, m => console.log(m));
-// }
 
-window.connectToChannel = connectToChannel;
-
-
-export default initChat;
+export default createChannelConnection;

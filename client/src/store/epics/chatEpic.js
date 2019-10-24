@@ -1,5 +1,5 @@
 import { ajax } from 'rxjs/ajax'
-import { bindCallback, of, Observable } from 'rxjs/index';
+import { of, Observable } from 'rxjs/index';
 import { ofType } from 'redux-observable';
 import { mergeMap, map, mapTo, take, catchError } from 'rxjs/operators';
 import { types } from '../redux/chatRedux';
