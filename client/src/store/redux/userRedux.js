@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-    _isFetching: true
+    __isFetching: true
 };
 
 export const types = {
@@ -13,7 +13,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.INIT_USER: {
             console.log('## ', types.INIT_USER);
-            return { ...state, _isFetching: false, ...payload }
+            return { ...state, __isFetching: false, ...payload }
         }
 
     }
@@ -23,4 +23,11 @@ export default (state = INITIAL_STATE, action) => {
 
 export const actions = {
     initUser: user => ({ type: types.INIT_USER, payload: user }),
+};
+
+
+export const selectors = {
+    name: state => state.user.name,
+    email: state => state.user.email,
+    phone: state => state.user.phone
 };

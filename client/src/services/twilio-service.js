@@ -1,7 +1,7 @@
 import { Client } from 'twilio-chat';
 
 class Connection {
-    constructor(channel) {
+    constructor(chatId, channel) {
         let listenerSet = false;
         this.listen = (onMessage) => {
             if (listenerSet) {
@@ -17,14 +17,28 @@ class Connection {
         this.sendMessage = (message) => {
             return channel.sendMessage(message);
         };
+
+        /** workaround for readonly getters from private fields */
+        this.__readonly = key => {
+            if (key == 'channelSid') return channel.sid;
+            if (key == 'chatId') return chatId;
+        }
+    }
+    
+    get chatId() { 
+        return this.__readonly('chatId');
+    }
+    get channelSid() { 
+        return this.__readonly('channelSid');
     }
 }
 
-export function createChannelConnection(channelSid, token) {
+/** chatId is our db chat id, channelSid id twilios channel sid */
+export function createChannelConnection(chatId, channelSid, token) {
     console.log('twilio initializing client...');
     
     return Client.create(token).then(client => {
-        console.log('twilio client initialized!', client);
+        console.log('twilio client initialized!');
 
         console.log('twilio finding channel by sid', channelSid);
         return client.getChannelBySid(channelSid).then(channel => {
@@ -32,10 +46,8 @@ export function createChannelConnection(channelSid, token) {
             return channel;
         });
     }).then(channel => {
-
-        return new Connection(channel);
-
-    }).catch(console.error);
+        return new Connection(chatId, channel);
+    });
 }
 
 

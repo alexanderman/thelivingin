@@ -3,21 +3,16 @@ import { Provider } from 'react-redux';
 import configureStore from './store'
 import './App.css';
 import { types as chatTypes } from './store/redux/chatRedux';
+import Chat from './components/chat';
 
 
 function getUrlParams() {
-  const pathSplit = window.location.pathname.split('/');
-  const query = window.location.search.substring(1);
-
-  const urlData = query.split('&').reduce((acc, keyVal) => {
+  return window.location.search.substring(1).split('&').reduce((acc, keyVal) => {
     const key = keyVal.split('=')[0];
     const val = decodeURIComponent(keyVal.split('=')[1]);
     acc[key] = val;
     return acc;
   }, {});
-
-  urlData.chatId = pathSplit[pathSplit.length - 1];
-  return urlData;
 }
 const urlParams = getUrlParams();
 
@@ -34,7 +29,7 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-        <h1>Chat</h1>
+        <Chat />
       </div>
     </Provider>
   );

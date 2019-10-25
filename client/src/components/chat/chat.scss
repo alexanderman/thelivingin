@@ -1,0 +1,42 @@
+.chat-container {
+    margin: 1em;
+    padding: 1em;
+    height: 100%;
+    background-color: #DFDFDF;
+    color: #333333;
+
+    .user-info {
+        font-size: 0.7em;
+        margin-bottom: 1em;
+    }
+
+    .request {
+        font-size: 1em;
+        margin-bottom: 1em;
+    }
+
+    .chat-window {
+        background-color: #EEEEEE;
+        overflow-y: scroll;
+        height: 20em;
+        margin-bottom: 0.5em;
+    }
+
+    .chat-input {
+        display: flex;
+        flex-direction: row;
+        input { 
+            outline: 0;
+            font-size: 1em;
+            flex-grow: 5;
+        }
+        button {
+            outline: 0;
+            background-color: #3333AA;
+            flex-grow: 2;
+            max-width: 14em;
+            color: white;
+        }
+
+    }
+}

@@ -1,22 +1,21 @@
-import { of, from } from 'rxjs/index';
+import { of, from, throwError } from 'rxjs/index';
 import { ofType } from 'redux-observable';
 import { mergeMap, map, take, catchError } from 'rxjs/operators';
 import { types } from '../redux/chatRedux';
 import { createChannelConnection } from '../../services/twilio-service';
 
 export const connect = action$ => action$.pipe(
-    ofType(types.INIT_CHANNEL),
+    ofType(types.CONNECT_CHANNEL),
     take(1),
-    mergeMap(action => {
-        const { payload: { channelSid, twilioToken } } = action;
-        console.log('connecting to channel', channelSid);
-        return from(createChannelConnection(channelSid, twilioToken));
+    mergeMap((action) => {
+        const { payload: { chatId, channelSid, twilioToken } } = action;
+        return from(createChannelConnection(chatId, channelSid, twilioToken));
     }),
     map(connection => {
         window.connection = connection;
-        return { type: types.INIT_CHANNEL_SUCCESS };
+        return { type: types.CONNECT_CHANNEL_SUCCESS };
     }),
-    catchError(err => of({ type: types.INIT_CHANNEL_ERROR, payload: err.message }))
+    catchError(err => of({ type: types.CONNECT_CHANNEL_ERROR, payload: err.message }))
 );
 
 
