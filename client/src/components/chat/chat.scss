@@ -4,6 +4,7 @@
     height: 100%;
     background-color: #DFDFDF;
     color: #333333;
+    border-radius: 0.5em;
 
     .user-info {
         font-size: 0.7em;
@@ -13,6 +14,9 @@
     .request {
         font-size: 1em;
         margin-bottom: 1em;
+        border-radius: 0.5em;
+        padding: 0.5em;
+        background-color: #E5E5E5;
     }
 
     .chat-window {
@@ -20,22 +24,32 @@
         overflow-y: scroll;
         height: 20em;
         margin-bottom: 0.5em;
+        border-radius: 0.5em;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
     }
 
     .chat-input {
         display: flex;
         flex-direction: row;
+        border-radius: 0.5em;
         input { 
             outline: 0;
             font-size: 1em;
             flex-grow: 5;
+            padding: 0.5em;
+            border-width: 0;
+            border-bottom-left-radius: 0.5em;
         }
         button {
+            padding: 0.5em;
             outline: 0;
             background-color: #3333AA;
             flex-grow: 2;
             max-width: 14em;
             color: white;
+            border-bottom-right-radius: 0.5em;
+            font-size: 0.8em;
         }
 
     }

@@ -117,12 +117,20 @@ export const actions = {
 
 
 export const selectors = {
-    request: state => { // TODO
-        // const { chat } = state;
-        // if (chat.__selectedChatId) {
-        //     return chat[chat.__selectedChatId].request;
-        // }
+    request: state => { 
+        const { __selectedChatId: chatId, channels } = state.chat;
+        if (chatId && channels[chatId]) {
+            return channels[chatId].request;
+        }
         return undefined;
     },
-    // isReady: state => state._
+    status: state => { 
+        const { __selectedChatId: chatId, channels } = state.chat;
+        if (chatId && channels[chatId]) {
+            const { __status } = channels[chatId];
+            console.log('__status', __status);
+            return __status;
+        }
+        return undefined;
+    },
 };
