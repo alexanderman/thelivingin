@@ -21,10 +21,13 @@ export const types = {
     CONNECT_CHANNEL: 'CONNECT_CHANNEL',
     CONNECT_CHANNEL_SUCCESS: 'CONNECT_CHANNEL_SUCCESS',
     CONNECT_CHANNEL_ERROR: 'CONNECT_CHANNEL_ERROR',
+    LISTEN_ERROR: 'LISTEN_ERROR',
     
     
-    // SEND_MESSAGE: 'SEND_MESSAGE',
-    // RECEIVE_MESSAGE: 'RECEIVE_MESSAGE'
+    SEND_MESSAGE: 'SEND_MESSAGE',
+    SEND_MESSAGE_ERROR: 'SEND_MESSAGE_ERROR',
+    SEND_MESSAGE_SUCCESS: 'SEND_MESSAGE_SUCCESS',
+    RECEIVE_MESSAGE: 'RECEIVE_MESSAGE'
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -103,6 +106,38 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
+        case types.SEND_MESSAGE: {
+            console.log('## ', types.SEND_MESSAGE);
+            const { __selectedChatId: chatId, channels } = state;
+            const { [chatId]: chatState } = channels;
+            return { ...state,
+                channels: {
+                    ...channels,
+                    [chatId]: { ...chatState, messages: [ ...(chatState.messages || []), payload ] }
+                }
+            };
+        }
+        case types.SEND_MESSAGE_SUCCESS: {
+            console.log('## ', types.SEND_MESSAGE_SUCCESS, payload);
+            return state;
+        }        
+        case types.SEND_MESSAGE_ERROR: {
+            console.log('## ', types.SEND_MESSAGE_ERROR, payload);
+            return state;
+        }        
+
+        case types.RECEIVE_MESSAGE: {
+            console.log('## ', types.RECEIVE_MESSAGE, payload);
+            const { __selectedChatId: chatId, channels } = state;
+            const { [chatId]: chatState } = channels;
+            return { ...state,
+                channels: {
+                    ...channels,
+                    [chatId]: { ...chatState, messages: [ ...(chatState.messages || []), payload ] }
+                }
+            };
+        }
+
     }
     
     return state;
@@ -113,6 +148,10 @@ export const actions = dispatch => ({
     fetchChat: (chatId, userId, requestId, sig) => dispatch({ 
         type: types.FETCH_CHAT, 
         payload: { chatId, userId, requestId, sig } 
+    }),
+    sendMessage: (message) => dispatch({
+        type: types.SEND_MESSAGE,
+        payload: message
     }),
 });
 
@@ -134,6 +173,10 @@ export const selectors = {
         return CHAT_STATUS.UNDEFINED;
     },
     messages: state => {
+        const { __selectedChatId: chatId, channels } = state.chat;
+        if (chatId && channels[chatId]) {
+            return channels[chatId].messages || [];
+        }
         return [];
     }
 };

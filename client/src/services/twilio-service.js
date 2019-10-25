@@ -11,7 +11,7 @@ class Connection {
             channel.on('messageAdded', message => {
                 console.log('twilio messageAdded', message);
                 const { author, body, channel: { sid: channelSid } } = message;
-                onMessage({ author, body, channelSid });
+                onMessage({ author, body, channelSid, chatId });
             });
         };
         this.sendMessage = (message) => {

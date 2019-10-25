@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { selectors as userSelectors } from '../../store/redux/userRedux';
-import { selectors as chatSelectors, CHAT_STATUS } from '../../store/redux/chatRedux';
+import { selectors as chatSelectors, CHAT_STATUS, actions as chatActions } from '../../store/redux/chatRedux';
 import './chat.scss';
 
 class Chat extends Component {
@@ -11,12 +11,21 @@ class Chat extends Component {
     }
 
     buttonClick = () => {
-        console.log(this.inputRef.current.value)
+        const message = this.inputRef.current.value;
         this.inputRef.current.value = '';
+        this.props.sendMessage(message);
     }
 
+    renderMessages = (messages) => (
+        <Fragment>
+            {messages.map((m, i) => (
+                <div key={i}>{m}</div>
+            ))}
+        </Fragment>
+    )
+
     render() {
-        const { name, email, phone, request, status } = this.props;
+        const { name, email, phone, request, status, messages } = this.props;
         const inputEnabled = status == CHAT_STATUS.CONNECT_SUCCESS;
         return (
             <div className="chat-container">
@@ -28,7 +37,9 @@ class Chat extends Component {
 
                 <div className="request">{request}</div>
 
-                <div className="chat-window"></div>
+                <div className="chat-window">
+                    {/* {this.renderMessages(messages)} */}
+                </div>
                 
                 <div className="chat-input" disabled={!inputEnabled}>
                     <input ref={this.inputRef} disabled={!inputEnabled} type="text"></input>
@@ -49,8 +60,6 @@ const mapStateToProps = state => ({
     messages: chatSelectors.messages(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-
-});
+const mapDispatchToProps = dispatch => chatActions(dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
