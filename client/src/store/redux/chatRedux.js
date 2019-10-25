@@ -1,4 +1,5 @@
 export const CHAT_STATUS = {
+    UNDEFINED: 'UNDEFINED',
     FETCH: 'FETCH',
     FETCH_SUCCESS: 'FETCH_SUCCESS',
     FETCH_ERROR: 'FETCH_ERROR',
@@ -108,12 +109,12 @@ export default (state = INITIAL_STATE, action) => {
 }
 
 
-export const actions = {
-    fetchChat: (chatId, userId, requestId, sig) => ({ 
+export const actions = dispatch => ({
+    fetchChat: (chatId, userId, requestId, sig) => dispatch({ 
         type: types.FETCH_CHAT, 
         payload: { chatId, userId, requestId, sig } 
-    })
-};
+    }),
+});
 
 
 export const selectors = {
@@ -128,9 +129,11 @@ export const selectors = {
         const { __selectedChatId: chatId, channels } = state.chat;
         if (chatId && channels[chatId]) {
             const { __status } = channels[chatId];
-            console.log('__status', __status);
             return __status;
         }
-        return undefined;
+        return CHAT_STATUS.UNDEFINED;
     },
+    messages: state => {
+        return [];
+    }
 };
