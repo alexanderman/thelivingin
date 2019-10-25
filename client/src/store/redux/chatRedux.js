@@ -106,16 +106,9 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
-        case types.SEND_MESSAGE: {
+        case types.SEND_MESSAGE: { 
             console.log('## ', types.SEND_MESSAGE);
-            const { __selectedChatId: chatId, channels } = state;
-            const { [chatId]: chatState } = channels;
-            return { ...state,
-                channels: {
-                    ...channels,
-                    [chatId]: { ...chatState, messages: [ ...(chatState.messages || []), payload ] }
-                }
-            };
+            return state;
         }
         case types.SEND_MESSAGE_SUCCESS: {
             console.log('## ', types.SEND_MESSAGE_SUCCESS, payload);
@@ -149,9 +142,9 @@ export const actions = dispatch => ({
         type: types.FETCH_CHAT, 
         payload: { chatId, userId, requestId, sig } 
     }),
-    sendMessage: (message) => dispatch({
+    sendMessage: (userId, message) => dispatch({
         type: types.SEND_MESSAGE,
-        payload: message
+        payload: { userId, message }
     }),
 });
 

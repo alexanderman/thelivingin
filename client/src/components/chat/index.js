@@ -11,9 +11,12 @@ class Chat extends Component {
     }
 
     buttonClick = () => {
+        const { userId } = this.props;
         const message = this.inputRef.current.value;
-        this.inputRef.current.value = '';
-        this.props.sendMessage(message);
+        if (message.trim() !== '') {
+            this.inputRef.current.value = '';
+            this.props.sendMessage(userId, message);
+        }
     }
 
     renderMessages = (messages) => (
@@ -25,13 +28,13 @@ class Chat extends Component {
     )
 
     render() {
-        const { name, email, phone, request, status, messages } = this.props;
+        const { userId, name, email, phone, request, status, messages } = this.props;
         const inputEnabled = status == CHAT_STATUS.CONNECT_SUCCESS;
         return (
             <div className="chat-container">
                 
                 <div className="user-info">
-                    <div>{name} {phone} {email}</div>
+                    <div>{userId} {name} {phone} {email}</div>
                     <div className="chat-status">{status}</div>
                 </div>
 
@@ -52,6 +55,7 @@ class Chat extends Component {
 }
 
 const mapStateToProps = state => ({
+    userId: userSelectors.userId(state),
     name: userSelectors.name(state),
     email: userSelectors.email(state),
     phone: userSelectors.phone(state),

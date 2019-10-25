@@ -8,14 +8,13 @@ let _connection;
 
 export const createConnection = action$ => action$.pipe(
     ofType(types.CONNECT_CHANNEL),
-    take(1),
+    take(1),    /** take once to create single connection */
     mergeMap((action) => {
         const { payload: { chatId, channelSid, twilioToken } } = action;
         return from(createChannelConnection(chatId, channelSid, twilioToken));
     }),
     map(connection => {
-        _connection = window.connection = connection; // debug code window.connection
-        // const listener$ = createListener(connection);
+        _connection = window.__connection = connection; // debug code window.__connection
         return { type: types.CONNECT_CHANNEL_SUCCESS };
     }),
     catchError(err => of({ type: types.CONNECT_CHANNEL_ERROR, payload: err.message }))
@@ -23,7 +22,7 @@ export const createConnection = action$ => action$.pipe(
 
 export const receiveMessages = action$ => action$.pipe(
     ofType(types.CONNECT_CHANNEL_SUCCESS),
-    take(1),
+    take(1),    /** take once --> only to create the new Observable */
     mergeMap(action => {
         return new Observable(observer => {
             _connection.listen(message => {
@@ -41,8 +40,8 @@ export const receiveMessages = action$ => action$.pipe(
 export const sendMessage = action$ => action$.pipe(
     ofType(types.SEND_MESSAGE),
     mergeMap(action => {
-        const { payload } = action;
-        return from(_connection.sendMessage(payload));
+        const { payload: { message, userId } } = action;
+        return from(_connection.sendMessage(userId, message));
     }),
     map(sendRes => {
         return { type: types.SEND_MESSAGE_SUCCESS, payload: sendRes };

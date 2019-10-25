@@ -10,12 +10,12 @@ class Connection {
             listenerSet = true;
             channel.on('messageAdded', message => {
                 console.log('twilio messageAdded', message);
-                const { author, body, channel: { sid: channelSid } } = message;
-                onMessage({ author, body, channelSid, chatId });
+                const { attributes, author, body, channel: { sid: channelSid } } = message;
+                onMessage({ author, body, channelSid, chatId, attributes });
             });
         };
-        this.sendMessage = (message) => {
-            return channel.sendMessage(message);
+        this.sendMessage = (userId, message) => {
+            return channel.sendMessage(message, { userId });
         };
 
         /** workaround for readonly getters from private fields */
