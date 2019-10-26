@@ -2,7 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { selectors as userSelectors } from '../../store/redux/userRedux';
 import { selectors as chatSelectors, CHAT_STATUS, actions as chatActions } from '../../store/redux/chatRedux';
-import Message from './message/messages';
+import Message from './message/message';
+import PerfectCrollbar from 'react-perfect-scrollbar';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import './chat.scss';
 
 class Chat extends Component {
@@ -51,7 +53,9 @@ class Chat extends Component {
                 <div className="request">{request}</div>
 
                 <div className="chat-window">
-                    {this.renderMessages(messages)}
+                    <PerfectCrollbar>
+                        {this.renderMessages(messages)}
+                    </PerfectCrollbar>
                 </div>
                 
                 <div className="chat-input" disabled={!inputEnabled}>
