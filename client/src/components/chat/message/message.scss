@@ -1,0 +1,43 @@
+.message-line {
+    margin-bottom: 0.8em;
+    display: flex;
+    flex-direction: row;
+    
+    &.me {
+        justify-content: flex-end;
+
+        .message-content {
+            flex-direction: row-reverse;
+            .message {
+                border-radius: 1.5em;
+                border-top-right-radius: 0;
+                border-bottom-left-radius: 0;    
+            }
+        }
+    }
+
+    .message-content {
+        display: flex;
+        flex-direction: row;
+        max-width: 90%;
+    
+        .user {
+            font-size: 0.4em;
+            padding: 0.3em 0.5em;
+            width: 2em;
+            min-width: 2em;
+            height: 1.2em;
+            overflow: hidden;
+        }
+    
+        .message {
+            background-color: #E9E9E9;
+            border-radius: 1.5em;
+            border-top-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border: solid 1px #DDDDDD;
+            padding: 0.5em 1em;
+        }
+    }
+}
+
