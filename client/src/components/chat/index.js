@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { selectors as userSelectors } from '../../store/redux/userRedux';
 import { selectors as chatSelectors, CHAT_STATUS, actions as chatActions } from '../../store/redux/chatRedux';
+import Message from './message/messages';
 import './chat.scss';
 
 class Chat extends Component {
@@ -19,13 +20,22 @@ class Chat extends Component {
         }
     }
 
-    renderMessages = (messages) => (
-        <Fragment>
-            {messages.map((m, i) => (
-                <div key={i}>{m}</div>
-            ))}
-        </Fragment>
-    )
+    handleEnter = (event) => {
+        if(event.key === 'Enter'){
+            this.buttonClick();
+        }
+    }
+
+    renderMessages = (messages) => {
+        const { userId } = this.props;
+        return (
+            <Fragment>
+                {messages.map((m, i) => (
+                    <Message key={i} userId={userId} message={m} />
+                ))}
+            </Fragment>
+        )
+    }
 
     render() {
         const { userId, name, email, phone, request, status, messages } = this.props;
@@ -41,11 +51,11 @@ class Chat extends Component {
                 <div className="request">{request}</div>
 
                 <div className="chat-window">
-                    {/* {this.renderMessages(messages)} */}
+                    {this.renderMessages(messages)}
                 </div>
                 
                 <div className="chat-input" disabled={!inputEnabled}>
-                    <input ref={this.inputRef} disabled={!inputEnabled} type="text"></input>
+                    <input ref={this.inputRef} onKeyPress={this.handleEnter} disabled={!inputEnabled} type="text"></input>
                     <button disabled={!inputEnabled} onClick={this.buttonClick}>send</button>
                 </div>
 
