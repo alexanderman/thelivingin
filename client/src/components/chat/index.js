@@ -14,11 +14,11 @@ class Chat extends Component {
     }
 
     buttonClick = () => {
-        const { userId } = this.props;
+        const { user } = this.props;
         const message = this.inputRef.current.value;
         if (message.trim() !== '') {
             this.inputRef.current.value = '';
-            this.props.sendMessage(userId, message);
+            this.props.sendMessage(user, message);
         }
     }
 
@@ -29,7 +29,8 @@ class Chat extends Component {
     }
 
     renderMessages = (messages) => {
-        const { userId } = this.props;
+        const { user } = this.props;
+        const { _id: userId } = user || {};
         return (
             <Fragment>
                 {messages.map((m, i) => (
@@ -40,7 +41,8 @@ class Chat extends Component {
     }
 
     render() {
-        const { userId, name, email, phone, request, status, messages } = this.props;
+        const { user, request, status, messages } = this.props;
+        const { name, email, phone, _id: userId } = user || {};
         const inputEnabled = status == CHAT_STATUS.CONNECT_SUCCESS;
         return (
             <div className="chat-container">
@@ -69,10 +71,7 @@ class Chat extends Component {
 }
 
 const mapStateToProps = state => ({
-    userId: userSelectors.userId(state),
-    name: userSelectors.name(state),
-    email: userSelectors.email(state),
-    phone: userSelectors.phone(state),
+    user: userSelectors.user(state),
     request: chatSelectors.request(state),
     status: chatSelectors.status(state),
     messages: chatSelectors.messages(state),

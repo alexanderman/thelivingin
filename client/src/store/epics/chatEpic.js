@@ -31,7 +31,6 @@ export const receiveMessages = action$ => action$.pipe(
         });
     }),
     map(message => {
-        console.log('message received', message);
         return { type: types.RECEIVE_MESSAGE, payload: message };
     }),
     catchError(err => of({ type: types.CONNECT_CHANNEL_ERROR, payload: err.message }))
@@ -40,10 +39,12 @@ export const receiveMessages = action$ => action$.pipe(
 export const sendMessage = action$ => action$.pipe(
     ofType(types.SEND_MESSAGE),
     mergeMap(action => {
-        const { payload: { message, userId } } = action;
+        const { payload: { message, user } } = action;
         return new Observable(observer => {
             /** swallowing an error, not letting it kill the epic, when reaches catchError */
-            _connection.sendMessage(userId, message)
+            /** TODO: add user avatar here */
+            const { canHelp, _id, name } = user;
+            _connection.sendMessage(message, { sender: { canHelp, _id, name } })
             .then(msgIdx => observer.next(msgIdx))
             .catch(err => {
                 console.error(err); // TODO: global error handler + retry ?

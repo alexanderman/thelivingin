@@ -142,9 +142,9 @@ export const actions = dispatch => ({
         type: types.FETCH_CHAT, 
         payload: { chatId, userId, requestId, sig } 
     }),
-    sendMessage: (userId, message) => dispatch({
+    sendMessage: (user, message) => dispatch({
         type: types.SEND_MESSAGE,
-        payload: { userId, message }
+        payload: { user, message }
     }),
 });
 

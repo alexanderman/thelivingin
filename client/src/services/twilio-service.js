@@ -14,8 +14,8 @@ class Connection {
                 onMessage({ author, body, channelSid, chatId, attributes });
             });
         };
-        this.sendMessage = (userId, message) => {
-            return channel.sendMessage(message, { userId });
+        this.sendMessage = (message, attributes) => {
+            return channel.sendMessage(message, attributes);
         };
 
         /** workaround for readonly getters from private fields */
@@ -49,6 +49,3 @@ export function createChannelConnection(chatId, channelSid, token) {
         return new Connection(chatId, channel);
     });
 }
-
-
-

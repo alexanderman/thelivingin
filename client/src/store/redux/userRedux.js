@@ -27,8 +27,5 @@ export const actions = {
 
 
 export const selectors = {
-    userId: state => state.user._id,
-    name: state => state.user.name,
-    email: state => state.user.email,
-    phone: state => state.user.phone
+    user: state => state.user,
 };

@@ -24,8 +24,8 @@
         .user {
             font-size: 0.4em;
             padding: 0.3em 0.5em;
-            width: 2em;
-            min-width: 2em;
+            min-width: 1em;
+            max-width: 5em;
             height: 1.2em;
             overflow: hidden;
         }
