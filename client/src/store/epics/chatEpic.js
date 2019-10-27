@@ -41,7 +41,14 @@ export const sendMessage = action$ => action$.pipe(
     ofType(types.SEND_MESSAGE),
     mergeMap(action => {
         const { payload: { message, userId } } = action;
-        return from(_connection.sendMessage(userId, message));
+        return new Observable(observer => {
+            /** swallowing an error, not letting it kill the epic, when reaches catchError */
+            _connection.sendMessage(userId, message)
+            .then(msgIdx => observer.next(msgIdx))
+            .catch(err => {
+                console.error(err); // TODO: global error handler + retry ?
+            });
+        });
     }),
     map(sendRes => {
         return { type: types.SEND_MESSAGE_SUCCESS, payload: sendRes };
