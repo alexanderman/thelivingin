@@ -24,10 +24,10 @@
         .user {
             font-size: 0.4em;
             padding: 0.3em 0.5em;
-            min-width: 1em;
+            padding-top: 0;
+            min-width: 3em;
             max-width: 5em;
-            height: 1.2em;
-            overflow: hidden;
+            overflow-wrap: normal;
         }
     
         .message {
