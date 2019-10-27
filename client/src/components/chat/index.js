@@ -43,7 +43,7 @@ class Chat extends Component {
     render() {
         const { user, request, status, messages } = this.props;
         const { name, email, phone, _id: userId } = user || {};
-        const inputEnabled = status == CHAT_STATUS.CONNECT_SUCCESS;
+        const inputEnabled = status === CHAT_STATUS.CONNECT_SUCCESS;
         return (
             <div className="chat-container">
                 

@@ -20,8 +20,8 @@ class Connection {
 
         /** workaround for readonly getters from private fields */
         this.__readonly = key => {
-            if (key == 'channelSid') return channel.sid;
-            if (key == 'chatId') return chatId;
+            if (key === 'channelSid') return channel.sid;
+            if (key === 'chatId') return chatId;
         }
     }
     
