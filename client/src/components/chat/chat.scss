@@ -34,7 +34,10 @@
         overflow-y: scroll;
         height: 20em;
         margin-bottom: 0.2em;
-        padding: 0.3em;
+
+        .chat-content {
+            padding: 0.3em;
+        }
     }
 
     .chat-input {

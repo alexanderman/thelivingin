@@ -11,6 +11,7 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();
+        this.scrollRef = React.createRef();
     }
 
     buttonClick = () => {
@@ -31,6 +32,13 @@ class Chat extends Component {
     renderMessages = (messages) => {
         const { user } = this.props;
         const { _id: userId } = user || {};
+
+        if (this.messagesCount && this.messagesCount < (messages || []).length) {
+            console.log('scroll down here NOT working!!!', this.scrollRef);
+        }
+        window._scroll = this.scrollRef.current;
+
+        this.messagesCount = (messages || []).length;
         return (
             <Fragment>
                 {messages.map((m, i) => (
@@ -55,8 +63,10 @@ class Chat extends Component {
                 <div className="request">{request}</div>
 
                 <div className="chat-window">
-                    <PerfectCrollbar>
-                        {this.renderMessages(messages)}
+                    <PerfectCrollbar ref={this.scrollRef} options={{ suppressScrollX: true }}>
+                        <div className="chat-content">
+                            {this.renderMessages(messages)}
+                        </div>
                     </PerfectCrollbar>
                 </div>
                 
