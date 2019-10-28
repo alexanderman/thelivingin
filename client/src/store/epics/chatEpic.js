@@ -1,6 +1,6 @@
-import { of, from, Observable } from 'rxjs/index';
+import { of, from, Observable, timer } from 'rxjs/index';
 import { ofType } from 'redux-observable';
-import { mergeMap, map, take, catchError } from 'rxjs/operators';
+import { mergeMap, map, take, catchError, debounce } from 'rxjs/operators';
 import { types } from '../redux/chatRedux';
 import { createChannelConnection } from '../../services/twilio-service';
 
@@ -41,6 +41,7 @@ export const receiveMessages = action$ => action$.pipe(
 
 export const getPreviousMessages = action$ => action$.pipe(
     ofType(types.FETCH_PREVIOUS_MESSAGES),
+    debounce(() => timer(500)), // TODO: temporary solution for infinit request
     mergeMap(action => {
         return new Observable(observer => {
             /** swallowing the error */

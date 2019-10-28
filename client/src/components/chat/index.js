@@ -11,7 +11,10 @@ class Chat extends Component {
     constructor(props) {
         super(props);
         this.inputRef = React.createRef();
+        
         this.scrollRef = React.createRef();
+        this.scrollTimeout = null;
+        this.isAutoMode = true; // scrolls down automatically with every new message
     }
 
     buttonClick = () => {
@@ -29,14 +32,32 @@ class Chat extends Component {
         }
     }
 
+    fetchPreviousMessages = () => {
+        if (!this.isAutoMode) {
+            console.log('fetchPreviousMessages called');
+            this.props.fetchPreviousMessages();
+        }
+    }
+
+    scrollToBottom = () => {
+        if (this.scrollRef.current) {
+            if (this.scrollTimeout) {
+                clearTimeout(this.scrollTimeout);
+            }
+            this.scrollTimeout = setTimeout(() => {
+                const container = this.scrollRef.current._container;
+                container.scrollTop = container.scrollHeight;
+                this.scrollTimeout = null;
+            }, 50);
+        }
+    }
+
     renderMessages = (messages) => {
         const { user } = this.props;
         const { _id: userId } = user || {};
 
-        if (this.messagesCount && this.messagesCount < (messages || []).length) {
-            console.log('scroll down here NOT working!!!', this.scrollRef);
-        }
-        window._scroll = this.scrollRef.current;
+        if (this.isAutoMode)
+            this.scrollToBottom();
 
         this.messagesCount = (messages || []).length;
         return (
@@ -63,7 +84,13 @@ class Chat extends Component {
                 <div className="request">{request}</div>
 
                 <div className="chat-window">
-                    <PerfectCrollbar ref={this.scrollRef} options={{ suppressScrollX: true }}>
+                    <PerfectCrollbar 
+                        onScrollUp={() => this.isAutoMode = false}
+                        onYReachStart={this.fetchPreviousMessages} 
+                        onYReachEnd={() => this.isAutoMode = true}
+                        ref={this.scrollRef} 
+                        options={{ suppressScrollX: true }}>
+
                         <div className="chat-content">
                             {this.renderMessages(messages)}
                         </div>
@@ -78,6 +105,13 @@ class Chat extends Component {
             </div>
         )
     }
+
+    componentWillUnmount() {
+        if (this.scrollTimeout) {
+            clearTimeout(this.scrollTimeout);
+        }
+    }
+
 }
 
 const mapStateToProps = state => ({
