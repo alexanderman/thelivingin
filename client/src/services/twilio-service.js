@@ -3,6 +3,9 @@ import { Client } from 'twilio-chat';
 class Connection {
     constructor(chatId, channel) {
         let listenerSet = false;
+        let pager = null;
+        const pageSize = 30;
+
         this.listen = (onMessage) => {
             if (listenerSet) {
                 throw new Error('listener already set');
@@ -17,6 +20,22 @@ class Connection {
         this.sendMessage = (message, attributes) => {
             return channel.sendMessage(message, attributes);
         };
+
+        this.getPreviousMessages = () => {
+            if (!pager) {
+                return channel.getMessages(pageSize).then(pgr => {
+                    pager = pgr;
+                    return pager.items;
+                });
+            }
+            if (pager.hasPrevPage) {
+                return pager.prevPage().then(pgr => {
+                    pager = pgr;
+                    return pager.items;
+                });
+            }
+            return Promise.resolve([]);
+        }
 
         /** workaround for readonly getters from private fields */
         this.__readonly = key => {
@@ -43,6 +62,7 @@ export function createChannelConnection(chatId, channelSid, token) {
         console.log('twilio finding channel by sid', channelSid);
         return client.getChannelBySid(channelSid).then(channel => {
             console.log('twilio channel found!');
+            window._channel = channel;
             return channel;
         });
     }).then(channel => {

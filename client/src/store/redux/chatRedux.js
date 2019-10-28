@@ -27,7 +27,11 @@ export const types = {
     SEND_MESSAGE: 'SEND_MESSAGE',
     SEND_MESSAGE_ERROR: 'SEND_MESSAGE_ERROR',
     SEND_MESSAGE_SUCCESS: 'SEND_MESSAGE_SUCCESS',
-    RECEIVE_MESSAGE: 'RECEIVE_MESSAGE'
+    RECEIVE_MESSAGE: 'RECEIVE_MESSAGE',
+    
+    FETCH_PREVIOUS_MESSAGES: 'FETCH_PREVIOUS_MESSAGES',
+    FETCH_PREVIOUS_MESSAGES_SUCCESS: 'FETCH_PREVIOUS_MESSAGES_SUCCESS',
+    FETCH_PREVIOUS_MESSAGES_ERROR: 'FETCH_PREVIOUS_MESSAGES_ERROR',
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -89,13 +93,13 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state,
                 channels: {
                     ...channels,
-                    [chatId]: { ...chatState, __status: CHAT_STATUS.CONNECT_SUCCESS }
+                    [chatId]: { ...chatState, __status: CHAT_STATUS.CONNECT_SUCCESS, messages: payload }
                 }
             };
         }
 
         case types.CONNECT_CHANNEL_ERROR: {
-            console.log('## ', types.CONNECT_CHANNEL_ERROR);
+            console.log('## ', types.CONNECT_CHANNEL_ERROR, payload);
             const { __selectedChatId: chatId, channels } = state;
             const { [chatId]: chatState } = channels;
             return { ...state,
@@ -145,6 +149,9 @@ export const actions = dispatch => ({
     sendMessage: (user, message) => dispatch({
         type: types.SEND_MESSAGE,
         payload: { user, message }
+    }),
+    fetchPreviousMessages: () => dispatch({
+        type: types.FETCH_PREVIOUS_MESSAGES
     }),
 });
 

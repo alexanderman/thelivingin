@@ -13,9 +13,12 @@ export const createConnection = action$ => action$.pipe(
         const { payload: { chatId, channelSid, twilioToken } } = action;
         return from(createChannelConnection(chatId, channelSid, twilioToken));
     }),
-    map(connection => {
+    mergeMap(connection => {
         _connection = window.__connection = connection; // debug code window.__connection
-        return { type: types.CONNECT_CHANNEL_SUCCESS };
+        return from(connection.getPreviousMessages());
+    }),
+    map(lastMessages => {
+        return { type: types.CONNECT_CHANNEL_SUCCESS, payload: lastMessages };
     }),
     catchError(err => of({ type: types.CONNECT_CHANNEL_ERROR, payload: err.message }))
 );
@@ -34,6 +37,20 @@ export const receiveMessages = action$ => action$.pipe(
         return { type: types.RECEIVE_MESSAGE, payload: message };
     }),
     catchError(err => of({ type: types.CONNECT_CHANNEL_ERROR, payload: err.message }))
+);
+
+export const getPreviousMessages = action$ => action$.pipe(
+    ofType(types.FETCH_PREVIOUS_MESSAGES),
+    mergeMap(action => {
+        return new Observable(observer => {
+            /** swallowing the error */
+            _connection.getPreviousMessages().then(messages => {
+                observer.next(messages);
+            }).catch(console.error);
+        });
+    }),
+    map(messages => ({ type: types.FETCH_PREVIOUS_MESSAGES_SUCCESS, payload: messages })),
+    catchError(err => of({ type: types.FETCH_PREVIOUS_MESSAGES_ERROR, payload: err.message }))
 );
 
 export const sendMessage = action$ => action$.pipe(
