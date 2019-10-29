@@ -7,6 +7,7 @@ function registerHelper(request) {
     return store.getUserByEmail(email)
     .then(user => {
         const userExists = !!user;
+        const userId = userExists ? user._id : store.generateUserId();
         let dbPromise;
 
         const userData = {

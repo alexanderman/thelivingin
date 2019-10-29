@@ -15,7 +15,7 @@ router.post('/request', requestValidator, (req, res) => {
 router.post('/helper', helperValidator, (req, res) => {
     helpersService.registerHelper(req.body)
     .then(result => res.json(result))
-    .catch(err => res.status(500).send(err));
+    .catch(err => res.status(500).send(err.message));
 });
 
 
