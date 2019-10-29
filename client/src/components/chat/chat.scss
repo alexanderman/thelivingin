@@ -34,6 +34,12 @@
         overflow-y: scroll;
         height: 20em;
         margin-bottom: 0.2em;
+        display: flex;
+        flex-direction: column;
+
+        .scrollbar-container {
+            flex-grow: 1;
+        }
 
         .chat-content {
             padding: 0.3em;
