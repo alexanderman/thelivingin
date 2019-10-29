@@ -1,5 +1,5 @@
 const store = require('../database/firestore');
-const twilioService = require('../services/twilio-service');
+const twilioService = require('./twilio-service');
 
 function registerRequest(request) {
     const { email } = request;

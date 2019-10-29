@@ -6,7 +6,7 @@ function handleUserTwilio(user) {
     if (user.twilio) {
         return Promise.resolve(user.twilio.sid);
     }
-    return twilioService.createUser(user._id, { email: user.email})
+    return twilioService.createUser(user._id, { email: user.email, canHelp: user.canHelp, name: user.name })
         .then(twUser => {
             return store.updateUser(user._id, { 'twilio.sid': twUser.sid })
                 .then(() => twUser.sid);
