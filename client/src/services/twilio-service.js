@@ -4,7 +4,7 @@ class Connection {
     constructor(chatId, channel) {
         let listenerSet = false;
         let pager = null;
-        const pageSize = 30;
+        const pageSize = 20;
 
         this.listen = (onMessage) => {
             if (listenerSet) {
@@ -13,8 +13,8 @@ class Connection {
             listenerSet = true;
             channel.on('messageAdded', message => {
                 console.log('twilio messageAdded', message);
-                const { attributes, author, body, channel: { sid: channelSid } } = message;
-                onMessage({ author, body, channelSid, chatId, attributes });
+                const { index, attributes, author, body, channel: { sid: channelSid } } = message;
+                onMessage({ author, body, channelSid, chatId, attributes, index });
             });
         };
         this.sendMessage = (message, attributes) => {

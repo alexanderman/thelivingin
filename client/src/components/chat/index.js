@@ -13,11 +13,12 @@ class Chat extends Component {
         this.inputRef = React.createRef();
         
         this.scrollRef = React.createRef();
-        this.scrollTimeout = null;
-        this.isAutoMode = true; // scrolls down automatically with every new message
+        this.chatContent = React.createRef();
+        this.isAutoScroll = true; // scrolls down automatically with every new message
+        this.hasPreviousMessages = true;
     }
 
-    buttonClick = () => {
+    sendClick = () => {
         const { user } = this.props;
         const message = this.inputRef.current.value;
         if (message.trim() !== '') {
@@ -28,36 +29,53 @@ class Chat extends Component {
 
     handleEnter = (event) => {
         if(event.key === 'Enter'){
-            this.buttonClick();
+            this.sendClick();
+        }
+    }
+
+    _getScroll = () => {
+        const chatContentElem = this.chatContent.current;
+        const scrollElem = this.scrollRef.current._container;
+        return {
+            height: chatContentElem.offsetHeight,
+            scrollTop: scrollElem.scrollTop,
+            scrollElem
+        };
+    }
+
+    getSnapshotBeforeUpdate() {
+        return this._getScroll(); 
+    }
+
+    componentDidUpdate(prevProps, prevState, snapShot) {
+        const prevScroll = snapShot;
+        if (prevProps.messages.length !== this.props.messages.length && prevScroll) {
+            if (this.isAutoScroll) {
+                /** scroll to bottom */
+                const container = this.scrollRef.current._container;
+                container.scrollTop = container.scrollHeight;
+            }
+            else {
+                /** find out are new messages appended or prepended */
+                const prevLastMessage = prevProps.messages[prevProps.messages.length - 1] || { index: 0 };
+                const currLastMessage = this.props.messages[this.props.messages.length - 1] || { index: 0 };
+                const isAppended = !prevProps.messages.length || currLastMessage.index > prevLastMessage.index;
+                /** preserve scroll position when new messages are added */
+                const currScroll = this._getScroll();
+                if (!isAppended) {
+                    currScroll.scrollElem.scrollTop = prevScroll.scrollTop + currScroll.height - prevScroll.height;
+                }
+            }
         }
     }
 
     fetchPreviousMessages = () => {
-        if (!this.isAutoMode) {
-            console.log('fetchPreviousMessages called');
-            this.props.fetchPreviousMessages();
-        }
-    }
-
-    scrollToBottom = () => {
-        if (this.scrollRef.current) {
-            if (this.scrollTimeout) {
-                clearTimeout(this.scrollTimeout);
-            }
-            this.scrollTimeout = setTimeout(() => {
-                const container = this.scrollRef.current._container;
-                container.scrollTop = container.scrollHeight;
-                this.scrollTimeout = null;
-            }, 50);
-        }
+        this.props.fetchPreviousMessages();
     }
 
     renderMessages = (messages) => {
         const { user } = this.props;
         const { _id: userId } = user || {};
-
-        if (this.isAutoMode)
-            this.scrollToBottom();
 
         this.messagesCount = (messages || []).length;
         return (
@@ -85,13 +103,13 @@ class Chat extends Component {
 
                 <div className="chat-window">
                     <PerfectCrollbar 
-                        onScrollUp={() => this.isAutoMode = false}
-                        onYReachStart={this.fetchPreviousMessages} 
-                        onYReachEnd={() => this.isAutoMode = true}
+                        onScrollUp={() => this.isAutoScroll = false}
+                        onYReachStart={() => {console.log('onYReachStart'); this.fetchPreviousMessages() }} 
+                        onYReachEnd={() => this.isAutoScroll = true}
                         ref={this.scrollRef} 
                         options={{ suppressScrollX: true }}>
 
-                        <div className="chat-content">
+                        <div className="chat-content" ref={this.chatContent}>
                             {this.renderMessages(messages)}
                         </div>
                     </PerfectCrollbar>
@@ -99,17 +117,15 @@ class Chat extends Component {
                 
                 <div className="chat-input" disabled={!inputEnabled}>
                     <input ref={this.inputRef} onKeyPress={this.handleEnter} disabled={!inputEnabled} type="text"></input>
-                    <button disabled={!inputEnabled} onClick={this.buttonClick}>send</button>
+                    <button disabled={!inputEnabled} onClick={this.sendClick}>send</button>
                 </div>
+                <button onClick={this.fetchPreviousMessages}>fetch prev</button>
 
             </div>
         )
     }
 
     componentWillUnmount() {
-        if (this.scrollTimeout) {
-            clearTimeout(this.scrollTimeout);
-        }
     }
 
 }
