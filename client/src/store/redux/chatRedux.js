@@ -135,6 +135,11 @@ export default (state = INITIAL_STATE, action) => {
             };
         }
 
+        case types.FETCH_PREVIOUS_MESSAGES: {
+            console.log('## ', types.FETCH_PREVIOUS_MESSAGES, payload);
+            return state;
+        }
+
         case types.FETCH_PREVIOUS_MESSAGES_SUCCESS: {
             console.log('## ', types.FETCH_PREVIOUS_MESSAGES_SUCCESS, payload);
             const { __selectedChatId: chatId, channels } = state;

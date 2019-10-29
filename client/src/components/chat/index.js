@@ -14,8 +14,9 @@ class Chat extends Component {
         
         this.scrollRef = React.createRef();
         this.chatContent = React.createRef();
-        this.isAutoScroll = true; // scrolls down automatically with every new message
+        this.isAutoScroll = true; /** scrolls down automatically with every new message */
         this.hasPreviousMessages = true;
+        this.onYReachStartEnabled = false;  /** prevent from calling fetchPreviousMessages immediately after render */
     }
 
     sendClick = () => {
@@ -44,6 +45,7 @@ class Chat extends Component {
     }
 
     getSnapshotBeforeUpdate() {
+        this.onYReachStartEnabled = false;
         return this._getScroll(); 
     }
 
@@ -70,7 +72,10 @@ class Chat extends Component {
     }
 
     fetchPreviousMessages = () => {
-        this.props.fetchPreviousMessages();
+        if (this.onYReachStartEnabled) {
+            this.props.fetchPreviousMessages();
+        }
+        this.onYReachStartEnabled = true;
     }
 
     renderMessages = (messages) => {
@@ -104,7 +109,7 @@ class Chat extends Component {
                 <div className="chat-window">
                     <PerfectCrollbar 
                         onScrollUp={() => this.isAutoScroll = false}
-                        onYReachStart={() => {console.log('onYReachStart'); this.fetchPreviousMessages() }} 
+                        onYReachStart={this.fetchPreviousMessages} 
                         onYReachEnd={() => this.isAutoScroll = true}
                         ref={this.scrollRef} 
                         options={{ suppressScrollX: true }}>
