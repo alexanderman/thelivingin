@@ -1,5 +1,6 @@
 import { Client } from 'twilio-chat';
 
+/** http://media.twiliocdn.com/sdk/js/chat/releases/3.3.1/docs/ */
 class Connection {
     constructor(chatId, channel) {
         let listenerSet = false;

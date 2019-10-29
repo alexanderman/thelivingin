@@ -41,7 +41,7 @@ export const receiveMessages = action$ => action$.pipe(
 
 export const getPreviousMessages = action$ => action$.pipe(
     ofType(types.FETCH_PREVIOUS_MESSAGES),
-    throttleTime(500), /** fires first then waits */
+    throttleTime(100), /** fires first then waits */
     mergeMap(action => {
         return new Observable(observer => {
             /** swallowing the error */

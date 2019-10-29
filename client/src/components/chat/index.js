@@ -37,6 +37,7 @@ class Chat extends Component {
     _getScroll = () => {
         const chatContentElem = this.chatContent.current;
         const scrollElem = this.scrollRef.current._container;
+        window._scroll = this.scrollRef.current;
         return {
             height: chatContentElem.offsetHeight,
             scrollTop: scrollElem.scrollTop,
@@ -67,6 +68,18 @@ class Chat extends Component {
                 if (!isAppended) {
                     currScroll.scrollElem.scrollTop = prevScroll.scrollTop + currScroll.height - prevScroll.height;
                 }
+            }
+        }
+
+        /** handle case when loaded initial messages did not fill the whole page and scroll is invisible  */
+        /** in this case fetch more messages till there is visible scroll or no more messages */
+        const ps = this.scrollRef.current ? this.scrollRef.current._ps : undefined;
+        const { status } = this.props;
+        const isConnected = status === CHAT_STATUS.CONNECT_SUCCESS;
+        if (ps && isConnected) {
+            if (!ps.scrollbarYActive) {
+                console.log('bring more messages, scroll invisible');
+                this.props.fetchPreviousMessages();
             }
         }
     }
@@ -124,7 +137,6 @@ class Chat extends Component {
                     <input ref={this.inputRef} onKeyPress={this.handleEnter} disabled={!inputEnabled} type="text"></input>
                     <button disabled={!inputEnabled} onClick={this.sendClick}>send</button>
                 </div>
-                <button onClick={this.fetchPreviousMessages}>fetch prev</button>
 
             </div>
         )
@@ -145,3 +157,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => chatActions(dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
+
+/**
+ * TODO: 
+ *  find out if channel has more previous messages
+ *  
+ */
