@@ -10,6 +10,7 @@ function registerHelper(request) {
         let dbPromise;
 
         const userData = {
+            ...request,
             name: request.name,
             email: request.email,
             phone: request.phone,
