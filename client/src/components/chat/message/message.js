@@ -2,7 +2,7 @@ import React from 'react';
 import './message.scss';
 
 function _isUrl(text) {
-    return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/
+    return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
         .test(text);
 }
 
@@ -21,7 +21,7 @@ export default props => {
                 {!isUrl 
                     ? <div className="message">{body}</div>    
                     : <div className="message">
-                        <a target="_blank" rel="noopener" href={body}>{body}</a>
+                        <a target="_blank" rel="noopener noreferrer" href={body}>{body}</a>
                     </div>    
                 }
                 
