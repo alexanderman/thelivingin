@@ -69,17 +69,17 @@ class Chat extends Component {
                     currScroll.scrollElem.scrollTop = prevScroll.scrollTop + currScroll.height - prevScroll.height;
                 }
             }
-        }
 
-        /** handle case when loaded initial messages did not fill the whole page and scroll is invisible  */
-        /** in this case fetch more messages till there is visible scroll or no more messages */
-        const ps = this.scrollRef.current ? this.scrollRef.current._ps : undefined;
-        const { status } = this.props;
-        const isConnected = status === CHAT_STATUS.CONNECT_SUCCESS;
-        if (ps && isConnected) {
-            if (!ps.scrollbarYActive) {
-                console.log('bring more messages, scroll invisible');
-                this.props.fetchPreviousMessages();
+            /** handle case when loaded initial messages did not fill the whole page and scroll is invisible  */
+            /** in this case fetch more messages till there is visible scroll or no more messages */
+            const ps = this.scrollRef.current ? this.scrollRef.current._ps : undefined;
+            const { status } = this.props;
+            const isConnected = status === CHAT_STATUS.CONNECT_SUCCESS;
+            if (ps && isConnected) {
+                if (!ps.scrollbarYActive) {
+                    console.log('bring more messages, scroll invisible');
+                    this.props.fetchPreviousMessages();
+                }
             }
         }
     }
@@ -159,7 +159,7 @@ const mapDispatchToProps = dispatch => chatActions(dispatch);
 export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 
 /**
- * TODO: 
- *  find out if channel has more previous messages
- *  
+ * TODO: indication for 
+ *  - sending message (on button indication)  
+ *  - fetching prev messages (on top of chat window like android refresh)
  */
