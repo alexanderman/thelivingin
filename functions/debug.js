@@ -1,0 +1,21 @@
+require('./services/twilio-service/channels-service');
+require('./services/twilio-service/user-service');
+
+const { generateToken } = require('./services/twilio-service');
+
+const tokenData = generateToken('server-user-2');
+console.log(tokenData.token);
+
+
+/** channelSid CH45fd4878e7c94e8e8813ffa8a2476e18 */
+
+/**
+ * server-user-3
+ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTS2ViNDljMGFlZjM5ZjQ2ZmU0ZWZjOTU2M2EwMmMyMmIzLTE1NzE4MzU0MTEiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJzZXJ2ZXItdXNlci0zIiwiY2hhdCI6eyJzZXJ2aWNlX3NpZCI6IklTZDBlNTJkYjk4MWYxNGUyYzk4ZDA2ZjRkYjk2MTMzZWEifX0sImlhdCI6MTU3MTgzNTQxMSwiZXhwIjoxNTcxODM5MDExLCJpc3MiOiJTS2ViNDljMGFlZjM5ZjQ2ZmU0ZWZjOTU2M2EwMmMyMmIzIiwic3ViIjoiQUMyMTI4NDI1MTQzZWM0MDU0MjBkNDBhNDAwYWQyNDJlZSJ9.PIa0IjJ_UFnfBPr_r0S87OhzzqVRYmysGSVpzKNG8Ds
+ */
+
+/**
+ * server-user-2
+ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTS2ViNDljMGFlZjM5ZjQ2ZmU0ZWZjOTU2M2EwMmMyMmIzLTE1NzE4MzU2MDIiLCJncmFudHMiOnsiaWRlbnRpdHkiOiJzZXJ2ZXItdXNlci0yIiwiY2hhdCI6eyJzZXJ2aWNlX3NpZCI6IklTZDBlNTJkYjk4MWYxNGUyYzk4ZDA2ZjRkYjk2MTMzZWEifX0sImlhdCI6MTU3MTgzNTYwMiwiZXhwIjoxNTcxODM5MjAyLCJpc3MiOiJTS2ViNDljMGFlZjM5ZjQ2ZmU0ZWZjOTU2M2EwMmMyMmIzIiwic3ViIjoiQUMyMTI4NDI1MTQzZWM0MDU0MjBkNDBhNDAwYWQyNDJlZSJ9.ldIzaHsDP94DQjUkxV3e7yUQE0MRVe95joRLs4bHEis
+ */
+
