@@ -11,7 +11,7 @@ export default props => {
     const { author, body, channelSid, chatId, attributes = {} } = message;
     const { _id: senderId, name } = attributes.sender || {};
 
-    const messageLineClass = userId == senderId ? 'message-line me' : 'message-line';
+    const messageLineClass = userId === senderId ? 'message-line me' : 'message-line';
     const isUrl = _isUrl(body);
 
     return (
@@ -21,7 +21,7 @@ export default props => {
                 {!isUrl 
                     ? <div className="message">{body}</div>    
                     : <div className="message">
-                        <a target="_blank" href={body}>{body}</a>
+                        <a target="_blank" rel="noopener" href={body}>{body}</a>
                     </div>    
                 }
                 
