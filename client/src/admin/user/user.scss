@@ -1,0 +1,46 @@
+$border: solid 1px #DDDDDD;
+
+.user-cont {
+    display: flex;
+    flex-direction: row;
+    border-radius: 0.5em;
+    border: $border;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    div {
+        background-color: #E9E9E9;
+        padding: 0.5em;
+        border-right: $border;
+        flex-grow: 1;
+        flex-shrink: 0;
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    div:first-child {
+        margin-left: 0;
+    }
+
+    .createdAt { 
+        flex-grow: 0;
+    }
+    .name { 
+        flex-shrink: 1;
+        flex-grow: 2;
+    }
+    .email {
+        flex-grow: 2;
+    }
+    .phone {
+        flex-grow: 1;
+    }
+    .canHelp {
+        flex-grow: 0;
+    }
+    .help_area {
+        flex-grow: 5;
+    }
+}
