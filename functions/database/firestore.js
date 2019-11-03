@@ -109,6 +109,37 @@ function _debugFetch(collection, itemId) {
     .then(_snapShotToObject);
 }
 
+function queryCollection(collection, filter, orderBy) {
+    /** https://cloud.google.com/firestore/docs/query-data/queries */
+    orderBy = orderBy || { key: 'createdAt', order: 'desc' };
+    filter = filter || [];
+    let query = collection;
+    filter.forEach(item => {
+        const { key, operator, operand } = item;
+        query = !query
+            ? collection.where(key, operator, operand)
+            : query.where(key, operator, operand);
+    });
+    return query.orderBy(orderBy.key, orderBy.order).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                return null;
+            }
+            const foundRecords = [];
+            snapshot.forEach(doc => {
+                foundRecords.push(_snapShotToObject(doc));
+            });
+            return foundRecords;
+        });
+}
+
+function queryUsers(filter, orderBy) {
+    return queryCollection(USER_COLL, filter, orderBy);
+}
+
+function queryRequests(filter, orderBy) {
+    return queryCollection(REQUEST_COLL, filter, orderBy);
+}
 
 module.exports = {
     generateUserId,
@@ -125,6 +156,9 @@ module.exports = {
     getUserById,
     updateUser,
     updateChat,
+
+    queryUsers,
+    queryRequests,
 
     _debugFetch
 }
