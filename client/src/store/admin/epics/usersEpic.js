@@ -1,15 +1,18 @@
-import { apiUrl } from '../../../config';
+import { adminUrl } from '../../../config';
 import { ajax } from 'rxjs/ajax'
 import { of } from 'rxjs/index';
 import { ofType } from 'redux-observable';
 import { mergeMap, take, catchError } from 'rxjs/operators';
 
-import { types as requestsTypes } from '../../redux/admin/requestsRedux';
+import { types as usersTypes } from '../redux/usersRedux';
+import { selectors as usersSelectors } from '../redux/usersRedux';
 
 
-export const fetchRequests = action$ => action$.pipe(
-    ofType(requestsTypes.FETCH),
+export const fetchUsers = (action$, store) => action$.pipe(
+    ofType(usersTypes.FETCH),
     mergeMap(action => {
+        const { filter, orderdBy } = usersSelectors(store.getState());
+
         /** TODO: set correct url */
         // const { payload: { chatId, userId, requestId, sig } } = action;
         // console.log(`fetching user and chat data for ${chatId}; ${userId}; ${requestId}; ${sig}`);
@@ -25,5 +28,5 @@ export const fetchRequests = action$ => action$.pipe(
         //     { type: chatTypes.CONNECT_CHANNEL, payload: { chatId, channelSid: sid, twilioToken } },
         // );
     }),
-    catchError(err => of({ type: requestsTypes.FETCH_ERROR, payload: `${err.message}; ${JSON.stringify(err.response)}` }))
+    catchError(err => of({ type: usersTypes.FETCH_ERROR, payload: `${err.message}; ${JSON.stringify(err.response)}` }))
 );

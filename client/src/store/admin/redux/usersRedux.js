@@ -54,6 +54,8 @@ export const actions = {
 };
 
 
-export const selectors = {
-    users: state => state.admin.users.list,
-};
+export const selectors = state => ({
+    users: state.admin.users.list,
+    filter: state.admin.users.filter,
+    orderBy: state.admin.users.orderBy,
+});

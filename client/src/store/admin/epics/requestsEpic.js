@@ -4,11 +4,11 @@ import { of } from 'rxjs/index';
 import { ofType } from 'redux-observable';
 import { mergeMap, take, catchError } from 'rxjs/operators';
 
-import { types as usersTypes } from '../../redux/admin/usersRedux';
+import { types as requestsTypes } from '../redux/requestsRedux';
 
 
 export const fetchRequests = action$ => action$.pipe(
-    ofType(usersTypes.FETCH),
+    ofType(requestsTypes.FETCH),
     mergeMap(action => {
         /** TODO: set correct url */
         // const { payload: { chatId, userId, requestId, sig } } = action;
@@ -25,5 +25,5 @@ export const fetchRequests = action$ => action$.pipe(
         //     { type: chatTypes.CONNECT_CHANNEL, payload: { chatId, channelSid: sid, twilioToken } },
         // );
     }),
-    catchError(err => of({ type: usersTypes.FETCH_ERROR, payload: `${err.message}; ${JSON.stringify(err.response)}` }))
+    catchError(err => of({ type: requestsTypes.FETCH_ERROR, payload: `${err.message}; ${JSON.stringify(err.response)}` }))
 );
