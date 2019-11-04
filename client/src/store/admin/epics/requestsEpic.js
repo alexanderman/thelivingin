@@ -8,21 +8,23 @@ import { types as requestsTypes } from '../redux/requestsRedux';
 import { selectors as requestsSelectors } from '../redux/requestsRedux';
 import { selectors as adminSelectors } from '../redux/adminUserRedux';
 
-function tryObseravable(observable$) {
-    return observable$.catchError(err => { 
-        console.error(err); 
-        return of({ error: err }); 
-    });
+function safeObseravable(observable$) {
+    return observable$.pipe(
+        catchError(err => { 
+            console.error('catchError', err); 
+            return of({ error: err }); 
+        })
+    );
 }
+
 
 export const fetchRequests = (action$, state$) => action$.pipe(
     ofType(requestsTypes.FETCH),
     mergeMap(action => {
         /** TODO: connect filter and orderBy + add epic that reacts on change in those with requestsTypes.FETCH */
-        const { state } = state$.value;
-        const { filter, orderdBy } = requestsSelectors(state);
-        const { token } = adminSelectors(state);
-        return tryObseravable(
+        const { filter, orderdBy } = requestsSelectors(state$.value);
+        const { token } = adminSelectors(state$.value);
+        return safeObseravable(
             ajax.getJSON(`${adminUrl}/requests`, { Authorization: `bearer ${token}` })
         );
     }),
