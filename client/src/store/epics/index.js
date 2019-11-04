@@ -1,7 +1,6 @@
 import { combineEpics } from 'redux-observable';
 import { createConnection, receiveMessages, sendMessage, getPreviousMessages } from './chatEpic';
 import { startup } from './startupEpic';
-import adminEpics from '../admin/epics';
 
 export default combineEpics(
     startup,
@@ -9,5 +8,4 @@ export default combineEpics(
     receiveMessages,
     sendMessage,
     getPreviousMessages,
-    adminEpics
 );

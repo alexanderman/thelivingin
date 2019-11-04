@@ -7,11 +7,11 @@ const INITIAL_STATE = {
 };
 
 export const types = {
-    FETCH: 'FETCH',
-    FETCH_SUCCESS: 'FETCH_SUCCESS',
-    FETCH_ERROR: 'FETCH_ERROR',
-    SET_FILTER: 'SET_FILTER',
-    SET_ORDERBY: 'SET_ORDERBY',
+    FETCH: 'admin-requests-FETCH',
+    FETCH_SUCCESS: 'admin-requests-FETCH_SUCCESS',
+    FETCH_ERROR: 'admin-requests-FETCH_ERROR',
+    SET_FILTER: 'admin-requests-SET_FILTER',
+    SET_ORDERBY: 'admin-requests-SET_ORDERBY',
 };
 
 

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
 };
 
 export const types = {
-    INIT_TOKEN: 'INIT_TOKEN',
+    INIT_TOKEN: 'INIT_ADMIN_TOKEN',
 };
 
 

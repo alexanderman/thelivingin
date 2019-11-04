@@ -7,11 +7,11 @@ const INITIAL_STATE = {
 };
 
 export const types = {
-    FETCH: 'FETCH',
-    FETCH_SUCCESS: 'FETCH_SUCCESS',
-    FETCH_ERROR: 'FETCH_ERROR',
-    SET_FILTER: 'SET_FILTER',
-    SET_ORDERBY: 'SET_ORDERBY',
+    FETCH: 'admin-users-FETCH',
+    FETCH_SUCCESS: 'admin-users-FETCH_SUCCESS',
+    FETCH_ERROR: 'admin-users-FETCH_ERROR',
+    SET_FILTER: 'admin-users-SET_FILTER',
+    SET_ORDERBY: 'admin-users-SET_ORDERBY',
 };
 
 
@@ -30,7 +30,7 @@ export default (state = INITIAL_STATE, action) => {
         }
 
         case types.FETCH_ERROR: {
-            console.log('## ', types.FETCH_ERROR);
+            console.log('## ', types.FETCH_ERROR, payload);
             return { ...state, __isFetching: false, error: payload };
         }
 

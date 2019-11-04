@@ -21,6 +21,7 @@ const Admin = props => {
     const { usersActions, requestsActions } = props;
 
     useEffect(() => {
+        console.log('admin init');
         usersActions.fetch();
         // requestsActions.fetch();
     }, [usersActions, requestsActions]);
