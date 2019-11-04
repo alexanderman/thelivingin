@@ -49,11 +49,13 @@ export default (state = INITIAL_STATE, action) => {
 }
 
 
-export const actions = {
+export const actions = dispatch => ({
+    fetch: () => dispatch({ type: types.FETCH }),
+});
 
-};
 
-
-export const selectors = {
-    requests: state => state.admin.requests.list,
-};
+export const selectors = state => ({
+    requests: state.admin.requests.list,
+    filter: state.admin.requests.filter,
+    orderBy: state.admin.requests.orderBy,
+});

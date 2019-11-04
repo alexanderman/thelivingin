@@ -1,29 +1,36 @@
-import { apiUrl } from '../../../config';
+import { adminUrl } from '../../../config';
 import { ajax } from 'rxjs/ajax'
 import { of } from 'rxjs/index';
 import { ofType } from 'redux-observable';
-import { mergeMap, take, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import { types as requestsTypes } from '../redux/requestsRedux';
+import { selectors as requestsSelectors } from '../redux/requestsRedux';
+import { selectors as adminSelectors } from '../redux/adminUserRedux';
 
+function tryObseravable(observable$) {
+    return observable$.catchError(err => { 
+        console.error(err); 
+        return of({ error: err }); 
+    });
+}
 
-export const fetchRequests = action$ => action$.pipe(
+export const fetchRequests = (action$, state$) => action$.pipe(
     ofType(requestsTypes.FETCH),
     mergeMap(action => {
-        /** TODO: set correct url */
-        // const { payload: { chatId, userId, requestId, sig } } = action;
-        // console.log(`fetching user and chat data for ${chatId}; ${userId}; ${requestId}; ${sig}`);
-        // const url = `${apiUrl}/chats/${chatId}?userId=${userId}&requestId=${requestId}&sig=${sig}`;
-        // return ajax.getJSON(url);
+        /** TODO: connect filter and orderBy + add epic that reacts on change in those with requestsTypes.FETCH */
+        const { state } = state$.value;
+        const { filter, orderdBy } = requestsSelectors(state);
+        const { token } = adminSelectors(state);
+        return tryObseravable(
+            ajax.getJSON(`${adminUrl}/requests`, { Authorization: `bearer ${token}` })
+        );
     }),
-    mergeMap(serverData => {
-        // const { user, chat, request, twilioToken } = serverData;
-        // const { _id: chatId, twilio: { sid } } = chat;
-        // return of(
-        //     { type: userTypes.INIT_USER, payload: { ...user, twilioToken } },
-        //     { type: chatTypes.FETCH_CHAT_SUCCESS, payload: { chat, request } },
-        //     { type: chatTypes.CONNECT_CHANNEL, payload: { chatId, channelSid: sid, twilioToken } },
-        // );
+    map(data => {
+        if (data.error) {
+            return { type: requestsTypes.FETCH_ERROR, payload: data.error };
+        }
+        return { type: requestsTypes.FETCH_SUCCESS, payload: data };
     }),
     catchError(err => of({ type: requestsTypes.FETCH_ERROR, payload: `${err.message}; ${JSON.stringify(err.response)}` }))
 );

@@ -49,9 +49,9 @@ export default (state = INITIAL_STATE, action) => {
 }
 
 
-export const actions = {
-
-};
+export const actions = dispatch => ({
+    fetch: () => dispatch({ type: types.FETCH }),
+});
 
 
 export const selectors = state => ({
