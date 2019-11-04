@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './admin.scss';
 import { actions as usersActions } from '../store/admin/redux/usersRedux';
 import { actions as requestsActions } from '../store/admin/redux/requestsRedux';
+import { actions as adminActions } from '../store/admin/redux/adminUserRedux';
 
 import UserList from './user-list';
 
@@ -18,10 +19,12 @@ function getUrlParams() {
 }
 
 const Admin = props => {
-    const { usersActions, requestsActions } = props;
+    const { adminActions, usersActions, requestsActions } = props;
 
     useEffect(() => {
         console.log('admin init');
+        const { token } = getUrlParams();
+        adminActions.setToken(token);
         usersActions.fetch();
         requestsActions.fetch();
     }, [usersActions, requestsActions]);
@@ -39,6 +42,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     usersActions: usersActions(dispatch),
     requestsActions: requestsActions(dispatch),
+    adminActions: adminActions(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

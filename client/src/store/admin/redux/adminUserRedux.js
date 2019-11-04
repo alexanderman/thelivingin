@@ -4,7 +4,7 @@ const INITIAL_STATE = {
 };
 
 export const types = {
-    INIT_TOKEN: 'INIT_ADMIN_TOKEN',
+    SET_TOKEN: 'SET_ADMIN_TOKEN',
 };
 
 
@@ -12,8 +12,8 @@ export default (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
     switch (type) {
 
-        case types.INIT_TOKEN: {
-            console.log('## ', types.INIT_TOKEN);
+        case types.SET_TOKEN: {
+            console.log('## ', types.SET_TOKEN, payload);
             return { ...state, token: payload };
         }
 
@@ -22,9 +22,9 @@ export default (state = INITIAL_STATE, action) => {
 }
 
 
-export const actions = {
-
-};
+export const actions = dispatch => ({
+    setToken: token => dispatch({ type: types.SET_TOKEN, payload: token }),
+});
 
 
 export const selectors = state => ({
