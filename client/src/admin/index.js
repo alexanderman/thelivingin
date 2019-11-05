@@ -21,14 +21,20 @@ function getUrlParams() {
 
 const Admin = props => {
     const { adminActions, usersActions, requestsActions } = props;
+    const { token } = getUrlParams();
 
     useEffect(() => {
         console.log('admin init');
-        const { token } = getUrlParams();
-        adminActions.setToken(token);
-        usersActions.fetch();
-        requestsActions.fetch();
-    }, [usersActions, requestsActions]);
+        if (token) {
+            adminActions.setToken(token);
+            usersActions.fetch();
+            requestsActions.fetch();
+        }
+        else {
+            console.error('missing admin token!!!');
+        }
+        
+    }, [usersActions, requestsActions, token]);
 
     return (
         <div className="admin-cont">
