@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './admin.scss';
 import { actions as usersActions } from '../store/admin/redux/usersRedux';
 import { actions as requestsActions } from '../store/admin/redux/requestsRedux';
 import { actions as adminActions } from '../store/admin/redux/adminUserRedux';
+import FullScreenDialog from './components/dialog-full-screen';
 
+import Button from '@material-ui/core/Button';
 import UserList from './user-list';
 import RequestsList from './requests-list';
 
@@ -22,6 +24,7 @@ function getUrlParams() {
 const Admin = props => {
     const { adminActions, usersActions, requestsActions } = props;
     const { token } = getUrlParams();
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         console.log('admin init');
@@ -38,8 +41,18 @@ const Admin = props => {
 
     return (
         <div className="admin-cont">
+
+            <Button variant="outlined" color="primary" onClick={() => setIsOpen(true)}>
+                Select request
+            </Button>
+
+
+            <FullScreenDialog isOpen={isOpen} handleClose={() => setIsOpen(false)} render={() => <RequestsList />} />
+       
+       
             <UserList />
-            <RequestsList />
+            {/* 
+            <RequestsList /> */}
         </div>
     ); 
 }
@@ -55,3 +68,18 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);
 
+/**
+ 
+request:    q6M3L71tiqrtKHErRQjO Лиза Здравствуйте! Хочу выйти на авталу
+user:       6xsJGDzJK5gHRcIRrgpb elizza402@gmail.com
+helper:     aWU0Eezm3dmZufmU2wAB Diamandineomi@gmail.com
+
+chat:       18W6swyva8ZJv6CzbVj6 
+admin:      As7V1n2F0p9Q5g64NOPB
+
+==== links ====
+user:       https://thelivingin-staging.firebaseapp.com/?chatId=18W6swyva8ZJv6CzbVj6&userId=6xsJGDzJK5gHRcIRrgpb&requestId=q6M3L71tiqrtKHErRQjO
+helper:     https://thelivingin-staging.firebaseapp.com/?chatId=18W6swyva8ZJv6CzbVj6&userId=aWU0Eezm3dmZufmU2wAB&requestId=q6M3L71tiqrtKHErRQjO
+Jenny:      https://thelivingin-staging.firebaseapp.com/?chatId=18W6swyva8ZJv6CzbVj6&userId=As7V1n2F0p9Q5g64NOPB&requestId=q6M3L71tiqrtKHErRQjO      
+
+*/

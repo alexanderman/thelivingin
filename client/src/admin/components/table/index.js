@@ -13,9 +13,10 @@ import './table.scss';
 const useStyles = makeStyles({
   root: {
     width: '100%',
+    height: '100%',
   },
   tableWrapper: {
-    maxHeight: 440,
+    maxHeight: '100%',
     overflow: 'auto',
   },
 });

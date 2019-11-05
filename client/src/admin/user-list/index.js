@@ -1,5 +1,5 @@
 import React from 'react';
-import MyTable from '../table';
+import MyTable from '../components/table';
 import { connect } from 'react-redux';
 import { selectors as usersSelectors } from '../../store/admin/redux/usersRedux';
 import CircularProgress from '@material-ui/core/CircularProgress';

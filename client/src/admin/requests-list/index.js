@@ -1,5 +1,5 @@
 import React from 'react';
-import MyTable from '../table';
+import MyTable from '../components/table';
 import './requests-list.scss';
 import { connect } from 'react-redux';
 import { selectors as requestsSelectors } from '../../store/admin/redux/requestsRedux';
