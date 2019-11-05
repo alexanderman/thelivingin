@@ -58,4 +58,5 @@ export const selectors = state => ({
     users: state.admin.users.list,
     filter: state.admin.users.filter,
     orderBy: state.admin.users.orderBy,
+    isFetching: state.admin.users.__isFetching,
 });

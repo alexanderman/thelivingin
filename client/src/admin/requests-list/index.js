@@ -1,12 +1,18 @@
 import React from 'react';
 import MyTable from '../table';
+import './requests-list.scss';
 import { connect } from 'react-redux';
-import { selectors as usersSelectors } from '../../store/admin/redux/usersRedux';
+import { selectors as requestsSelectors } from '../../store/admin/redux/requestsRedux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import './user-list.scss';
 import moment from 'moment';
 
 const columns = [{
+    id: 'createdAt',
+    label: 'CreatedAt',
+    minWidth: 100,
+    align: 'left',
+    format: value => moment(value).format('DD/MM/YYYY HH:mm'),
+},{
         id: 'name',
         label: 'Name',
         minWidth: 140,
@@ -25,21 +31,9 @@ const columns = [{
         align: 'left',
         format: value => value,
     },{
-        id: 'createdAt',
-        label: 'CreatedAt',
-        minWidth: 100,
-        align: 'left',
-        format: value => moment(value).format('DD/MM/YYYY HH:mm'),
-    },{
-        id: 'canHelp',
-        label: 'CanHelp',
-        minWidth: 60,
-        align: 'left',
-        format: value => (!!value).toString(),
-    },{
-        id: 'help_area',
-        label: 'Help Area',
-        minWidth: 250,
+        id: 'textarea',
+        label: 'Request',
+        minWidth: 270,
         align: 'left',
         format: value => value,
 }];
@@ -48,11 +42,12 @@ const columns = [{
 const mock_users = require('../mock_users');
 const rows = mock_users;
 
-function UserList(props) {
-    const { users, isFetching } = props;
+
+function RequestsList(props) {
+    const { requests, isFetching } = props;
     return (
-        <div className="user-list-cont">
-            <MyTable columns={columns} rows={users} />
+        <div className="requess-list">
+            <MyTable columns={columns} rows={requests} />
             {isFetching
                 ? <CircularProgress className="loader" />
                 : null
@@ -62,10 +57,10 @@ function UserList(props) {
     );
 }
 
-const mapStateToProps = state => usersSelectors(state);
+const mapStateToProps = state => requestsSelectors(state);
 
 const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default connect(mapStateToProps, mapDispatchToProps)(RequestsList);
 
 

@@ -6,6 +6,7 @@ import { actions as requestsActions } from '../store/admin/redux/requestsRedux';
 import { actions as adminActions } from '../store/admin/redux/adminUserRedux';
 
 import UserList from './user-list';
+import RequestsList from './requests-list';
 
 function getUrlParams() {
     return window.location.search.substr(1).split('&').reduce((acc, keyVal) => {
@@ -32,6 +33,7 @@ const Admin = props => {
     return (
         <div className="admin-cont">
             <UserList />
+            <RequestsList />
         </div>
     ); 
 }
@@ -47,9 +49,3 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);
 
-
-/** 
- * TODO: 
- *  - fetch all requests
- *  - fetch all helpers
- */
