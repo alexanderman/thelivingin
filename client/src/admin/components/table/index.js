@@ -7,8 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import './table.scss';
 
 
 const useStyles = makeStyles({
@@ -43,7 +43,7 @@ export default function MyTable(props) {
     const [data, setData] = useState({ columns: props.columns, rows: props.rows });
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { onRowClick, showLoading } = props;
+    const { onRowClick, showLoading, selectable } = props;
 
     useEffect(() => {
         setData({ columns: props.columns, rows: props.rows });
@@ -59,6 +59,17 @@ export default function MyTable(props) {
         setPage(0);
     };
 
+    const handleRowClick = (row, index) => {
+        const { columns, rows } = data;
+        const updatedRows = [...rows];
+        updatedRows[index] = { ...row, _$selected: !!!row._$selected };
+        setData({ columns, rows: updatedRows });
+
+        if (onRowClick) {
+            onRowClick(row);
+        }
+    }
+
     const { columns, rows } = data;
 
     return (
@@ -69,9 +80,13 @@ export default function MyTable(props) {
             }
         <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
-            <Table stickyHeader aria-label="sticky table">
+            <Table stickyHeader aria-label="sticky table" size="medium">
             <TableHead>
                 <TableRow>
+                {selectable
+                    ? <TableCell></TableCell>
+                    : null 
+                }
                 {columns.map(column => (
                     <TableCell
                     key={column.id}
@@ -84,9 +99,15 @@ export default function MyTable(props) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                 return (
-                    <TableRow hover onClick={() => onRowClick && onRowClick(row)} role="checkbox" tabIndex={-1} key={row._id}>
+                    <TableRow selected={row._$selected} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
+                    
+                    {selectable
+                        ? <TableCell><Checkbox color="primary" checked={!!row._$selected} /></TableCell>
+                        : null
+                    }
+
                     {columns.map(column => {
                         const value = row[column.id];
                         return (

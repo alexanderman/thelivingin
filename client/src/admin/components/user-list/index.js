@@ -49,7 +49,7 @@ const columns = [{
 function UserList(props) {
     const { users, isFetching } = props;
     return (
-        <MyTable className="user-list" columns={columns} rows={users} showLoading={isFetching} />
+        <MyTable selectable className="user-list" columns={columns} rows={users} showLoading={isFetching} />
     );
 }
 

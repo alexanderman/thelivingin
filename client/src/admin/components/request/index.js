@@ -38,7 +38,7 @@ export default function RequestCard(props) {
   const { name, email, phone, createdAt, textarea, _id } = request;
 
   return (
-    <Card className={classes.card} elevation="5">
+    <Card className={classes.card} elevation={5}>
       <CardContent>
         <div className={classes.content}>
           

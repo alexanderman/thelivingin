@@ -33,7 +33,7 @@ const Admin = props => {
     useEffect(() => {
         console.log('admin init');
         if (token) {
-            // adminActions.setToken(token);
+            adminActions.setToken(token);
             // usersActions.fetch();
             // requestsActions.fetch();
         }

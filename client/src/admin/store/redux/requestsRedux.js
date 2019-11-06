@@ -1,5 +1,7 @@
+const mock_requests = require('../../_mocks/mock_requests.json');
+
 const INITIAL_STATE = {
-    list: [],
+    list: mock_requests,
     selected: undefined,
     filter: undefined,
     orderBy: undefined,
@@ -15,7 +17,6 @@ export const types = {
     SET_ORDERBY: 'admin-requests-SET_ORDERBY',
     SET_SELECTED: 'admin-requests-SET_SELECTED',
 };
-
 
 export default (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
