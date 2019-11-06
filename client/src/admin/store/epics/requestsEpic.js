@@ -1,6 +1,6 @@
 import { adminUrl } from '../../../config';
 import { ajax } from 'rxjs/ajax'
-import { of } from 'rxjs/index';
+import { of } from 'rxjs';
 import { ofType } from 'redux-observable';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import MyTable from '../components/table';
 import { connect } from 'react-redux';
-import { selectors as usersSelectors } from '../../store/admin/redux/usersRedux';
+import { selectors as usersSelectors } from '../store/redux/usersRedux';
 import moment from 'moment';
 import './user-list.scss';
 

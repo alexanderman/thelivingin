@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import MyTable from '../components/table';
 import { connect } from 'react-redux';
-import { selectors as requestsSelectors, actions as requestsActions } from '../../store/admin/redux/requestsRedux';
+import { selectors as requestsSelectors, actions as requestsActions } from '../store/redux/requestsRedux';
 import moment from 'moment';
 
 const timestampFormat = timestamp => {

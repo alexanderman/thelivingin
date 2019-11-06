@@ -7,8 +7,8 @@ import { combineEpics } from 'redux-observable';
 import appReducer from './redux';
 import appEpic from './epics';
 
-import adminReducer from './admin/redux';
-import adminEpic from './admin/epics';
+import adminReducer from '../admin/store/redux';
+import adminEpic from '../admin/store/epics';
 
 const rootEpic = combineEpics(
     appEpic,

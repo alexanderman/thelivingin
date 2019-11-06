@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './admin.scss';
-import { actions as usersActions } from '../store/admin/redux/usersRedux';
-import { actions as requestsActions } from '../store/admin/redux/requestsRedux';
-import { actions as adminActions } from '../store/admin/redux/adminUserRedux';
+import { actions as usersActions } from './store/redux/usersRedux';
+import { actions as requestsActions } from './store/redux/requestsRedux';
+import { actions as adminActions } from './store/redux/adminUserRedux';
 import FullScreenDialog from './components/dialog-full-screen';
 
 import Button from '@material-ui/core/Button';
