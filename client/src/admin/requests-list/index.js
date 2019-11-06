@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import MyTable from '../components/table';
-import './requests-list.scss';
 import { connect } from 'react-redux';
-import { selectors as requestsSelectors } from '../../store/admin/redux/requestsRedux';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { selectors as requestsSelectors, actions as requestsActions } from '../../store/admin/redux/requestsRedux';
 import moment from 'moment';
+
+const timestampFormat = timestamp => {
+    const date = moment(timestamp).format('DD/MM/YYYY HH:mm').split(' ');    
+    return <Fragment>{date[0]}&nbsp;<span>{date[1]}</span></Fragment>
+}
+
+const requestFormat = value => <span className="help-area">{value}</span>;
 
 const columns = [{
     id: 'createdAt',
-    label: 'CreatedAt',
-    minWidth: 100,
+    label: 'Created At',
+    minWidth: 120,
     align: 'left',
-    format: value => moment(value).format('DD/MM/YYYY HH:mm'),
+    format: timestampFormat
 },{
         id: 'name',
         label: 'Name',
@@ -27,15 +32,15 @@ const columns = [{
     },{
         id: 'phone',
         label: 'Phone',
-        minWidth: 100,
+        minWidth: 120,
         align: 'left',
         format: value => value,
     },{
         id: 'textarea',
         label: 'Request',
-        minWidth: 270,
+        minWidth: 250,
         align: 'left',
-        format: value => value,
+        format: requestFormat
 }];
 
 
@@ -44,22 +49,15 @@ const rows = mock_users;
 
 
 function RequestsList(props) {
-    const { requests, isFetching } = props;
+    const { requests, isFetching, setSelected } = props;
     return (
-        <div className="requess-list">
-            <MyTable columns={columns} rows={requests} />
-            {isFetching
-                ? <CircularProgress className="loader" />
-                : null
-            }
-            
-        </div>
+        <MyTable columns={columns} rows={requests} onRowClick={setSelected} showLoading={isFetching} />
     );
 }
 
 const mapStateToProps = state => requestsSelectors(state);
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = requestsActions;
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestsList);
 

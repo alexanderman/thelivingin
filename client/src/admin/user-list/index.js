@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import MyTable from '../components/table';
 import { connect } from 'react-redux';
 import { selectors as usersSelectors } from '../../store/admin/redux/usersRedux';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import './user-list.scss';
 import moment from 'moment';
+import './user-list.scss';
+
+const timestampFormat = timestamp => {
+    const date = moment(timestamp).format('DD/MM/YYYY HH:mm').split(' ');    
+    return <Fragment>{date[0]}&nbsp;<span>{date[1]}</span></Fragment>
+}
+
+const helpAreaFormat = value => <span className="help-area">{value}</span>;
 
 const columns = [{
         id: 'name',
@@ -21,18 +27,18 @@ const columns = [{
     },{
         id: 'phone',
         label: 'Phone',
-        minWidth: 100,
+        minWidth: 120,
         align: 'left',
         format: value => value,
     },{
         id: 'createdAt',
-        label: 'CreatedAt',
+        label: 'Created At',
         minWidth: 100,
         align: 'left',
-        format: value => moment(value).format('DD/MM/YYYY HH:mm'),
+        format: timestampFormat,
     },{
         id: 'canHelp',
-        label: 'CanHelp',
+        label: 'Can Help',
         minWidth: 60,
         align: 'left',
         format: value => (!!value).toString(),
@@ -41,7 +47,7 @@ const columns = [{
         label: 'Help Area',
         minWidth: 250,
         align: 'left',
-        format: value => value,
+        format: helpAreaFormat,
 }];
 
 
@@ -51,14 +57,7 @@ const rows = mock_users;
 function UserList(props) {
     const { users, isFetching } = props;
     return (
-        <div className="user-list-cont">
-            <MyTable columns={columns} rows={users} />
-            {isFetching
-                ? <CircularProgress className="loader" />
-                : null
-            }
-            
-        </div>
+        <MyTable className="user-list" columns={columns} rows={users} showLoading={isFetching} />
     );
 }
 

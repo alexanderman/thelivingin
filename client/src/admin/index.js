@@ -9,6 +9,10 @@ import FullScreenDialog from './components/dialog-full-screen';
 import Button from '@material-ui/core/Button';
 import UserList from './user-list';
 import RequestsList from './requests-list';
+import RequestCard from './components/request';
+
+const mockRequests = require('./mock_requests.json');
+
 
 function getUrlParams() {
     return window.location.search.substr(1).split('&').reduce((acc, keyVal) => {
@@ -42,6 +46,8 @@ const Admin = props => {
     return (
         <div className="admin-cont">
 
+            <RequestCard request={mockRequests[0]} />
+
             <Button variant="outlined" color="primary" onClick={() => setIsOpen(true)}>
                 Select request
             </Button>
@@ -51,8 +57,6 @@ const Admin = props => {
        
        
             <UserList />
-            {/* 
-            <RequestsList /> */}
         </div>
     ); 
 }

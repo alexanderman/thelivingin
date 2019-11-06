@@ -1,13 +1,7 @@
-.user-list-cont {
+.user-list {
     position: relative;
-    height: 100%;
 
-    .loader {
-        position: absolute;
-        left: 50%;
-        margin-left: -20px;
-        top: 50%;
-        margin-top: -20px;
-        z-index: 10;
+    .help-area {
+        font-size: 0.7em;
     }
 }
