@@ -2,21 +2,17 @@ import React, { Fragment } from 'react';
 import MyTable from '../table';
 import { connect } from 'react-redux';
 import { selectors as requestsSelectors, actions as requestsActions } from '../../store/redux/requestsRedux';
-import moment from 'moment';
+import Timestamp from '../common/timestamp';
 
-const timestampFormat = timestamp => {
-    const date = moment(timestamp).format('DD/MM/YYYY HH:mm').split(' ');    
-    return <Fragment>{date[0]}&nbsp;<span>{date[1]}</span></Fragment>
-}
 
 const requestFormat = value => <span className="help-area">{value}</span>;
 
 const columns = [{
     id: 'createdAt',
     label: 'Created At',
-    minWidth: 120,
+    minWidth: 100,
     align: 'left',
-    format: timestampFormat
+    format: val => <Timestamp timestamp={val} />,
 },{
         id: 'name',
         label: 'Name',

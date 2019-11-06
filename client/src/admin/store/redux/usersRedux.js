@@ -27,6 +27,7 @@ export default (state = INITIAL_STATE, action) => {
         case types.FETCH_SUCCESS: {
             console.log('## ', types.FETCH_SUCCESS);
             return { ...state, __isFetching: false, list: payload };
+            // return { ...state, __isFetching: false, list: [...payload,...payload,...payload,...payload,...payload,...payload,] };
         }
 
         case types.FETCH_ERROR: {

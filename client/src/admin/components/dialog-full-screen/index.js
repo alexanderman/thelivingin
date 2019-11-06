@@ -2,10 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,6 +17,13 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(2),
     flex: 1,
   },
+  content: {
+    padding: '1em',
+    backgroundColor: '#f5f5f5',
+    display: 'flex',
+    height: '100%',
+    overflow: 'hidden',
+  }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -41,12 +44,14 @@ export default function FullScreenDialog(props) {
             <Typography variant="h6" className={classes.title}>
               {title}
             </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
+            {/* <Button autoFocus color="inherit" onClick={handleClose}>
               save
-            </Button>
+            </Button> */}
           </Toolbar>
         </AppBar>
-        {render()}
+        <div className={classes.content}>
+          {render()}
+        </div>
       </Dialog>
   );
 }

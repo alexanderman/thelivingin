@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Timestamp from '../common/timestamp';
 
 const useStyles = makeStyles({
   card: {
@@ -15,42 +16,32 @@ const useStyles = makeStyles({
     margin: '0 2px',
     transform: 'scale(0.8)',
   },
-  title: {
-    fontSize: 14,
-  },
   pos: {
-    marginBottom: 12,
+    margin: '1em 0 0 0',
   },
 });
 
-export default function RequestCard() {
+
+export default function RequestCard(props) {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  const { request = {} } = props;
+  const { name, email, phone, createdAt, textarea, _id } = request;
 
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography className={classes.title} color="textPrimary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="h2">
-          be
-          {bull}
-          nev
-          {bull}o{bull}
-          lent
+        <Typography variant="body1" color="textPrimary">
+          {name} <br />
+          {phone} <br />
+          {email}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          adjective
-        </Typography>
-        <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
+          {/* {formatTimestamp(createdAt)} */}
+          <Timestamp timestamp={createdAt} />
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small">Clear</Button>
       </CardActions>
     </Card>
   );

@@ -44,19 +44,21 @@ const Admin = props => {
     }, [usersActions, requestsActions, token]);
 
     return (
-        <div className="admin-cont">
+        <div className="admin-bg">
+            <div className="admin-cont">
 
-            <RequestCard request={mockRequests[0]} />
+                <RequestCard request={mockRequests[0]} />
 
-            <Button variant="outlined" color="primary" onClick={() => setIsOpen(true)}>
-                Select request
-            </Button>
+                <Button variant="outlined" color="primary" onClick={() => setIsOpen(true)}>
+                    Select request
+                </Button>
 
 
-            <FullScreenDialog isOpen={isOpen} handleClose={() => setIsOpen(false)} render={() => <RequestsList />} />
-       
-       
-            <UserList />
+                <FullScreenDialog isOpen={isOpen} handleClose={() => setIsOpen(false)} render={() => <RequestsList />} />
+        
+        
+                <UserList />
+            </div>
         </div>
     ); 
 }

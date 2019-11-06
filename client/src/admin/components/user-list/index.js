@@ -2,13 +2,8 @@ import React, { Fragment } from 'react';
 import MyTable from '../table';
 import { connect } from 'react-redux';
 import { selectors as usersSelectors } from '../../store/redux/usersRedux';
-import moment from 'moment';
+import Timestamp from '../common/timestamp';
 import './user-list.scss';
-
-const timestampFormat = timestamp => {
-    const date = moment(timestamp).format('DD/MM/YYYY HH:mm').split(' ');    
-    return <Fragment>{date[0]}&nbsp;<span>{date[1]}</span></Fragment>
-}
 
 const helpAreaFormat = value => <span className="help-area">{value}</span>;
 
@@ -35,7 +30,7 @@ const columns = [{
         label: 'Created At',
         minWidth: 100,
         align: 'left',
-        format: timestampFormat,
+        format: val => <Timestamp timestamp={val} />,
     },{
         id: 'canHelp',
         label: 'Can Help',
