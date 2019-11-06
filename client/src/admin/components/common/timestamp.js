@@ -10,6 +10,9 @@ const useStyles = makeStyles(theme => ({
 
 export default props => {
     const classes = useStyles();
+    if (!props.timestamp) {
+        return null;
+    }
     const formatted = moment(props.timestamp).format('DD/MM/YYYY HH:mm');
     return <span className={classes.timeStamp}>{formatted}</span>;
 }

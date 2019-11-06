@@ -41,9 +41,15 @@ const columns = [{
 
 
 function RequestsList(props) {
-    const { requests, isFetching, setSelected } = props;
+    const { requests, isFetching, setSelected, onSelectedSet } = props;
+
+    const handleClick = request => {
+        setSelected(request);
+        onSelectedSet && onSelectedSet(request)
+    }
+
     return (
-        <MyTable columns={columns} rows={requests} onRowClick={setSelected} showLoading={isFetching} />
+        <MyTable columns={columns} rows={requests} onRowClick={handleClick} showLoading={isFetching} />
     );
 }
 

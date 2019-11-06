@@ -43,7 +43,7 @@ export default function MyTable(props) {
     const [data, setData] = useState({ columns: props.columns, rows: props.rows });
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { onRowClick, showLoading, selectable } = props;
+    const { onRowClick, showLoading, selectable, onSelectedChange } = props;
 
     useEffect(() => {
         setData({ columns: props.columns, rows: props.rows });
@@ -60,10 +60,16 @@ export default function MyTable(props) {
     };
 
     const handleRowClick = (row, index) => {
-        const { columns, rows } = data;
-        const updatedRows = [...rows];
-        updatedRows[index] = { ...row, _$selected: !!!row._$selected };
-        setData({ columns, rows: updatedRows });
+        if (selectable) {
+            const { columns, rows } = data;
+            const updatedRows = [...rows];
+            updatedRows[index] = { ...row, _$selected: !!!row._$selected };
+            setData({ columns, rows: updatedRows });
+
+            if (onSelectedChange) {
+                onSelectedChange(updatedRows.filter(r => r._$selected));
+            }
+        }
 
         if (onRowClick) {
             onRowClick(row);

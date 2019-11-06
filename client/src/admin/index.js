@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import './admin.scss';
-import { actions as usersActions } from './store/redux/usersRedux';
-import { actions as requestsActions } from './store/redux/requestsRedux';
+import { actions as usersActions, selectors as usersSelectors } from './store/redux/usersRedux';
+import { actions as requestsActions, selectors as requestsSelectors } from './store/redux/requestsRedux';
 import { actions as adminActions } from './store/redux/adminUserRedux';
 import FullScreenDialog from './components/dialog-full-screen';
 
@@ -26,7 +26,7 @@ function getUrlParams() {
 }
 
 const Admin = props => {
-    const { adminActions, usersActions, requestsActions } = props;
+    const { adminActions, usersActions, requestsActions, requestsSelectors } = props;
     const { token } = getUrlParams();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -43,6 +43,10 @@ const Admin = props => {
         
     }, [usersActions, requestsActions, token]);
 
+    const resetSelectedRequest = () => {
+
+    }
+
     return (
         <div className="admin-cont">
             <div className="admin-chat-manager">
@@ -51,9 +55,16 @@ const Admin = props => {
                     Select request
                 </Button>
     
-                <RequestCard request={mockRequests[0]} />
+                {requestsSelectors.selected
+                    ?   <RequestCard request={requestsSelectors.selected} 
+                            onClearClick={() => requestsActions.setSelected(undefined)} 
+                        />
+                    : null
+                }
 
-                <FullScreenDialog isOpen={isOpen} handleClose={() => setIsOpen(false)} render={() => <RequestsList />} />
+                <FullScreenDialog isOpen={isOpen} 
+                    handleClose={() => setIsOpen(false)} render={() => <RequestsList onSelectedSet={() => setIsOpen(false)} />} 
+                />
                 
                 <UserList />
             </div>
@@ -62,6 +73,9 @@ const Admin = props => {
 }
 
 const mapStateToProps = state => ({
+    requestsSelectors: requestsSelectors(state),
+    usersSelectors: usersSelectors(state),
+
 });
 
 const mapDispatchToProps = dispatch => ({

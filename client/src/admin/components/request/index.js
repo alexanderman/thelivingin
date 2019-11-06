@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     flexDirection: 'row',
   },
   userInfo: {
-    
+    minWidth: '12em',
   },
   request: {
     marginLeft: '2em'
@@ -34,9 +34,13 @@ const useStyles = makeStyles({
 
 export default function RequestCard(props) {
   const classes = useStyles();
-  const { request = {} } = props;
+  const { request = {}, onClearClick } = props;
   const { name, email, phone, createdAt, textarea, _id } = request;
 
+  const handleClearClick = () => {
+    if (onClearClick) onClearClick();
+  }
+  
   return (
     <Card className={classes.card} elevation={5}>
       <CardContent>
@@ -60,7 +64,7 @@ export default function RequestCard(props) {
         </div>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="contained">Clear</Button>
+        <Button size="small" onClick={handleClearClick} variant="contained">Clear</Button>
       </CardActions>
     </Card>
   );

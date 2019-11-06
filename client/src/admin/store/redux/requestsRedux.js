@@ -39,17 +39,17 @@ export default (state = INITIAL_STATE, action) => {
         }
 
         case types.SET_FILTER: {
-            console.log('## ', types.SET_FILTER);
+            console.log('## ', types.SET_FILTER, payload);
             return { ...state, filter: payload };
         }
 
         case types.SET_ORDERBY: {
-            console.log('## ', types.SET_ORDERBY);
+            console.log('## ', types.SET_ORDERBY, payload);
             return { ...state, orderBy: payload };
         }
 
         case types.SET_SELECTED: {
-            console.log('## ', types.SET_SELECTED);
+            console.log('## ', types.SET_SELECTED, payload);
             return { ...state, selected: payload };
         }
 
