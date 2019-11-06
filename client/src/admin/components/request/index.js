@@ -8,6 +8,16 @@ import Typography from '@material-ui/core/Typography';
 import Timestamp from '../common/timestamp';
 
 const useStyles = makeStyles({
+  content: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  userInfo: {
+    
+  },
+  request: {
+    marginLeft: '2em'
+  },
   card: {
     minWidth: 275,
   },
@@ -28,20 +38,29 @@ export default function RequestCard(props) {
   const { name, email, phone, createdAt, textarea, _id } = request;
 
   return (
-    <Card className={classes.card}>
+    <Card className={classes.card} elevation="5">
       <CardContent>
-        <Typography variant="body1" color="textPrimary">
-          {name} <br />
-          {phone} <br />
-          {email}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          {/* {formatTimestamp(createdAt)} */}
-          <Timestamp timestamp={createdAt} />
-        </Typography>
+        <div className={classes.content}>
+          
+          <div className={classes.userInfo}>
+            <Typography variant="body1" color="textPrimary">
+              {name} <br />
+              {phone} <br />
+              {email} <br />
+              <Timestamp timestamp={createdAt} />
+            </Typography>
+          </div>
+          
+          <div className={classes.request}>
+            <Typography variant="body2" color="textSecondary">
+              {textarea}
+            </Typography>
+          </div>
+
+        </div>
       </CardContent>
       <CardActions>
-        <Button size="small">Clear</Button>
+        <Button size="small" variant="contained">Clear</Button>
       </CardActions>
     </Card>
   );

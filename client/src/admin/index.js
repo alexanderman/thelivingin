@@ -33,9 +33,9 @@ const Admin = props => {
     useEffect(() => {
         console.log('admin init');
         if (token) {
-            adminActions.setToken(token);
-            usersActions.fetch();
-            requestsActions.fetch();
+            // adminActions.setToken(token);
+            // usersActions.fetch();
+            // requestsActions.fetch();
         }
         else {
             console.error('missing admin token!!!');
@@ -44,19 +44,17 @@ const Admin = props => {
     }, [usersActions, requestsActions, token]);
 
     return (
-        <div className="admin-bg">
-            <div className="admin-cont">
+        <div className="admin-cont">
+            <div className="admin-chat-manager">
 
-                <RequestCard request={mockRequests[0]} />
-
-                <Button variant="outlined" color="primary" onClick={() => setIsOpen(true)}>
+                <Button variant="contained" color="primary" onClick={() => setIsOpen(true)}>
                     Select request
                 </Button>
-
+    
+                <RequestCard request={mockRequests[0]} />
 
                 <FullScreenDialog isOpen={isOpen} handleClose={() => setIsOpen(false)} render={() => <RequestsList />} />
-        
-        
+                
                 <UserList />
             </div>
         </div>
