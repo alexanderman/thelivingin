@@ -7,11 +7,11 @@ import { actions as adminActions } from './store/redux/adminUserRedux';
 import FullScreenDialog from './components/dialog-full-screen';
 
 import Button from '@material-ui/core/Button';
-import UserList from './user-list';
-import RequestsList from './requests-list';
+import UserList from './components/user-list';
+import RequestsList from './components/requests-list';
 import RequestCard from './components/request';
 
-const mockRequests = require('./mock_requests.json');
+const mockRequests = require('./_mocks/mock_requests.json');
 
 
 function getUrlParams() {

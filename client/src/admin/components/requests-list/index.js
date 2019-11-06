@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import MyTable from '../components/table';
+import MyTable from '../table';
 import { connect } from 'react-redux';
-import { selectors as requestsSelectors, actions as requestsActions } from '../store/redux/requestsRedux';
+import { selectors as requestsSelectors, actions as requestsActions } from '../../store/redux/requestsRedux';
 import moment from 'moment';
 
 const timestampFormat = timestamp => {
@@ -42,10 +42,6 @@ const columns = [{
         align: 'left',
         format: requestFormat
 }];
-
-
-const mock_users = require('../mock_users');
-const rows = mock_users;
 
 
 function RequestsList(props) {

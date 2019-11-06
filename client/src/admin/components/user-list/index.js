@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import MyTable from '../components/table';
+import MyTable from '../table';
 import { connect } from 'react-redux';
-import { selectors as usersSelectors } from '../store/redux/usersRedux';
+import { selectors as usersSelectors } from '../../store/redux/usersRedux';
 import moment from 'moment';
 import './user-list.scss';
 
@@ -50,9 +50,6 @@ const columns = [{
         format: helpAreaFormat,
 }];
 
-
-const mock_users = require('../mock_users');
-const rows = mock_users;
 
 function UserList(props) {
     const { users, isFetching } = props;
