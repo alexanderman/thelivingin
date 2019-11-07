@@ -38,19 +38,21 @@ const useStyles = makeStyles({
     },
 });
 
+/** maintains own(unmanaged) pager state  */
 export default function MyTable(props) {
-    const classes = useStyles();
-    const { columns, rows } = props;
+    const { columns, rows, onRowClick, showLoading, 
+         /*onSelectedChange,*/  
+         selectable, selected, updateSelected, isEqual
+    } = props;
+    const isItemSelected = item => selectable && !!selected.filter(i => isEqual(i, item))[0];
 
-    const [data, setData] = useState({ columns: props.columns, rows: props.rows });
+    const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { onRowClick, showLoading, selectable, onSelectedChange, selected } = props;
 
     useEffect(() => {
-        setData({ columns: props.columns, rows: props.rows });
-        setPage(0);
-    }, [props.columns, props.rows]);
+        setPage(0); /** will reset the pager when the data changes */
+    }, [columns, rows]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -62,23 +64,15 @@ export default function MyTable(props) {
     };
 
     const handleRowClick = (row, index) => {
+        /** handling selecting table items */
         if (selectable) {
-            const { columns, rows } = data;
-            const updatedRows = [...rows];
-            updatedRows[index] = { ...row, _$selected: !!!row._$selected };
-            setData({ columns, rows: updatedRows });
-
-            if (onSelectedChange) {
-                onSelectedChange(updatedRows.filter(r => r._$selected));
-            }
+            updateSelected(row);
         }
 
         if (onRowClick) {
             onRowClick(row);
         }
     }
-
-    // const { columns, rows } = data;
 
     return (
         <div className={classes.container}>
@@ -109,10 +103,10 @@ export default function MyTable(props) {
             <TableBody>
                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                 return (
-                    <TableRow selected={row._$selected} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
+                    <TableRow selected={isItemSelected(row)} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
                     
                     {selectable
-                        ? <TableCell><Checkbox color="primary" checked={!!row._$selected} /></TableCell>
+                        ? <TableCell><Checkbox color="primary" checked={isItemSelected(row)} /></TableCell>
                         : null
                     }
 

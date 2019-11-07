@@ -45,16 +45,21 @@ const columns = [{
         format: helpAreaFormat,
 }];
 
+const areUsersEqual = (u1, u2) => u1._id === u2._id;
 
 function UserList(props) {
-    const { users, isFetching, setSelected, selected } = props;
+    const { users, isFetching, selected, updateSelected } = props;
 
     useEffect(() => {
         /** rerender only when these props change */
     }, [users, isFetching, selected]);
 
     return (
-        <MyTable selectable selected={selected} onSelectedChange={setSelected} className="user-list" columns={columns} rows={users} showLoading={isFetching} />
+        <MyTable className="user-list" columns={columns} rows={users} showLoading={isFetching} 
+            selectable selected={selected} 
+            updateSelected={updateSelected}
+            isEqual={areUsersEqual}
+        />
     );
 }
 

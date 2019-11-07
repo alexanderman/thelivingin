@@ -5,7 +5,7 @@ const INITIAL_STATE = {
     filter: undefined,
     orderBy: undefined,
     error: undefined,
-    selected: undefined,
+    selected: [],    /** sub list of users */
     __isFetching: false
 };
 
@@ -15,8 +15,14 @@ export const types = {
     FETCH_ERROR: 'admin-users-FETCH_ERROR',
     SET_FILTER: 'admin-users-SET_FILTER',
     SET_ORDERBY: 'admin-users-SET_ORDERBY',
-    SET_SELECTED: 'admin-users-SET_SELECTED',
+    
+    SET_SELECTED: 'admin-users-SET_SELECTED',   /** for selected list from api, overrides entire list */
+    UPDATE_SELECTED: 'admin-users-UPDATE_SELECTED',   /** used by users table to modify selected users */
 };
+
+const isEqual = (u1, u2) => u1._id === u2._id;
+const isInList = (list, user) => !!list.filter(u => isEqual(u, user))[0];
+const removeFromList = (list, user) => list.filter(u => !isEqual(u, user));
 
 export default (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
@@ -48,9 +54,17 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, orderBy: payload };
         }
 
-        case types.SET_SELECTED: {
+        case types.SET_SELECTED: {  /** overrides the selected list */
             console.log('## ', types.SET_SELECTED, payload);
             return { ...state, selected: payload };
+        }
+
+        case types.UPDATE_SELECTED: {
+            console.log('## ', types.UPDATE_SELECTED, payload);
+            if (isInList(state.selected, payload)) {
+                return { ...state, selected: removeFromList(state.selected, payload) };    
+            }
+            return { ...state, selected: [...state.selected, payload] };
         }
 
     }
@@ -61,6 +75,7 @@ export default (state = INITIAL_STATE, action) => {
 export const actions = dispatch => ({
     fetch: () => dispatch({ type: types.FETCH }),
     setSelected: payload => dispatch({ type: types.SET_SELECTED, payload }),
+    updateSelected: user => dispatch({ type: types.UPDATE_SELECTED, payload: user }),
 });
 
 
