@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import MyTable from '../table';
+import Table from '../table';
 import { connect } from 'react-redux';
 import { selectors as requestsSelectors, actions as requestsActions } from '../../store/redux/requestsRedux';
 import Timestamp from '../common/timestamp';
@@ -49,7 +49,7 @@ function RequestsList(props) {
     }
 
     return (
-        <MyTable rowClickable columns={columns} rows={requests} onRowClick={handleClick} showLoading={isFetching} />
+        <Table rowClickable columns={columns} rows={requests} onRowClick={handleClick} showLoading={isFetching} />
     );
 }
 

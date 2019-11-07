@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import MyTable from '../table';
+import Table from '../table';
 import { connect } from 'react-redux';
 import { selectors as usersSelectors, actions as userActions } from '../../store/redux/usersRedux';
 import Timestamp from '../common/timestamp';
@@ -55,7 +55,7 @@ function UserList(props) {
     }, [users, isFetching, selected]);
 
     return (
-        <MyTable className="user-list" columns={columns} rows={users} showLoading={isFetching} 
+        <Table className="user-list" columns={columns} rows={users} showLoading={isFetching} 
             selectable selected={selected} onSelectClick={updateSelected}
             isEqual={areUsersEqual}
         />
