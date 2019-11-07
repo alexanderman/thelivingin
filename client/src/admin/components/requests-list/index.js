@@ -49,7 +49,7 @@ function RequestsList(props) {
     }
 
     return (
-        <MyTable columns={columns} rows={requests} onRowClick={handleClick} showLoading={isFetching} />
+        <MyTable rowClickable columns={columns} rows={requests} onRowClick={handleClick} showLoading={isFetching} />
     );
 }
 

@@ -56,8 +56,7 @@ function UserList(props) {
 
     return (
         <MyTable className="user-list" columns={columns} rows={users} showLoading={isFetching} 
-            selectable selected={selected} 
-            updateSelected={updateSelected}
+            selectable selected={selected} onSelectClick={updateSelected}
             isEqual={areUsersEqual}
         />
     );

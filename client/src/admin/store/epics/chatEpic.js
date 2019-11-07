@@ -36,6 +36,7 @@ export const fetchChatsByRequestId = (action$, state$) => action$.pipe(
         if (!data || data.error) {
             return { type: selectedChatTypes.FETCH_ERROR, payload: data ? data.error : data };
         }
+        /** at the moment we create single chat per request */
         return { type: selectedChatTypes.FETCH_SUCCESS, payload: data[0] }; 
     }),
     catchError(err => of({ type: selectedChatTypes.FETCH_ERROR, payload: `${err.message}; ${JSON.stringify(err.response)}` }))

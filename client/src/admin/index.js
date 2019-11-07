@@ -58,6 +58,7 @@ const Admin = props => {
                 }
 
                 <FullScreenDialog isOpen={isOpen} 
+                    title="Requests"
                     handleClose={() => setIsOpen(false)} render={() => <RequestsList onSelectedSet={() => setIsOpen(false)} />} 
                 />
                 
