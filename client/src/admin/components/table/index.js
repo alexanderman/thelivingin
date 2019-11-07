@@ -40,9 +40,9 @@ const useStyles = makeStyles({
 
 /** maintains own(unmanaged) pager state  */
 export default function MyTable(props) {
-    const { columns, rows, onRowClick, showLoading, 
-         /*onSelectedChange,*/  
-         selectable, selected, updateSelected, isEqual
+    const { columns, rows, showLoading, 
+        onRowClick, 
+        selectable, selected, updateSelected, isEqual
     } = props;
     const isItemSelected = item => selectable && !!selected.filter(i => isEqual(i, item))[0];
 

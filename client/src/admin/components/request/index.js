@@ -47,7 +47,7 @@ export default function RequestCard(props) {
         <div className={classes.content}>
           
           <div className={classes.userInfo}>
-            <Typography variant="body1" color="textPrimary">
+            <Typography variant="body1" color="textSecondary">
               {name} <br />
               {phone} <br />
               {email} <br />
@@ -56,7 +56,7 @@ export default function RequestCard(props) {
           </div>
           
           <div className={classes.request}>
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="textPrimary">
               {textarea}
             </Typography>
           </div>

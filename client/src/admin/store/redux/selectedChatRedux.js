@@ -5,9 +5,10 @@ const INITIAL_STATE = {
 };
 
 export const types = {
-    FETCH: 'selected-chat-FETCH',
-    FETCH_SUCCESS: 'selected-chat-FETCH_SUCCESS',
-    FETCH_ERROR: 'selected-chat-FETCH_ERROR',
+    FETCH: 'admin-selected-chat-FETCH',
+    FETCH_CANCEL: 'admin-selected-chat-FETCH_CANCEL',
+    FETCH_SUCCESS: 'admin-selected-chat-FETCH_SUCCESS',
+    FETCH_ERROR: 'admin-selected-chat-FETCH_ERROR',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,12 +22,17 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.FETCH_SUCCESS: {
             console.log('## ', types.FETCH_SUCCESS, payload);
-            return { ...state, __isFetching: false, chat: payload };
+            return { ...state, __isFetching: false, chat: payload, error: undefined };
         }
 
         case types.FETCH_ERROR: {
             console.log('## ', types.FETCH_ERROR, payload);
             return { ...state, __isFetching: false, error: payload };
+        }
+
+        case types.FETCH_CANCEL: {
+            console.log('## ', types.FETCH_CANCEL);
+            return { ...state, __isFetching: false };
         }
 
     }
@@ -35,7 +41,7 @@ export default (state = INITIAL_STATE, action) => {
 
 
 export const actions = dispatch => ({
-    fetch: () => dispatch({ type: types.FETCH }),
+    fetch: requestId => dispatch({ type: types.FETCH, payload: requestId }),
 });
 
 
@@ -44,7 +50,3 @@ export const selectors = state => ({
     error: state.admin.selectedChat.filter,
     isFetching: state.admin.selectedChat.__isFetching,
 });
-/**
- * TODO: 
- *  - prepare rout to fetch chatS by requestId
- */
