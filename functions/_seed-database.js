@@ -1,6 +1,6 @@
-const users = require('./_mocks/users.json');
-const chats = require('./_mocks/chats.json');
-const requests = require('./_mocks/requests.json');
+const users = require('../_mocks/users.json');
+const chats = require('../_mocks/chats.json');
+const requests = require('../_mocks/requests.json');
 
 // const functions = require('firebase-functions');
 const admin = require('firebase-admin');

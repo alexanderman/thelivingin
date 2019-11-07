@@ -1,4 +1,4 @@
-const mock_requests = require('../../_mocks/mock_requests.json');
+const mock_requests = require('../../../._mocks-copy/requests.json');
 
 const INITIAL_STATE = {
     list: mock_requests,

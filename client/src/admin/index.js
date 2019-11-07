@@ -11,8 +11,6 @@ import UserList from './components/user-list';
 import RequestsList from './components/requests-list';
 import RequestCard from './components/request';
 
-const mockRequests = require('./_mocks/mock_requests.json');
-
 
 function getUrlParams() {
     return window.location.search.substr(1).split('&').reduce((acc, keyVal) => {

@@ -20,7 +20,7 @@
     "typescript": "^3.6.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node _copy-mocks.js && react-scripts start",
     "build": "react-scripts build",
     "serve-build": "serve -s build",
     "test": "react-scripts test",
@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "fs-extra": "^8.1.0",
     "redux-devtools-extension": "^2.13.8"
   }
 }
