@@ -141,6 +141,10 @@ function queryRequests(filter, orderBy) {
     return queryCollection(REQUEST_COLL, filter, orderBy);
 }
 
+function queryChats(filter, orderBy) {
+    return queryCollection(CHAT_COLL, filter, orderBy);
+}
+
 module.exports = {
     generateUserId,
     generateChatId,
@@ -159,6 +163,7 @@ module.exports = {
 
     queryUsers,
     queryRequests,
+    queryChats,
 
     _debugFetch
 }

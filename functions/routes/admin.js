@@ -20,5 +20,17 @@ router.get('/requests/:id?', (req, res, next) => {
     .catch(next);
 });
 
+router.get('/chats/:id?', (req, res, next) => {
+    if (req.params.id) {
+        return store.getChatById(req.params.id)
+            .then(result => res.json(result))
+            .catch(next);
+    }
+
+    store.queryChats(req.query.filter, req.query.orderby)
+    .then(result => res.json(result))
+    .catch(next);
+});
+
 
 module.exports = router;
