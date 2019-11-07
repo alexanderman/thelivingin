@@ -40,10 +40,12 @@ const useStyles = makeStyles({
 
 export default function MyTable(props) {
     const classes = useStyles();
+    const { columns, rows } = props;
+
     const [data, setData] = useState({ columns: props.columns, rows: props.rows });
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const { onRowClick, showLoading, selectable, onSelectedChange } = props;
+    const { onRowClick, showLoading, selectable, onSelectedChange, selected } = props;
 
     useEffect(() => {
         setData({ columns: props.columns, rows: props.rows });
@@ -76,7 +78,7 @@ export default function MyTable(props) {
         }
     }
 
-    const { columns, rows } = data;
+    // const { columns, rows } = data;
 
     return (
         <div className={classes.container}>

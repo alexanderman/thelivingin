@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     filter: undefined,
     orderBy: undefined,
     error: undefined,
+    selected: undefined,
     __isFetching: false
 };
 
@@ -14,6 +15,7 @@ export const types = {
     FETCH_ERROR: 'admin-users-FETCH_ERROR',
     SET_FILTER: 'admin-users-SET_FILTER',
     SET_ORDERBY: 'admin-users-SET_ORDERBY',
+    SET_SELECTED: 'admin-users-SET_SELECTED',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -46,6 +48,11 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, orderBy: payload };
         }
 
+        case types.SET_SELECTED: {
+            console.log('## ', types.SET_SELECTED, payload);
+            return { ...state, selected: payload };
+        }
+
     }
     return state;
 }
@@ -53,6 +60,7 @@ export default (state = INITIAL_STATE, action) => {
 
 export const actions = dispatch => ({
     fetch: () => dispatch({ type: types.FETCH }),
+    setSelected: payload => dispatch({ type: types.SET_SELECTED, payload }),
 });
 
 
@@ -61,4 +69,5 @@ export const selectors = state => ({
     filter: state.admin.users.filter,
     orderBy: state.admin.users.orderBy,
     isFetching: state.admin.users.__isFetching,
+    selected: state.admin.users.selected,
 });

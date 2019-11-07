@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import MyTable from '../table';
 import { connect } from 'react-redux';
-import { selectors as usersSelectors } from '../../store/redux/usersRedux';
+import { selectors as usersSelectors, actions as userActions } from '../../store/redux/usersRedux';
 import Timestamp from '../common/timestamp';
 import './user-list.scss';
 
@@ -47,15 +47,20 @@ const columns = [{
 
 
 function UserList(props) {
-    const { users, isFetching } = props;
+    const { users, isFetching, setSelected, selected } = props;
+
+    useEffect(() => {
+        /** rerender only when these props change */
+    }, [users, isFetching, selected]);
+
     return (
-        <MyTable selectable onSelectedChange={console.log} className="user-list" columns={columns} rows={users} showLoading={isFetching} />
+        <MyTable selectable selected={selected} onSelectedChange={setSelected} className="user-list" columns={columns} rows={users} showLoading={isFetching} />
     );
 }
 
 const mapStateToProps = state => usersSelectors(state);
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = userActions;
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);
 

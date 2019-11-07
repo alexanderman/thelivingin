@@ -43,9 +43,6 @@ const Admin = props => {
         
     }, [usersActions, requestsActions, token]);
 
-    const resetSelectedRequest = () => {
-
-    }
 
     return (
         <div className="admin-cont">
