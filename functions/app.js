@@ -14,6 +14,15 @@ app.use('/tilda', tildaRouter);
 app.use('/client', clientRouter);
 app.use('/admin', adminRouter);
 
+/** SEED route ***********************************/
+app.get('/__seeddb', (req, res) => {
+    const seedProms = require('./_seed-database')();
+    Promise.all(seedProms).then(_ => {
+        res.send('seeded successfully');
+    }).catch(err => res.send(err));
+});
+/*************************************************/
+
 /** DEBUG route **********************************/
 const firestore = require('./database/firestore');
 app.get('/__db/:collection/:id?', (req, res) => {
