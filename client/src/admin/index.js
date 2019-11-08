@@ -11,7 +11,7 @@ import UserList from './components/user-list';
 import RequestsList from './components/requests-list';
 import RequestCard from './components/request';
 
-import Dialog from './components/common/dialog';
+import ConnectChatDialog from './components/connect-chat-dialog';
 
 
 function getUrlParams() {
@@ -66,12 +66,8 @@ const Admin = props => {
                 
                 <UserList />
 
-                <Dialog isOpen={isConnectOpen} 
-                    handleClose={() => setIsConnectOpen(false)} 
-                    renderActions={() => <Button onClick={() => setIsConnectOpen(false)}>testing button</Button>} 
-                >
-                    Здравствуйте! Хочу выйти на авталу. Нужна консультация по бухгалтерии: пенсия, пицуим, выход на авталу (куда обращаться и какие документы нужны). Понять, правильно ли ведется бухгалтером тофес 106.
-                </Dialog>
+                <ConnectChatDialog isOpen={isConnectOpen} handleClose={() => setIsConnectOpen(false)} />
+
             </div>
         </div>
     ); 
@@ -90,19 +86,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);
-
-/**
- 
-request:    q6M3L71tiqrtKHErRQjO Лиза Здравствуйте! Хочу выйти на авталу
-user:       6xsJGDzJK5gHRcIRrgpb elizza402@gmail.com
-helper:     aWU0Eezm3dmZufmU2wAB Diamandineomi@gmail.com
-
-chat:       18W6swyva8ZJv6CzbVj6 
-admin:      As7V1n2F0p9Q5g64NOPB
-
-==== links ====
-user:       https://thelivingin-staging.firebaseapp.com/?chatId=18W6swyva8ZJv6CzbVj6&userId=6xsJGDzJK5gHRcIRrgpb&requestId=q6M3L71tiqrtKHErRQjO
-helper:     https://thelivingin-staging.firebaseapp.com/?chatId=18W6swyva8ZJv6CzbVj6&userId=aWU0Eezm3dmZufmU2wAB&requestId=q6M3L71tiqrtKHErRQjO
-Jenny:      https://thelivingin-staging.firebaseapp.com/?chatId=18W6swyva8ZJv6CzbVj6&userId=As7V1n2F0p9Q5g64NOPB&requestId=q6M3L71tiqrtKHErRQjO      
-
-*/
