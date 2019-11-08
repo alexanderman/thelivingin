@@ -13,12 +13,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function MaxWidthDialog(props) {
   const classes = useStyles();
-  const { isOpen = false, title, text, renderActions, handleClose } = props;
+  const { isOpen = false, title, text, renderActions, handleClose, fullWidth = true } = props;
 
   return (
     <React.Fragment>
     <Dialog
-        fullWidth
+        fullWidth={fullWidth}
         maxWidth="sm"
         open={isOpen}
         onClose={handleClose}

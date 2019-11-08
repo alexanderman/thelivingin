@@ -6,10 +6,12 @@ export default props => {
     const { message, isOpen, handleClose } = props;
 
     return (
-        <Dialog isOpen={isOpen} title="Message" text={message} handleClose={handleClose} 
+        <Dialog fullWidth={false} isOpen={isOpen} handleClose={handleClose} 
             renderActions={() => (
                 <Button variant="outlined" onClick={handleClose}>OK</Button>
             )}
-        />
+        >
+            {message}
+        </Dialog>
     );
 }
