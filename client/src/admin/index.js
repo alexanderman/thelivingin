@@ -11,6 +11,8 @@ import UserList from './components/user-list';
 import RequestsList from './components/requests-list';
 import RequestCard from './components/request';
 
+import Dialog from './components/common/dialog';
+
 
 function getUrlParams() {
     return window.location.search.substr(1).split('&').reduce((acc, keyVal) => {
@@ -63,6 +65,8 @@ const Admin = props => {
                 />
                 
                 <UserList />
+
+                <Dialog />
             </div>
         </div>
     ); 

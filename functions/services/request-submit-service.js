@@ -16,7 +16,8 @@ function registerRequest(request) {
 
         const requestData = {
             ...request,
-            issuedBy: userId
+            issuedBy: userId,
+            chats: [chatId]
         };
         promises.push(store.createRequest(requestId, requestData));
     
