@@ -22,7 +22,7 @@ const columns = [{
     },{
         id: 'phone',
         label: 'Phone',
-        minWidth: 120,
+        minWidth: 140,
         align: 'left',
         format: value => value,
     },{
@@ -33,8 +33,8 @@ const columns = [{
         format: val => <Timestamp timestamp={val} />,
     },{
         id: 'canHelp',
-        label: 'Can Help',
-        minWidth: 60,
+        label: 'Helper',
+        minWidth: 30,
         align: 'left',
         format: value => (!!value).toString(),
     },{

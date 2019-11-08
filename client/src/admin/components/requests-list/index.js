@@ -28,7 +28,7 @@ const columns = [{
     },{
         id: 'phone',
         label: 'Phone',
-        minWidth: 120,
+        minWidth: 140,
         align: 'left',
         format: value => value,
     },{
