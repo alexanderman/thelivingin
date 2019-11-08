@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import Table from '../table';
 import { connect } from 'react-redux';
 import { selectors as usersSelectors, actions as userActions } from '../../store/redux/usersRedux';
+import { selectors as chatSelectors } from '../../store/redux/selectedChatRedux';
 import Timestamp from '../common/timestamp';
 import './user-list.scss';
 
@@ -62,7 +63,16 @@ function UserList(props) {
     );
 }
 
-const mapStateToProps = state => usersSelectors(state);
+// const mapStateToProps = state => usersSelectors(state);
+const mapStateToProps = state => {
+    const users = usersSelectors(state);
+    const chat = chatSelectors(state);
+    return {
+        ...users, 
+        isFetching: users.isFetching || chat.isFetching
+    }
+};
+
 
 const mapDispatchToProps = userActions;
 
