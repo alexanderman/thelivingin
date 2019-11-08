@@ -4,7 +4,7 @@ import './admin.scss';
 import { actions as usersActions, selectors as usersSelectors } from './store/redux/usersRedux';
 import { actions as requestsActions, selectors as requestsSelectors } from './store/redux/requestsRedux';
 import { actions as adminActions } from './store/redux/adminUserRedux';
-import FullScreenDialog from './components/dialog-full-screen';
+import DialogFullScreen from './components/common/dialog-full-screen';
 
 import Button from '@material-ui/core/Button';
 import UserList from './components/user-list';
@@ -28,7 +28,8 @@ function getUrlParams() {
 const Admin = props => {
     const { adminActions, usersActions, requestsActions, requestsSelectors } = props;
     const { token } = getUrlParams();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isRequestsOpen, setIsRequestsOpen] = useState(false);
+    const [isConnectOpen, setIsConnectOpen] = useState(true);
 
     useEffect(() => {
         console.log('admin init');
@@ -48,7 +49,7 @@ const Admin = props => {
         <div className="admin-cont">
             <div className="admin-chat-manager">
 
-                <Button variant="contained" color="primary" onClick={() => setIsOpen(true)}>
+                <Button variant="contained" color="primary" onClick={() => setIsRequestsOpen(true)}>
                     Select request
                 </Button>
     
@@ -59,14 +60,18 @@ const Admin = props => {
                     : null
                 }
 
-                <FullScreenDialog isOpen={isOpen} 
-                    title="Requests"
-                    handleClose={() => setIsOpen(false)} render={() => <RequestsList onSelectedSet={() => setIsOpen(false)} />} 
-                />
+                <DialogFullScreen isOpen={isRequestsOpen} title="Requests" handleClose={() => setIsRequestsOpen(false)}>
+                    <RequestsList onSelectedSet={() => setIsRequestsOpen(false)} />
+                </DialogFullScreen>
                 
                 <UserList />
 
-                <Dialog />
+                <Dialog isOpen={isConnectOpen} 
+                    handleClose={() => setIsConnectOpen(false)} 
+                    renderActions={() => <Button onClick={() => setIsConnectOpen(false)}>testing button</Button>} 
+                >
+                    Здравствуйте! Хочу выйти на авталу. Нужна консультация по бухгалтерии: пенсия, пицуим, выход на авталу (куда обращаться и какие документы нужны). Понять, правильно ли ведется бухгалтером тофес 106.
+                </Dialog>
             </div>
         </div>
     ); 
