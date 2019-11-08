@@ -29,7 +29,6 @@ const Admin = props => {
     const { adminActions, usersActions, requestsActions, requestsSelectors } = props;
     const { token } = getUrlParams();
     const [isRequestsOpen, setIsRequestsOpen] = useState(false);
-    const [isConnectOpen, setIsConnectOpen] = useState(true);
 
     useEffect(() => {
         console.log('admin init');
@@ -66,7 +65,7 @@ const Admin = props => {
                 
                 <UserList />
 
-                <ConnectChatDialog isOpen={isConnectOpen} handleClose={() => setIsConnectOpen(false)} />
+                <ConnectChatDialog />
 
             </div>
         </div>

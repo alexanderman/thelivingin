@@ -32,7 +32,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.FETCH_CANCEL: {
             console.log('## ', types.FETCH_CANCEL);
-            return { ...state, __isFetching: false };
+            return { ...state, __isFetching: false, chat: undefined };
         }
 
     }
@@ -46,7 +46,7 @@ export const actions = dispatch => ({
 
 
 export const selectors = state => ({
-    chat: state.admin.selectedChat.list,
-    error: state.admin.selectedChat.filter,
+    chat: state.admin.selectedChat.chat,
+    error: state.admin.selectedChat.error,
     isFetching: state.admin.selectedChat.__isFetching,
 });
