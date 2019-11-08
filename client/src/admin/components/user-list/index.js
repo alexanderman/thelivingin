@@ -51,10 +51,6 @@ const areUsersEqual = (u1, u2) => u1._id === u2._id;
 function UserList(props) {
     const { users, isFetching, selected, updateSelected } = props;
 
-    useEffect(() => {
-        /** rerender only when these props change */
-    }, [users, isFetching, selected]);
-
     return (
         <Table className="user-list" columns={columns} rows={users} showLoading={isFetching} 
             selectable selected={selected} onSelectClick={updateSelected}
@@ -63,7 +59,6 @@ function UserList(props) {
     );
 }
 
-// const mapStateToProps = state => usersSelectors(state);
 const mapStateToProps = state => {
     const users = usersSelectors(state);
     const chat = chatSelectors(state);
