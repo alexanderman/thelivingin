@@ -34,6 +34,7 @@ const Admin = props => {
     const { token } = getUrlParams();
     const [isRequestsOpen, setIsRequestsOpen] = useState(false);
     const [messageData, setMessage] = useState({ open: false, text: '' });
+    const [isAddUser, setIsAddUser] = useState(true);
 
     useEffect(() => {
         console.log('admin init');
@@ -62,10 +63,7 @@ const Admin = props => {
             return setMessage({ open: true, text: 'Please wait for selected request chats to load' });
         }
 
-        if (isUserSelected(user)) {
-            return console.log(' === handle removing user from chat ======');
-        }
-
+        isUserSelected(user) ? setIsAddUser(false): setIsAddUser(true);
         connectActions.setUser(user);
     }
 
@@ -103,7 +101,7 @@ const Admin = props => {
                 <MessageDialog handleClose={() => setMessage({ open: false })} message={messageData.text} isOpen={messageData.open} />
 
                 {connectSelectors.isAllSet
-                    ? <ConnectChatDialog />
+                    ? <ConnectChatDialog isAddUser={isAddUser} />
                     : null
                 }
                 
