@@ -27,6 +27,10 @@ export const types = {
     SEND_CONNECT: 'admin-connect-chat-user-SEND_CONNECT',
     SEND_CONNECT_SUCCESS: 'admin-connect-chat-user-SEND_CONNECT_SUCCESS',
     SEND_CONNECT_ERROR: 'admin-connect-chat-user-SEND_CONNECT_ERROR',
+
+    SEND_DICSONNECT: 'admin-connect-chat-user-SEND_DICSONNECT',
+    SEND_DICSONNECT_SUCCESS: 'admin-connect-chat-user-SEND_DICSONNECT_SUCCESS',
+    SEND_DICSONNECT_ERROR: 'admin-connect-chat-user-SEND_DICSONNECT_ERROR',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -68,6 +72,21 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, __inProcess: false, error: payload };
         }
 
+        case types.SEND_DICSONNECT: {
+            console.log('## ', types.SEND_DICSONNECT, payload);
+            return { ...state, __inProcess: true };
+        }
+
+        case types.SEND_DICSONNECT_SUCCESS: {
+            console.log('## ', types.SEND_DICSONNECT_SUCCESS, payload);
+            return { ...state, __inProcess: false };
+        }
+
+        case types.SEND_DICSONNECT_ERROR: {
+            console.log('## ', types.SEND_DICSONNECT_ERROR, payload);
+            return { ...state, __inProcess: false, error: payload };
+        }
+
     }
     return state;
 }
@@ -79,6 +98,7 @@ export const actions = dispatch => ({
     setChat: chat => dispatch({ type: types.SET_CHAT, payload: chat }),
     setNotifications: payload => dispatch({ type: types.SET_NOTIFICATIONS, payload }),
     sendConnect: payload => dispatch({ type: types.SEND_CONNECT, payload }),
+    sendDisconnect: payload => dispatch({ type: types.SEND_DICSONNECT, payload }),
 });
 
 

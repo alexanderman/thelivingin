@@ -9,7 +9,7 @@ import { actions as connectActions, selectors as connectSelectors } from '../../
 const ConnectChatDialog = props => {
     const { 
         user, chat, request, setUser, isAllSet, notification, setNotifications, 
-        inProcess, sendConnect, /** redux actions */
+        inProcess, sendConnect, sendDisconnect, /** redux actions */
         /** parent component props */
         isAddUser,
     } = props;
@@ -22,8 +22,11 @@ const ConnectChatDialog = props => {
         setUser(undefined);
     }
 
-    const handleAdd = () => {
-        sendConnect();
+    const handleAction = () => {
+        if (isAddUser) 
+            sendConnect();
+        else    
+            sendDisconnect();
     }
 
     const renderTitle = () => {
@@ -61,7 +64,7 @@ const ConnectChatDialog = props => {
     const renderActions = () => (
         <Fragment>
             <Button variant="text" onClick={handleClose}>Cancel</Button>
-            <Button variant="contained" color="primary" onClick={handleAdd}>{buttonText}</Button>
+            <Button variant="contained" color="primary" onClick={handleAction}>{buttonText}</Button>
         </Fragment>
     );
 

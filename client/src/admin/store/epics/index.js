@@ -2,7 +2,7 @@ import { combineEpics } from 'redux-observable';
 import { fetchRequests } from './requestsEpic';
 import { fetchUsers } from './usersEpic';
 import { fetchChatsByRequestId, listenToSelectedRequest } from './chatEpic';
-import { sendConnectUserToChat } from './connectChatEpic';
+import { sendConnectUserToChat, sendDisconnectUserFromChat } from './connectChatEpic';
 
 export default combineEpics(
     fetchRequests,
@@ -10,4 +10,5 @@ export default combineEpics(
     fetchChatsByRequestId,
     listenToSelectedRequest,
     sendConnectUserToChat,
+    sendDisconnectUserFromChat,
 );
