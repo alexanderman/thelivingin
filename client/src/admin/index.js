@@ -62,13 +62,15 @@ const Admin = props => {
             return setMessage({ open: true, text: 'Please wait for selected request chats to load' });
         }
 
+        if (isUserSelected(user)) {
+            return console.log(' === handle removing user from chat ======');
+        }
+
         connectActions.setUser(user);
     }
 
     const isUserSelected = user => {
         return !!requestChats.selectedMembers[user._id];
-        
-        return false;
     }
 
 
