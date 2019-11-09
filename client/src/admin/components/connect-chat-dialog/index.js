@@ -8,8 +8,10 @@ import { actions as connectActions, selectors as connectSelectors } from '../../
 
 const ConnectChatDialog = props => {
     const { 
+        /** redux props */
         user, chat, request, setUser, isAllSet, notification, setNotifications, 
-        inProcess, sendConnect, sendDisconnect, /** redux actions */
+        setNotificationsToAdd, setNotificationsToRemove,
+        inProcess, sendConnect, sendDisconnect, 
         /** parent component props */
         isAddUser,
     } = props;
@@ -17,12 +19,7 @@ const ConnectChatDialog = props => {
     const buttonText = isAddUser ? 'Add' : 'Remove';
     
     useEffect(() => {
-        /** set notifications state according to action [add, remove] */
-        const notificationsFalse = Object.keys(notification).reduce((acc, key) => {
-            acc[key] = isAddUser;
-            return acc;
-        }, {});
-        setNotifications(notificationsFalse);        
+        isAddUser ? setNotificationsToAdd() : setNotificationsToRemove();
     }, [user, chat]);
     
     const isOpen = isAllSet;
