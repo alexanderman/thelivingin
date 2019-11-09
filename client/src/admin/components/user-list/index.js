@@ -45,18 +45,17 @@ const columns = [{
         format: helpAreaFormat,
 }];
 
-const areUsersEqual = (u1, u2) => u1._id === u2._id;
 
 function UserList(props) {
     const { users, isFetching, /** actions from usersredux */
-        showLoading, onSelectClick, selectedUsers = [] /** from parent component */
+        showLoading, onSelectClick, selectable, isUserSelected /** from parent component */
     } = props;
 
     return (
         <Fragment>
             <Table className="user-list" columns={columns} rows={users} showLoading={isFetching || showLoading} 
-                selectable selected={selectedUsers} onSelectClick={onSelectClick}
-                isEqual={areUsersEqual}
+                selectable={selectable} onSelectClick={onSelectClick}
+                isUserSelected={isUserSelected}
             />
         </Fragment>
     );

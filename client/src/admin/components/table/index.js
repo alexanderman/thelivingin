@@ -42,9 +42,9 @@ const useStyles = makeStyles({
 export default function MyTable(props) {
     const { columns, rows, showLoading, 
         rowClickable, onRowClick, 
-        selectable, selected, onSelectClick, isEqual
+        selectable, onSelectClick, isUserSelected
     } = props;
-    const isItemSelected = item => selectable && !!selected.filter(i => isEqual(i, item))[0];
+    const isRowSelected = row => selectable && isUserSelected(row);
 
     const classes = useStyles();
     const [page, setPage] = useState(0);
@@ -69,7 +69,7 @@ export default function MyTable(props) {
         }
     }
 
-    const handleSelect = (row, index) => {
+    const handleRowSelect = (row, index) => {
         if (selectable && onSelectClick) {
             onSelectClick(row);
         }
@@ -104,10 +104,10 @@ export default function MyTable(props) {
             <TableBody>
                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                 return (
-                    <TableRow style={{cursor: rowClickable ? 'pointer' : 'default'}} selected={isItemSelected(row)} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
+                    <TableRow style={{cursor: rowClickable ? 'pointer' : 'default'}} selected={isRowSelected(row)} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
                     
                     {selectable
-                        ? <TableCell><Checkbox color="primary" onClick={() => handleSelect(row)} checked={isItemSelected(row)} /></TableCell>
+                        ? <TableCell><Checkbox color="primary" onClick={() => handleRowSelect(row)} checked={isRowSelected(row)} /></TableCell>
                         : null
                     }
 

@@ -51,7 +51,7 @@ function getSelectedChatMembers(selectedChat) {
     if (selectedChat && selectedChat.twilio && selectedChat.twilio.members) {
         return selectedChat.twilio.members; /** map of userId to twilio memberId  */
     }
-    return undefined;
+    return {};
 }
 
 export const selectors = state => ({

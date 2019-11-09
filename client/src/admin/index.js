@@ -4,7 +4,7 @@ import './admin.scss';
 import { actions as usersActions, selectors as usersSelectors } from './store/redux/usersRedux';
 import { actions as requestsActions, selectors as requestsSelectors } from './store/redux/requestsRedux';
 import { selectors as connectSelectors, actions as connectActions } from './store/redux/connectChatRedux';
-import { selectors as selectedChatSelectors } from './store/redux/requestChatsRedux';
+import { selectors as requestChats } from './store/redux/requestChatsRedux';
 import { actions as adminActions } from './store/redux/adminUserRedux';
 import DialogFullScreen from './components/common/dialog-full-screen';
 import MessageDialog from './components/common/dialog-message';
@@ -29,8 +29,8 @@ function getUrlParams() {
 }
 
 const Admin = props => {
-    const { adminActions, usersActions, requestsActions, connectSelectors, connectActions, selectedChatSelectors } = props;
-    const { isFetching: showUsersLoading } = selectedChatSelectors;
+    const { adminActions, usersActions, requestsActions, connectSelectors, connectActions, requestChats } = props;
+    const { isFetching: showUsersLoading } = requestChats;
     const { token } = getUrlParams();
     const [isRequestsOpen, setIsRequestsOpen] = useState(false);
     const [messageData, setMessage] = useState({ open: false, text: '' });
@@ -65,6 +65,12 @@ const Admin = props => {
         connectActions.setUser(user);
     }
 
+    const isUserSelected = user => {
+        return !!requestChats.selectedMembers[user._id];
+        
+        return false;
+    }
+
 
     return (
         <div className="admin-cont">
@@ -85,7 +91,12 @@ const Admin = props => {
                     <RequestsList onSelectedSet={() => setIsRequestsOpen(false)} />
                 </DialogFullScreen>
                 
-                <UserList showLoading={showUsersLoading} selectedUsers={[]} onSelectClick={onUserSelectClick} />
+                <UserList selectable 
+                    isUserSelected={isUserSelected}
+                    showLoading={showUsersLoading} 
+                    onSelectClick={onUserSelectClick} 
+                />
+                
                 <MessageDialog handleClose={() => setMessage({ open: false })} message={messageData.text} isOpen={messageData.open} />
 
                 {connectSelectors.isAllSet
@@ -103,7 +114,7 @@ const mapStateToProps = state => ({
     requestsSelectors: requestsSelectors(state),
     usersSelectors: usersSelectors(state),
     connectSelectors: connectSelectors(state),
-    selectedChatSelectors: selectedChatSelectors(state),
+    requestChats: requestChats(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -20,6 +20,9 @@
         "createdAt": 1573130634380,
         "phone": "+972-5-456-0000",
         "name": "Анна",
+        "chats": [
+            "4BbIHGl6tZUG48J2jRua"
+        ],
         "email": "elizza402@gmail.com",
         "_id": "TTeihNaHAUl7cYgQr5G0",
         "_createTime": "2019-11-08T07:04:18.700Z",
