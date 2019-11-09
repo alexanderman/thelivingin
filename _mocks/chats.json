@@ -4,7 +4,11 @@
         "createdAt": 1573130635706,
         "requestId": "TTeihNaHAUl7cYgQr5G0",
         "twilio": {
-            "sid": "CHccf5f081039543b39db2b275f00b22ef"
+            "sid": "CHccf5f081039543b39db2b275f00b22ef",
+            "members": {
+                "CZQjMaETb0LcVTmbf97r": "fake_twilio_member_id_1",
+                "EJD5NEAx5GlhhvIEpMsP": "fake_twilio_member_id_2"
+            }
         },
         "_id": "4BbIHGl6tZUG48J2jRua",
         "_createTime": "2019-11-08T07:04:18.701Z",

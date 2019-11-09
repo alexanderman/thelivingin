@@ -1,3 +1,4 @@
+/** holds chats of selected request */
 const INITIAL_STATE = {
     list: undefined,
     selected: undefined,
@@ -48,8 +49,8 @@ export const actions = dispatch => ({
 
 
 export const selectors = state => ({
-    chats: state.admin.selectedChat.list,
-    selected: state.admin.selectedChat.selected,
-    error: state.admin.selectedChat.error,
-    isFetching: state.admin.selectedChat.__isFetching,
+    chats: state.admin.requestChatsRedux.list,
+    selected: state.admin.requestChatsRedux.selected,
+    error: state.admin.requestChatsRedux.error,
+    isFetching: state.admin.requestChatsRedux.__isFetching,
 });

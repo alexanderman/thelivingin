@@ -4,7 +4,7 @@ import { mergeMap, takeUntil, map, catchError } from 'rxjs/operators';
 import { getJSON } from './utils';
 
 import { types as connectTypes } from '../redux/connectChatRedux'
-import { types as selectedChatTypes } from '../redux/selectedChatRedux';
+import { types as selectedChatTypes } from '../redux/requestChatsRedux';
 
 /** reacts on request selection and dispatches fetch chats */
 export const listenToSelectedRequest = (action$, state$) => action$.pipe(

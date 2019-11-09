@@ -4,7 +4,7 @@ import './admin.scss';
 import { actions as usersActions, selectors as usersSelectors } from './store/redux/usersRedux';
 import { actions as requestsActions, selectors as requestsSelectors } from './store/redux/requestsRedux';
 import { selectors as connectSelectors, actions as connectActions } from './store/redux/connectChatRedux';
-import { selectors as selectedChatSelectors } from './store/redux/selectedChatRedux';
+import { selectors as selectedChatSelectors } from './store/redux/requestChatsRedux';
 import { actions as adminActions } from './store/redux/adminUserRedux';
 import DialogFullScreen from './components/common/dialog-full-screen';
 import MessageDialog from './components/common/dialog-message';
