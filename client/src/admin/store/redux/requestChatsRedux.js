@@ -47,10 +47,17 @@ export const actions = dispatch => ({
     fetch: requestId => dispatch({ type: types.FETCH, payload: requestId }),
 });
 
+function getSelectedChatMembers(selectedChat) {
+    if (selectedChat && selectedChat.twilio && selectedChat.twilio.members) {
+        return selectedChat.twilio.members; /** map of userId to twilio memberId  */
+    }
+    return undefined;
+}
 
 export const selectors = state => ({
     chats: state.admin.requestChatsRedux.list,
     selected: state.admin.requestChatsRedux.selected,
+    selectedMembers: getSelectedChatMembers(state.admin.requestChatsRedux.selected),
     error: state.admin.requestChatsRedux.error,
     isFetching: state.admin.requestChatsRedux.__isFetching,
 });

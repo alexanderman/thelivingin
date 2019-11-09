@@ -114,3 +114,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);
+
+/** 
+ * TODO: 
+ *  - show selected users
+ *  - handle disconnect user from chat
+ */
