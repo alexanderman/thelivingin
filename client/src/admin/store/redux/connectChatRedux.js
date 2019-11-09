@@ -25,8 +25,8 @@ export const types = {
     SET_NOTIFICATIONS: 'admin-connect-chat-user-SET_NOTIFICATIONS',    
 
     SEND_CONNECT: 'admin-connect-chat-user-SEND_CONNECT',
-    SEND_CONNECT_SUCCESS: 'admin-connect-chat-user-SEND_CONNECT',
-    SEND_CONNECT_ERROR: 'admin-connect-chat-user-SEND_CONNECT',
+    SEND_CONNECT_SUCCESS: 'admin-connect-chat-user-SEND_CONNECT_SUCCESS',
+    SEND_CONNECT_ERROR: 'admin-connect-chat-user-SEND_CONNECT_ERROR',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -78,10 +78,12 @@ export const actions = dispatch => ({
     setRequest: request => dispatch({ type: types.SET_REQUEST, payload: request }),
     setChat: chat => dispatch({ type: types.SET_CHAT, payload: chat }),
     setNotifications: payload => dispatch({ type: types.SET_NOTIFICATIONS, payload }),
+    sendConnect: payload => dispatch({ type: types.SEND_CONNECT, payload }),
 });
 
 
 export const selectors = state => ({
+    state: state.admin.connectChat, 
     user: state.admin.connectChat.user,
     chat: state.admin.connectChat.chat,
     request: state.admin.connectChat.request,

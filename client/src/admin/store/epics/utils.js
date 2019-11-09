@@ -15,3 +15,14 @@ export const getJSON = (state$, path) => {
         })
     );
 }
+
+export const postJSON = (state$, path, data) => {
+    const { token } = adminSelectors(state$.value);
+    const url = `${adminUrl}/${path}`;
+    return ajax.post(url, data, { 'Content-Type': 'application/json', Authorization: `bearer ${token}` }).pipe(
+        catchError(err => { 
+            console.error('catchError', err); 
+            return of({ error: err }); 
+        })
+    );
+}
