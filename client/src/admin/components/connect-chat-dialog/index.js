@@ -7,7 +7,7 @@ import { actions as connectActions, selectors as connectSelectors } from '../../
 
 
 const ConnectChatDialog = props => {
-    const { user, chat, request, setUser, isAllSet } = props;
+    const { user, chat, request, setUser, isAllSet, notification, setNotifications, inProcess } = props;
     
     const isOpen = isAllSet;
 
@@ -19,6 +19,10 @@ const ConnectChatDialog = props => {
         <span>Add <b>{user.name}</b> to request</span>
     );
 
+    const toggleNotification = key => event => {
+        setNotifications({ ...notification, [key]: event.target.checked });
+    }
+
     const renderRequestInfo = () => {
         const requestText = (request.textarea || '').substr(0, 200) + '...';
         return (
@@ -26,10 +30,10 @@ const ConnectChatDialog = props => {
                 <Typography variant="body2" color="textSecondary">{requestText}</Typography>
                 <div style={{ marginTop: '1em' }} className="connect-chat-dialog-controls">
                     <FormControlLabel control={
-                        <Switch color="secondary"></Switch>
+                        <Switch checked={notification.email} onChange={toggleNotification('email')} color="secondary"></Switch>
                     } label="Send Email Notification"></FormControlLabel>
                     <FormControlLabel control={
-                        <Switch color="secondary"></Switch>
+                        <Switch checked={notification.application} onChange={toggleNotification('application')} color="secondary"></Switch>
                     } label="Show Application Notification"></FormControlLabel>
                 </div>
             </Fragment>

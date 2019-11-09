@@ -17,23 +17,6 @@ const INITIAL_STATE = {
     __inProcess: false,
 };
 
-
-/** debug code */
-// INITIAL_STATE.user = {
-//     "requests": [
-//         "K0pWLb6UWuCsfg7qWyPb"
-//     ],
-//     "canHelp": false,
-//     "createdAt": 1573203085703,
-//     "phone": "+380 (93) 445-53-59",
-//     "name": "Яна",
-//     "email": "aleksandrit76@i.ua",
-//     "_id": "HLVph2RSfXXOGok4yDn1",
-//     "_createTime": "2019-11-08T08:51:25.724Z",
-//     "_updateTime": "2019-11-08T08:51:25.724Z",
-//     "_readTime": "2019-11-08T08:53:46.773Z"
-// };
-
 export const types = {
     SET_USER: 'admin-connect-chat-user-SET_USER',
 
@@ -94,6 +77,7 @@ export const actions = dispatch => ({
     setUser: user => dispatch({ type: types.SET_USER, payload: user }),
     setRequest: request => dispatch({ type: types.SET_REQUEST, payload: request }),
     setChat: chat => dispatch({ type: types.SET_CHAT, payload: chat }),
+    setNotifications: payload => dispatch({ type: types.SET_NOTIFICATIONS, payload }),
 });
 
 
@@ -101,5 +85,7 @@ export const selectors = state => ({
     user: state.admin.connectChat.user,
     chat: state.admin.connectChat.chat,
     request: state.admin.connectChat.request,
+    inProcess: state.admin.connectChat.__inProcess,
+    notification: state.admin.connectChat.notification,
     isAllSet: !!(state.admin.connectChat.user && state.admin.connectChat.chat && state.admin.connectChat.request)
 });

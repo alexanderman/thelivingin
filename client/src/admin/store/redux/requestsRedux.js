@@ -8,23 +8,6 @@ const INITIAL_STATE = {
     __isFetching: false
 };
 
-/** debug code */
-// INITIAL_STATE.selected = {
-//     "issuedBy": "HLVph2RSfXXOGok4yDn1",
-//     "textarea": "Шалом! Планирую лететь 27.01.2020 . Еду одна. Денег с собой практически нет. Зато в руках профессия - мастер татуажа, тату. Могу работать мастером по шугарингу и восковой депиляции. Для репатриации выбрала Иерусалим. Если кто-то чем-то сможет помочь - буду рада. Модет можно предварительно найти место работы? Скромную квартиру на съем? Хороший ульпан? Шаббат Шалом!",
-//     "createdAt": 1573203085696,
-//     "phone": "+380 (93) 445-53-59",
-//     "name": "Яна",
-//     "chats": [
-//         "KaVGXf0f2uTvHavMlmcS"
-//     ],
-//     "email": "aleksandrit76@i.ua",
-//     "_id": "K0pWLb6UWuCsfg7qWyPb",
-//     "_createTime": "2019-11-08T08:51:25.724Z",
-//     "_updateTime": "2019-11-08T08:51:25.724Z",
-//     "_readTime": "2019-11-08T08:53:21.027Z"
-// };
-
 export const types = {
     FETCH: 'admin-requests-FETCH',
     FETCH_SUCCESS: 'admin-requests-FETCH_SUCCESS',
