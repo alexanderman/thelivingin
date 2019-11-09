@@ -1,8 +1,22 @@
 const INITIAL_STATE = {
     chat: undefined,
     error: undefined,
-    __isFetching: false
+    __isFetching: false,
 };
+
+/** debug code */
+// INITIAL_STATE.chat =     {
+//     "issuedBy": "I4H5trugYrOIjZh2EOU9",
+//     "createdAt": 1573130635706,
+//     "requestId": "TTeihNaHAUl7cYgQr5G0",
+//     "twilio": {
+//         "sid": "CHccf5f081039543b39db2b275f00b22ef"
+//     },
+//     "_id": "4BbIHGl6tZUG48J2jRua",
+//     "_createTime": "2019-11-08T07:04:18.701Z",
+//     "_updateTime": "2019-11-08T07:04:18.701Z",
+//     "_readTime": "2019-11-08T08:51:43.687Z"
+// };
 
 export const types = {
     FETCH: 'admin-selected-chat-FETCH',

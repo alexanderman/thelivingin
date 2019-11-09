@@ -13,7 +13,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function MaxWidthDialog(props) {
   const classes = useStyles();
-  const { isOpen = false, title, text, renderActions, handleClose, fullWidth = true } = props;
+  const { isOpen = false, title, text, renderActions, handleClose, fullWidth = false } = props;
+  
+  const renderTitle = () => {
+    if (title) {
+      if (typeof title === 'function')
+        return title();
+      return title;
+    }
+  }
 
   return (
     <React.Fragment>
@@ -24,7 +32,7 @@ export default function MaxWidthDialog(props) {
         onClose={handleClose}
         aria-labelledby="max-width-dialog-title"
     >
-        {title ? <DialogTitle id="max-width-dialog-title">{title}</DialogTitle> : null}
+        {title ? <DialogTitle id="max-width-dialog-title">{renderTitle()}</DialogTitle> : null}
         
         <DialogContent>
             {text ? <DialogContentText>{text}</DialogContentText> : null}

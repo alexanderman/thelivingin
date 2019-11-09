@@ -6,7 +6,6 @@ import { getJSON } from './utils';
 import { types as requestsTypes } from '../redux/requestsRedux'
 import { types as selectedChatTypes } from '../redux/selectedChatRedux';
 
-
 /** reacts on request selection and dispatches fetch chats */
 export const listenToSelectedRequest = (action$, state$) => action$.pipe(
     ofType(requestsTypes.SET_SELECTED),

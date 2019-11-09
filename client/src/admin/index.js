@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './admin.scss';
 import { actions as usersActions, selectors as usersSelectors } from './store/redux/usersRedux';
 import { actions as requestsActions, selectors as requestsSelectors } from './store/redux/requestsRedux';
+import { selectors as connectSelectors } from './store/redux/connectChatRedux';
 import { actions as adminActions } from './store/redux/adminUserRedux';
 import DialogFullScreen from './components/common/dialog-full-screen';
 
@@ -26,7 +27,7 @@ function getUrlParams() {
 }
 
 const Admin = props => {
-    const { adminActions, usersActions, requestsActions, requestsSelectors } = props;
+    const { adminActions, usersActions, requestsActions, requestsSelectors, connectSelectors } = props;
     const { token } = getUrlParams();
     const [isRequestsOpen, setIsRequestsOpen] = useState(false);
 
@@ -65,7 +66,11 @@ const Admin = props => {
                 
                 <UserList />
 
-                <ConnectChatDialog />
+                {connectSelectors.isAllSet
+                    ? <ConnectChatDialog />
+                    : null
+                }
+                
 
             </div>
         </div>
@@ -75,7 +80,7 @@ const Admin = props => {
 const mapStateToProps = state => ({
     requestsSelectors: requestsSelectors(state),
     usersSelectors: usersSelectors(state),
-
+    connectSelectors: connectSelectors(state),
 });
 
 const mapDispatchToProps = dispatch => ({
