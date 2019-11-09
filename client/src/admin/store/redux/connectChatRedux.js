@@ -1,10 +1,5 @@
 const mock_users = require('../../../._mocks-copy/users.json');
 
-/** TODO: move all connect user to chat data here
- *  - user
- *  - chat
- *  - request
- */
 const INITIAL_STATE = {
     user: undefined,
     request: undefined,
