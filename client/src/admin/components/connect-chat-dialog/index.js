@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Dialog from '../common/dialog';
 import { Button, Typography, Switch, FormControlLabel } from '@material-ui/core';
@@ -15,6 +15,15 @@ const ConnectChatDialog = props => {
     } = props;
 
     const buttonText = isAddUser ? 'Add' : 'Remove';
+    
+    useEffect(() => {
+        /** set notifications state according to action [add, remove] */
+        const notificationsFalse = Object.keys(notification).reduce((acc, key) => {
+            acc[key] = isAddUser;
+            return acc;
+        }, {});
+        setNotifications(notificationsFalse);        
+    }, [user, chat]);
     
     const isOpen = isAllSet;
 
