@@ -1,5 +1,6 @@
 const INITIAL_STATE = {
-    chat: undefined,
+    list: undefined,
+    selected: undefined,
     error: undefined,
     __isFetching: false,
 };
@@ -36,17 +37,18 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.FETCH_SUCCESS: {
             console.log('## ', types.FETCH_SUCCESS, payload);
-            return { ...state, __isFetching: false, chat: payload, error: undefined };
+            /** for now single chat per request -> setting selected automatically */
+            return { ...state, __isFetching: false, chat: payload, selected: payload[0], error: undefined };
         }
 
         case types.FETCH_ERROR: {
             console.log('## ', types.FETCH_ERROR, payload);
-            return { ...state, __isFetching: false, error: payload };
+            return { ...state, __isFetching: false, error: payload, list: undefined, selected: undefined };
         }
 
         case types.FETCH_CANCEL: {
             console.log('## ', types.FETCH_CANCEL);
-            return { ...state, __isFetching: false, chat: undefined };
+            return { ...state, __isFetching: false, list: undefined, selected: undefined };
         }
 
     }
@@ -60,7 +62,8 @@ export const actions = dispatch => ({
 
 
 export const selectors = state => ({
-    chat: state.admin.selectedChat.chat,
+    chats: state.admin.selectedChat.list,
+    selected: state.admin.selectedChat.selected,
     error: state.admin.selectedChat.error,
     isFetching: state.admin.selectedChat.__isFetching,
 });

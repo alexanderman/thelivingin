@@ -3,12 +3,12 @@ import { ofType } from 'redux-observable';
 import { mergeMap, takeUntil, map, catchError } from 'rxjs/operators';
 import { getJSON } from './utils';
 
-import { types as requestsTypes } from '../redux/requestsRedux'
+import { types as connectTypes } from '../redux/connectChatRedux'
 import { types as selectedChatTypes } from '../redux/selectedChatRedux';
 
 /** reacts on request selection and dispatches fetch chats */
 export const listenToSelectedRequest = (action$, state$) => action$.pipe(
-    ofType(requestsTypes.SET_SELECTED),
+    ofType(connectTypes.SET_REQUEST),
     map(action => {
         const { payload } = action;
         if (payload) {
@@ -31,12 +31,15 @@ export const fetchChatsByRequestId = (action$, state$) => action$.pipe(
             )),
         );
     }),
-    map(data => {
+    mergeMap(data => {
         if (!data || data.error) {
-            return { type: selectedChatTypes.FETCH_ERROR, payload: data ? data.error : data };
+            return of({ type: selectedChatTypes.FETCH_ERROR, payload: data ? data.error : data });
         }
-        /** at the moment we create single chat per request */
-        return { type: selectedChatTypes.FETCH_SUCCESS, payload: data[0] }; 
+        return of(
+            { type: selectedChatTypes.FETCH_SUCCESS, payload: data },
+            /** for now single chat per request -> setting connect selected automatically */
+            { type: connectTypes.SET_CHAT, payload: data[0] }, 
+        ); 
     }),
     catchError(err => of({ type: selectedChatTypes.FETCH_ERROR, payload: `${err.message}; ${JSON.stringify(err.response)}` }))
 );

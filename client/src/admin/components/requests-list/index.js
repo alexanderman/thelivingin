@@ -1,7 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Table from '../table';
 import { connect } from 'react-redux';
 import { selectors as requestsSelectors, actions as requestsActions } from '../../store/redux/requestsRedux';
+import { selectors as connectSelectors, actions as connectActions } from '../../store/redux/connectChatRedux';
 import Timestamp from '../common/timestamp';
 
 
@@ -41,10 +42,12 @@ const columns = [{
 
 
 function RequestsList(props) {
-    const { requests, isFetching, setSelected, onSelectedSet } = props;
+    const { onSelectedSet, requestsSelectors, connectSelectors, connectActions } = props;
+    const { requests, isFetching } = requestsSelectors;
+    const { setRequest } = connectActions;
 
     const handleClick = request => {
-        setSelected(request);
+        setRequest(request);
         onSelectedSet && onSelectedSet(request)
     }
 
@@ -53,9 +56,15 @@ function RequestsList(props) {
     );
 }
 
-const mapStateToProps = state => requestsSelectors(state);
+const mapStateToProps = state => ({
+    requestsSelectors: requestsSelectors(state),
+    connectSelectors: connectSelectors(state),
+});
 
-const mapDispatchToProps = requestsActions;
+const mapDispatchToProps = dispatch => ({
+    requestsActions: requestsActions(dispatch),
+    connectActions: connectActions(dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RequestsList);
 

@@ -92,10 +92,14 @@ export default (state = INITIAL_STATE, action) => {
 
 export const actions = dispatch => ({
     setUser: user => dispatch({ type: types.SET_USER, payload: user }),
+    setRequest: request => dispatch({ type: types.SET_REQUEST, payload: request }),
+    setChat: chat => dispatch({ type: types.SET_CHAT, payload: chat }),
 });
 
 
 export const selectors = state => ({
     user: state.admin.connectChat.user,
-    isAllSet: state.admin.connectChat.user && state.admin.connectChat.chat && state.admin.connectChat.request,
+    chat: state.admin.connectChat.chat,
+    request: state.admin.connectChat.request,
+    isAllSet: !!(state.admin.connectChat.user && state.admin.connectChat.chat && state.admin.connectChat.request)
 });

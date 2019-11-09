@@ -3,34 +3,24 @@ import { connect } from 'react-redux';
 import Dialog from '../common/dialog';
 import { Button, Typography, Switch, FormControlLabel } from '@material-ui/core';
 import './connect-chat-dialog.scss';
-
-import { actions as usersActions, selectors as usersSelectors } from '../../store/redux/usersRedux';
-import { actions as chatActions, selectors as chatSelectors } from '../../store/redux/selectedChatRedux';
 import { actions as connectActions, selectors as connectSelectors } from '../../store/redux/connectChatRedux';
-import { selectors as requestsSelectors } from '../../store/redux/requestsRedux';
 
 
 const ConnectChatDialog = props => {
-    const { 
-        usersSelectors, chatSelectors, connectSelectors,
-        usersActions, chatActions, connectActions, requestsSelectors,
-    } = props;
+    const { user, chat, request, setUser, isAllSet } = props;
     
-    const { selected: selectedRequest } = requestsSelectors;
-    const { chat: selectedChat } = chatSelectors;
-    const isOpen = !!(connectSelectors.user && chatSelectors.chat);
-    // const isOpen = true;
+    const isOpen = isAllSet;
 
     const handleClose = () => {
-        connectActions.setUser(undefined);
+        setUser(undefined);
     }
 
     const renderTitle = () => (
-        <span>Add <b>{(connectSelectors.user || {}).name}</b> to request</span>
+        <span>Add <b>{user.name}</b> to request</span>
     );
 
     const renderRequestInfo = () => {
-        const requestText = (selectedRequest.textarea || '').substr(0, 200) + '...';
+        const requestText = (request.textarea || '').substr(0, 200) + '...';
         return (
             <Fragment>
                 <Typography variant="body2" color="textSecondary">{requestText}</Typography>
@@ -65,17 +55,7 @@ const ConnectChatDialog = props => {
     );
 }
 
-const mapStateToProps = state => ({
-    usersSelectors: usersSelectors(state),
-    chatSelectors: chatSelectors(state),
-    connectSelectors: connectSelectors(state),
-    requestsSelectors: requestsSelectors(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-    usersActions: usersActions(dispatch),
-    chatActions: chatActions(dispatch),
-    connectActions: connectActions(dispatch),
-});
+const mapStateToProps = connectSelectors;
+const mapDispatchToProps = connectActions;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConnectChatDialog);
