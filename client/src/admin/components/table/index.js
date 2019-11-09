@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 export default function MyTable(props) {
     const { columns, rows, showLoading, 
         rowClickable, onRowClick, 
-        selectable, onSelectClick, isUserSelected
+        selectable, onSelectClick, isUserSelected, disableSelection
     } = props;
     const isRowSelected = row => selectable && isUserSelected(row);
 
@@ -107,7 +107,7 @@ export default function MyTable(props) {
                     <TableRow style={{cursor: rowClickable ? 'pointer' : 'default'}} selected={isRowSelected(row)} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
                     
                     {selectable
-                        ? <TableCell><Checkbox color="primary" onClick={() => handleRowSelect(row)} checked={isRowSelected(row)} /></TableCell>
+                        ? <TableCell><Checkbox disabled={disableSelection} color="primary" onClick={() => handleRowSelect(row)} checked={isRowSelected(row)} /></TableCell>
                         : null
                     }
 

@@ -96,6 +96,7 @@ const Admin = props => {
                 <UserList selectable 
                     isUserSelected={isUserSelected}
                     showLoading={showUsersLoading} 
+                    disableSelection={showUsersLoading}
                     onSelectClick={onUserSelectClick} 
                 />
                 
