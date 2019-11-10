@@ -38,11 +38,11 @@ const ConnectChatDialog = props => {
     const renderTitle = () => {
         if (!isAddUser) {
             return (
-                <span>Remove <b>{user.name}</b> from request</span>
+                <span>Removing <b>{user.name}</b> from request</span>
             );
         }
         return (
-            <span>Add <b>{user.name}</b> to request</span>
+            <span>Adding <b>{user.name}</b> to request</span>
         );
     }
 
