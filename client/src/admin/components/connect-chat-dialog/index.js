@@ -24,7 +24,7 @@ const ConnectChatDialog = props => {
     
     const isOpen = isAllSet;
 
-    const handleClose = () => {
+    const handleClose = (ev, reason) => {
         if (!inProcess)
             setUser(undefined);
     }
