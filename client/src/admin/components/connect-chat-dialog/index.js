@@ -25,14 +25,17 @@ const ConnectChatDialog = props => {
     const isOpen = isAllSet;
 
     const handleClose = () => {
-        setUser(undefined);
+        if (!inProcess)
+            setUser(undefined);
     }
 
     const handleAction = () => {
-        if (isAddUser) 
-            sendConnect();
-        else    
-            sendDisconnect();
+        if (!inProcess) {
+            if (isAddUser) 
+                sendConnect();
+            else    
+                sendDisconnect();
+        }
     }
 
     const renderTitle = () => {
@@ -57,10 +60,10 @@ const ConnectChatDialog = props => {
                 <Typography variant="body2" color="textSecondary">{requestText}</Typography>
                 <div style={{ marginTop: '1em' }} className="connect-chat-dialog-controls">
                     <FormControlLabel control={
-                        <Switch checked={notification.email} onChange={toggleNotification('email')} color="secondary"></Switch>
+                        <Switch disabled={inProcess} checked={notification.email} onChange={toggleNotification('email')} color="secondary"></Switch>
                     } label="Send Email Notification"></FormControlLabel>
                     <FormControlLabel control={
-                        <Switch checked={notification.application} onChange={toggleNotification('application')} color="secondary"></Switch>
+                        <Switch disabled={inProcess} checked={notification.application} onChange={toggleNotification('application')} color="secondary"></Switch>
                     } label="Show Application Notification"></FormControlLabel>
                 </div>
             </Fragment>
@@ -69,14 +72,15 @@ const ConnectChatDialog = props => {
         
     const renderActions = () => (
         <Fragment>
-            <Button variant="text" onClick={handleClose}>Cancel</Button>
-            <Button variant="contained" color="primary" onClick={handleAction}>{buttonText}</Button>
+            <Button disabled={inProcess} variant="text" onClick={handleClose}>Cancel</Button>
+            <Button disabled={inProcess} variant="contained" style={{ width: '12em' }} color="primary" onClick={handleAction}>{buttonText}</Button>
         </Fragment>
     );
 
 
     return (
         <Dialog isOpen={isOpen} 
+            showProgress={inProcess}
             title={renderTitle}
             handleClose={handleClose} 
             renderActions={renderActions} 
