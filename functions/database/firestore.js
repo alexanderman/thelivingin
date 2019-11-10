@@ -9,6 +9,7 @@ const db = admin.firestore();
 const USER_COLL = db.collection('users');
 const REQUEST_COLL = db.collection('requests');
 const CHAT_COLL = db.collection('chats');
+const ROLES_COLL = db.collection('roles');
 
 function _snapShotToObject(snapshot) {
     if (!snapshot.exists) 
@@ -95,6 +96,24 @@ function getRequestById(requestId) {
     .then(_snapShotToObject);
 }
 
+function getAdmins() {
+    return ROLES_COLL.doc('admin').get().then(doc => {
+        const data = _snapShotToObject(doc);
+        const userRefs = data.users.map(id => USER_COLL.doc(id));
+        return db.getAll(...userRefs);
+    })
+    .then(snapshot => {
+        if (snapshot.empty) {
+            return null;
+        }
+        const foundRecords = [];
+        snapshot.forEach(doc => {
+            foundRecords.push(_snapShotToObject(doc));
+        });
+        return foundRecords;
+    })
+}
+
 function _debugFetch(collection, itemId) {
     if (!itemId) {
         return db.collection(collection).get()
@@ -160,6 +179,8 @@ module.exports = {
     getUserById,
     updateUser,
     updateChat,
+
+    getAdmins,
 
     queryUsers,
     queryRequests,

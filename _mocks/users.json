@@ -1,11 +1,12 @@
 [
     {
-        "help_area": "here for fun here for fun here for fun here for fun here for fun here for fun here for fun ",
+        "help_area": "Могу помочь с вопросами о страховании имущества, жизни, здоровья, пенсии.",
         "canHelp": true,
         "createdAt": 1573130651390,
-        "phone": "+972-5-456-83784",
-        "name": "petya helper",
-        "email": "vaskin@gmail.com",
+        "phone": "+972-5-999-99999",
+        "name": "Женя Чернявская",
+        "email": "jenny@livingin.com",
+        "roles": ["admin"],
         "_id": "CZQjMaETb0LcVTmbf97r",
         "_createTime": "2019-11-08T07:04:18.700Z",
         "_updateTime": "2019-11-08T07:04:18.700Z",
