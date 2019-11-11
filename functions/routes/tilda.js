@@ -16,16 +16,16 @@ const allowTildaTest = (req, res, next) => {
     return next();
 }
 
-router.post('/request', allowTildaTest, requestValidator, (req, res) => {
+router.post('/request', allowTildaTest, requestValidator, (req, res, next) => {
     requestService.registerRequest(req.body)
     .then(result => res.json(result))
-    .catch(err => res.status(500).send(err));
+    .catch(next);
 });
 
 router.post('/helper', allowTildaTest, helperValidator, (req, res) => {
     helpersService.registerHelper(req.body)
     .then(result => res.json(result))
-    .catch(err => res.status(500).send(err.message));
+    .catch(next);
 });
 
 

@@ -15,21 +15,21 @@ app.use('/client', clientRouter);
 app.use('/admin', adminRouter);
 
 /** SEED route ***********************************/
-app.get('/__seeddb', (req, res) => {
+app.get('/__seeddb', (req, res, next) => {
     const seedProms = require('./_seed-database')();
     Promise.all(seedProms).then(_ => {
         res.send('seeded successfully');
-    }).catch(err => res.send(err));
+    }).catch(next);
 });
 /*************************************************/
 
 /** DEBUG route **********************************/
 const firestore = require('./database/firestore');
-app.get('/__db/:collection/:id?', (req, res) => {
+app.get('/__db/:collection/:id?', (req, res, next) => {
     const { collection, id } = req.params;
     firestore._debugFetch(collection, id)
     .then(result => res.json(result))
-    .catch(err => res.status(500).send(err));
+    .catch(next);
 });
 /*************************************************/
 
@@ -37,7 +37,13 @@ app.get('/__db/:collection/:id?', (req, res) => {
 app.use((err, req, res, next) => {
     console.log(err);
     res.status(500).json({
-        error: err.message
+        error: err.message,
+        fileName: err.fileName,
+        lineNumber: err.lineNumber,
+        columnNumber: err.columnNumber,
+        stack: err.stack,
+        name: err.name,
+        _err: err
     });
 });
 

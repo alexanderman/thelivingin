@@ -1,3 +1,7 @@
+/**
+ * wrapper on twilio API, no database objects or other app logic should be here
+ * use chat-service for app logic
+ */
 const config = require('../../config').twilio;
 const Twilio = require('twilio');
 const client = Twilio(config.accountSid, config.authToken);
@@ -58,6 +62,21 @@ function createUser(identity, attributes) {
         });
 }
 
+function fetchUser(identity) {
+    return client.chat.services(config.chatServiceId).users(identity).fetch();
+}
+
+/** if user with this identity already exists, fetch it */
+function ensureUser(identity, attributes) {
+    return createUser(identity, attributes)
+    .catch(err => {
+        if (err.status === 409 && err.code === 50201) {
+            return fetchUser(identity);
+        }
+        throw err;
+    });
+}
+
 function createMember(channelSid, identity, attributes) {
     const options = {
         identity, 
@@ -81,4 +100,7 @@ module.exports = {
     createChannel,
     createUser,
     createMember,
+
+    fetchUser,
+    ensureUser,
 }

@@ -11,21 +11,35 @@ const REQUEST_COLL = db.collection('requests');
 const CHAT_COLL = db.collection('chats');
 const ROLES_COLL = db.collection('roles');
 
+/** names of DTOs firestore internal fields, prevent from saving/updating them */
+const SYS_FIELDS = {
+    _id:            { name: 'id', format: v => v },
+    _createTime:    { name: 'createTime', format: v => v.toDate() },
+    _updateTime:    { name: 'updateTime', format: v => v.toDate() },
+    _readTime:      { name: 'readTime', format: v => v.toDate() },
+};
+
 function _snapShotToObject(snapshot) {
     if (!snapshot.exists) 
         return null;
-    return {
-        ...snapshot.data(),
-        _id: snapshot.id,
-        _createTime: snapshot.createTime.toDate(),
-        _updateTime: snapshot.updateTime.toDate(),
-        _readTime: snapshot.readTime.toDate()
-    };
+    
+    return Object.keys(SYS_FIELDS).reduce((obj, key) => {
+        obj[key] = SYS_FIELDS[key].format(snapshot[SYS_FIELDS[key].name]);
+        return obj;
+    }, { ...snapshot.data() });
+}
+
+/** returns new object without SYS_FIELDS */
+function _crearSysFields(data) {
+    return Object.keys(SYS_FIELDS).reduce((acc, key) => {
+        delete acc[key];
+        return acc;
+    }, { ...data });
 }
 
 function _createData(collection, id, data) {
-    data.createdAt = Date.now();
-    return collection.doc(id).set(data);
+    const modifiedData = _crearSysFields({ ...data, createdAt: Date.now() });
+    return collection.doc(id).set(modifiedData);
 }
 
 function generateUserId() {
@@ -51,7 +65,8 @@ function addRequestToUser(id, requestId) {
 }
 
 function updateUser(id, fields) {
-    return USER_COLL.doc(id).update(fields);
+    const modifiedFields = _crearSysFields(fields);
+    return USER_COLL.doc(id).update(modifiedFields);
 }
 
 function createRequest(id, data) {
@@ -63,7 +78,8 @@ function createChat(id, data) {
 }
 
 function updateChat(id, fields) {
-    return CHAT_COLL.doc(id).update(fields);
+    const modifiedFields = _crearSysFields(fields);
+    return CHAT_COLL.doc(id).update(modifiedFields);
 }
 
 function getUserByEmail(email) {
@@ -99,8 +115,11 @@ function getRequestById(requestId) {
 function getAdmins() {
     return ROLES_COLL.doc('admin').get().then(doc => {
         const data = _snapShotToObject(doc);
-        const userRefs = data.users.map(id => USER_COLL.doc(id));
-        return db.getAll(...userRefs);
+        if (data) {
+            const userRefs = data.users.map(id => USER_COLL.doc(id));
+            return db.getAll(...userRefs);
+        }
+        return { empty: true };
     })
     .then(snapshot => {
         if (snapshot.empty) {
