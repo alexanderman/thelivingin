@@ -82,6 +82,10 @@ function updateChat(id, fields) {
     return CHAT_COLL.doc(id).update(modifiedFields);
 }
 
+function deleteChatMember(id, userId) {
+    return CHAT_COLL.doc(id).update({ [`twilio.members.${userId}`]: FieldValue.delete() });
+}
+
 function getUserByEmail(email) {
     return USER_COLL.where('email', '==', email).get()
     .then(snapshot => {
@@ -192,6 +196,7 @@ module.exports = {
     createUser,
     getUserByEmail,
     addRequestToUser,
+    deleteChatMember,
 
     getChatById,
     getRequestById,

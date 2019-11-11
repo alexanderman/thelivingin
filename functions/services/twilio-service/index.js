@@ -94,6 +94,11 @@ function createMember(channelSid, identity, attributes) {
         });
 }
 
+function deleteMember(channelSid, memberSid) {
+    return client.chat.services(config.chatServiceId)
+        .channels(channelSid).members(memberSid).remove();
+}
+
 
 module.exports = {
     generateToken,
@@ -103,4 +108,5 @@ module.exports = {
 
     fetchUser,
     ensureUser,
+    deleteMember,
 }

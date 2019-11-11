@@ -28,9 +28,11 @@ router.post('/chats/addmember', fromPromise((req, res, next) => {
         .then(() => store.getChatById(chat._id));
 }));
 
-router.post('/chats/removemember', (req, res, next) => {
-    res.json(req.body);
-});
+router.post('/chats/removemember', fromPromise((req, res, next) => {
+    const { user, chat, notification } = req.body;    
+    return chatService.removeMember(user, chat)
+        .then(() => store.getChatById(chat._id));
+}));
 
 
 module.exports = router;

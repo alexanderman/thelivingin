@@ -48,6 +48,19 @@ function ensureMember(user, chat, options = { updateDb: true }) {
         });
 }
 
+function removeMember(user, chat) {
+    if (!chat.twilio) {
+        return Promise.reject(new Error('expected chat with existing twilio channel'));
+    }
+
+    if (!user.twilio) {
+        return Promise.reject(new Error('expected user with existing twilio sid'));
+    }
+
+    return twilioService.deleteMember(chat.twilio.sid, user.twilio.sid)
+        .then(() => store.deleteChatMember(chat._id, user._id));
+}
+
 /**
  * @description creates twilio user if needed + adds member to chat + upadtes db with twilio keys
  * @param {*} user 
@@ -65,4 +78,5 @@ module.exports = {
     ensureMember,
     ensureUser,
     addUserToChat,
+    removeMember,
 }
