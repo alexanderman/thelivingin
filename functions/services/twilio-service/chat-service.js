@@ -57,7 +57,7 @@ function removeMember(user, chat) {
         return Promise.reject(new Error('expected user with existing twilio sid'));
     }
 
-    return twilioService.deleteMember(chat.twilio.sid, user.twilio.sid)
+    return twilioService.deleteMember(chat.twilio.sid, chat.twilio.members[user._id])
         .then(() => store.deleteChatMember(chat._id, user._id));
 }
 
