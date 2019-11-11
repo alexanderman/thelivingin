@@ -81,7 +81,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, __inProcess: true };
         }
 
-        case types.SEND_CONNECT_SUCCESS: {
+        case types.SEND_CONNECT_SUCCESS: { /** does nothing */
             console.log('## ', types.SEND_CONNECT_SUCCESS, payload);
             return { ...state, __inProcess: false };
         }
@@ -122,11 +122,18 @@ export const actions = dispatch => ({
     sendDisconnect: payload => dispatch({ type: types.SEND_DICSONNECT, payload }),
 });
 
+function getSelectedChatMembers(selectedChat) {
+    if (selectedChat && selectedChat.twilio && selectedChat.twilio.members) {
+        return selectedChat.twilio.members; /** map of userId to twilio memberId  */
+    }
+    return {};
+}
 
 export const selectors = state => ({
     state: state.admin.connectChat, 
     user: state.admin.connectChat.user,
     chat: state.admin.connectChat.chat,
+    chatMembers: getSelectedChatMembers(state.admin.connectChat.chat),
     request: state.admin.connectChat.request,
     inProcess: state.admin.connectChat.__inProcess,
     notification: state.admin.connectChat.notification,

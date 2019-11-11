@@ -1,7 +1,6 @@
 /** holds chats of selected request */
 const INITIAL_STATE = {
     list: undefined,
-    selected: undefined,
     error: undefined,
     __isFetching: false,
 };
@@ -11,6 +10,7 @@ export const types = {
     FETCH_CANCEL: 'admin-selected-chat-FETCH_CANCEL',
     FETCH_SUCCESS: 'admin-selected-chat-FETCH_SUCCESS',
     FETCH_ERROR: 'admin-selected-chat-FETCH_ERROR',
+    UPDATE_CHAT: 'admin-selected-chat-UPDATE_CHAT',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -25,17 +25,23 @@ export default (state = INITIAL_STATE, action) => {
         case types.FETCH_SUCCESS: {
             console.log('## ', types.FETCH_SUCCESS, payload);
             /** for now single chat per request -> setting selected automatically */
-            return { ...state, __isFetching: false, chat: payload, selected: payload[0], error: undefined };
+            return { ...state, __isFetching: false, list: payload, error: undefined };
         }
 
         case types.FETCH_ERROR: {
             console.log('## ', types.FETCH_ERROR, payload);
-            return { ...state, __isFetching: false, error: payload, list: undefined, selected: undefined };
+            return { ...state, __isFetching: false, error: payload, list: undefined };
         }
 
         case types.FETCH_CANCEL: {
             console.log('## ', types.FETCH_CANCEL);
-            return { ...state, __isFetching: false, list: undefined, selected: undefined };
+            return { ...state, __isFetching: false, list: undefined };
+        }
+
+        case types.UPDATE_CHAT: {
+            console.log('## ', types.UPDATE_CHAT, payload);
+            const newList = state.list.map(chat => chat._id === payload._id ? payload : chat);
+            return { ...state, list: newList };
         }
 
     }
@@ -45,19 +51,11 @@ export default (state = INITIAL_STATE, action) => {
 
 export const actions = dispatch => ({
     fetch: requestId => dispatch({ type: types.FETCH, payload: requestId }),
+    updateChat: chat => dispatch({ type: types.UPDATE_CHAT, payload: chat }),
 });
-
-function getSelectedChatMembers(selectedChat) {
-    if (selectedChat && selectedChat.twilio && selectedChat.twilio.members) {
-        return selectedChat.twilio.members; /** map of userId to twilio memberId  */
-    }
-    return {};
-}
 
 export const selectors = state => ({
     chats: state.admin.requestChatsRedux.list,
-    selected: state.admin.requestChatsRedux.selected,
-    selectedMembers: getSelectedChatMembers(state.admin.requestChatsRedux.selected),
     error: state.admin.requestChatsRedux.error,
     isFetching: state.admin.requestChatsRedux.__isFetching,
 });

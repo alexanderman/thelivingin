@@ -68,7 +68,7 @@ const Admin = props => {
     }
 
     const isUserSelected = user => {
-        return !!requestChats.selectedMembers[user._id];
+        return !!connectSelectors.chatMembers[user._id];
     }
 
 
