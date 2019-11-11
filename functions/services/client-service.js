@@ -1,6 +1,5 @@
 const store = require('../database/firestore');
 const twilioService = require('./twilio-service');
-const chatService = require('./twilio-service/chat-service');
 
 function getChatData(userId, chatId, requestId) {
     return Promise.all([
@@ -20,13 +19,7 @@ function getChatData(userId, chatId, requestId) {
             throw new Error('chat with provided parameters not found');
         }
 
-        const { user, chat } = result;
-        
-        /** TODO: move this logic to submit request */
-        return Promise.all([
-            chatService.ensureUser(user),
-            chatService.ensureMember(user, chat)
-        ]).then(() => result);
+        return result;
     });
 }
 

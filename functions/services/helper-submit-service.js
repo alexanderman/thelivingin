@@ -8,9 +8,9 @@ function registerHelper(request) {
     .then(user => {
         const userExists = !!user;
         const userId = userExists ? user._id : store.generateUserId();
-        let dbPromise;
 
         const userData = {
+            _id: userId,
             ...request,
             name: request.name,
             email: request.email,
@@ -18,15 +18,16 @@ function registerHelper(request) {
             canHelp: true
         };
 
-        if (userExists) {
-            dbPromise = store.updateUser(userId, userData);
-        }
-        else {
-            dbPromise = store.createUser(userId, userData);
-        }
+        const ensureTwilioUser = userExists && user.twilio
+            ? Promise.resolve(user.twilio.sid)
+            : twilioService.ensureUser(userId, { name: userData.name, email: userData.email })
+                .then(t => userData.twilio = { sid: t.sid });
 
-        return dbPromise;
+        const saveToDb = userExists 
+            ? () => store.updateUser(userId, userData)
+            : () => store.createUser(userId, userData);
 
+        return ensureTwilioUser.then(saveToDb);
     });
 }
 
