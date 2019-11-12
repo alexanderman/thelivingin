@@ -14,6 +14,7 @@ import UserList from './components/user-list';
 import RequestsList from './components/requests-list';
 import RequestCard from './components/request';
 import ConnectChatDialog from './components/connect-chat-dialog';
+import ChatList from './components/chat-list';
 
 import SnackError from './components/common/snackbar-error';
 
@@ -86,6 +87,7 @@ const Admin = props => {
                         />
                     : null
                 }
+                <ChatList />
 
                 <DialogFullScreen isOpen={isRequestsOpen} title="Requests" handleClose={() => setIsRequestsOpen(false)}>
                     <RequestsList onSelectedSet={() => setIsRequestsOpen(false)} />
