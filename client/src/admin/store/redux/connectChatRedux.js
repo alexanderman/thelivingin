@@ -48,7 +48,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.SET_USER: {
             console.log('## ', types.SET_USER, payload);
-            return { ...state, user: payload };
+            return { ...state, user: payload, error: undefined };
         }
 
         case types.SET_CHAT: {
@@ -78,7 +78,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.SEND_CONNECT: {
             console.log('## ', types.SEND_CONNECT, payload);
-            return { ...state, __inProcess: true };
+            return { ...state, __inProcess: true, error: undefined };
         }
 
         case types.SEND_CONNECT_SUCCESS: { /** does nothing */
@@ -93,7 +93,7 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.SEND_DICSONNECT: {
             console.log('## ', types.SEND_DICSONNECT, payload);
-            return { ...state, __inProcess: true };
+            return { ...state, __inProcess: true, error: undefined };
         }
 
         case types.SEND_DICSONNECT_SUCCESS: {
