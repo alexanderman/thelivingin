@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const store = require('../database/firestore');
-const { fromPromise, filterJson } = require('../middleware/utils-middleware');
+const { fromPromise, filterJson, validateToken } = require('../middleware/utils-middleware');
 const chatService = require('../services/twilio-service/chat-service');
 
 router.get('/', (req, res) => res.send('ok admin'));
+router.use(validateToken);
 
 router.get('/users/:id?', filterJson, fromPromise(
     req => store.queryUsers(req.query.filter, req.query.orderby)
