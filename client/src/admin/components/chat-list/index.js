@@ -16,8 +16,6 @@ const ChatList = props => {
         return null;
     }
 
-    console.log(request);
-
     const chatMembersUrls = chat => {
         const { members } = chat.twilio || {};
         if (!members) return null;
