@@ -11,7 +11,7 @@ export const getJSON = (state$, path) => {
     return ajax.getJSON(url, { Authorization: `bearer ${token}` }).pipe(
         catchError(err => { 
             console.error('catchError', err); 
-            return of({ error: err }); 
+            return of({ error: { ...err.response } }); 
         })
     );
 }
@@ -22,7 +22,7 @@ export const postJSON = (state$, path, data) => {
     return ajax.post(url, data, { 'Content-Type': 'application/json', Authorization: `bearer ${token}` }).pipe(
         catchError(err => { 
             console.error('catchError', err); 
-            return of({ error: err }); 
+            return of({ error: { ...err.response } }); 
         })
     );
 }

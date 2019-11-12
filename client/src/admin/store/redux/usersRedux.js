@@ -1,7 +1,7 @@
 const mock_users = require('../../../._mocks-copy/users.json');
 
 const INITIAL_STATE = {
-    list: mock_users,
+    list: [], //mock_users,
     filter: undefined,
     orderBy: undefined,
     error: undefined,

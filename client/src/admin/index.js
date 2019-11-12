@@ -41,8 +41,8 @@ const Admin = props => {
         console.log('admin init');
         if (token) {
             adminActions.setToken(token);
-            // usersActions.fetch();
-            // requestsActions.fetch();
+            usersActions.fetch();
+            requestsActions.fetch();
         }
         else {
             console.error('missing admin token!!!');

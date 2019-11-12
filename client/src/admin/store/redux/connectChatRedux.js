@@ -53,12 +53,12 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.SET_CHAT: {
             console.log('## ', types.SET_CHAT, payload);
-            return { ...state, chat: payload };
+            return { ...state, chat: payload, error: undefined };
         }
 
         case types.SET_REQUEST: {
             console.log('## ', types.SET_REQUEST, payload);
-            return { ...state, request: payload };
+            return { ...state, request: payload, error: undefined };
         }
 
         case types.SET_NOTIFICATIONS: {
@@ -137,5 +137,6 @@ export const selectors = state => ({
     request: state.admin.connectChat.request,
     inProcess: state.admin.connectChat.__inProcess,
     notification: state.admin.connectChat.notification,
-    isAllSet: !!(state.admin.connectChat.user && state.admin.connectChat.chat && state.admin.connectChat.request)
+    isAllSet: !!(state.admin.connectChat.user && state.admin.connectChat.chat && state.admin.connectChat.request),
+    error: state.admin.connectChat.error,
 });

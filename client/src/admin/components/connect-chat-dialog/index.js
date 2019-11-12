@@ -11,7 +11,7 @@ const ConnectChatDialog = props => {
         /** redux props */
         user, chat, request, setUser, isAllSet, notification, setNotifications, 
         setNotificationsToAdd, setNotificationsToRemove,
-        inProcess, sendConnect, sendDisconnect, 
+        inProcess, sendConnect, sendDisconnect, error,
         /** parent component props */
         isAddUser,
     } = props;
@@ -66,7 +66,22 @@ const ConnectChatDialog = props => {
                         <Switch disabled={inProcess} checked={notification.application} onChange={toggleNotification('application')} color="secondary"></Switch>
                     } label="Show Application Notification"></FormControlLabel>
                 </div>
+                {renderError()}
             </Fragment>
+        );
+    }
+
+    const renderError = () => {
+        if (!error) return null;        
+        return (
+            <div className="connect-chat-dialog_error">
+                <ul>
+                    {Object.keys(error).filter(k => k !== '_err').map(key => <li key={key}>{key}: {error[key]}</li>)}
+                    <ul>
+                        {Object.keys(error._err).map(key => <li key={key}>{key}: {error._err[key]}</li>)}
+                    </ul>
+                </ul>
+            </div>
         );
     }
         

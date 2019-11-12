@@ -6,8 +6,6 @@ import './chat.scss';
 export default props => {
     const { createdAt, issuedBy } = props.chat;
     const { members } = props;
-    
-    console.log('members', members);
 
     return (
         <Paper className="chat-cont">
