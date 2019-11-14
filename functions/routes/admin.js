@@ -36,4 +36,23 @@ router.post('/chats/removemember', fromPromise((req, res, next) => {
 }));
 
 
+/** SEED route ***********************************/
+router.get('/__seeddb', (req, res, next) => {
+    const seedProms = require('../_seed-database')();
+    Promise.all(seedProms).then(_ => {
+        res.send('seeded successfully');
+    }).catch(next);
+});
+/*************************************************/
+
+/** DEBUG route **********************************/
+router.get('/__db/:collection/:id?', (req, res, next) => {
+    const { collection, id } = req.params;
+    store._debugFetch(collection, id)
+    .then(result => res.json(result))
+    .catch(next);
+});
+/*************************************************/
+
+
 module.exports = router;
