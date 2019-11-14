@@ -1,0 +1,10 @@
+.connect-chat-dialog-controls {
+    display: flex;
+    flex-direction: column;
+}
+
+.connect-chat-dialog_error {
+    margin-top: 1em;
+    color: #f44336;
+    font-size: 0.8em;
+}

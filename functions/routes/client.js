@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const chatVlidator = require('../middleware/chat-request-validator');
-const chatService = require('../services/chat-service');
+const chatService = require('../services/client-service');
 
 router.get('/', (req, res) => {
     res.send('ok');

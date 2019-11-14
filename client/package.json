@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.5.2",
+    "@material-ui/icons": "^4.5.1",
+    "moment": "^2.24.0",
     "node-sass": "^4.12.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -17,7 +20,7 @@
     "typescript": "^3.6.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node _copy-mocks.js && react-scripts start",
     "build": "react-scripts build",
     "serve-build": "serve -s build",
     "test": "react-scripts test",
@@ -41,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "fs-extra": "^8.1.0",
     "redux-devtools-extension": "^2.13.8"
   }
 }

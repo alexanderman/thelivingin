@@ -9,22 +9,37 @@ const db = admin.firestore();
 const USER_COLL = db.collection('users');
 const REQUEST_COLL = db.collection('requests');
 const CHAT_COLL = db.collection('chats');
+const ROLES_COLL = db.collection('roles');
+
+/** names of DTOs firestore internal fields, prevent from saving/updating them */
+const SYS_FIELDS = {
+    _id:            { name: 'id', format: v => v },
+    _createTime:    { name: 'createTime', format: v => v.toDate() },
+    _updateTime:    { name: 'updateTime', format: v => v.toDate() },
+    _readTime:      { name: 'readTime', format: v => v.toDate() },
+};
 
 function _snapShotToObject(snapshot) {
     if (!snapshot.exists) 
         return null;
-    return {
-        ...snapshot.data(),
-        _id: snapshot.id,
-        _createTime: snapshot.createTime.toDate(),
-        _updateTime: snapshot.updateTime.toDate(),
-        _readTime: snapshot.readTime.toDate()
-    };
+    
+    return Object.keys(SYS_FIELDS).reduce((obj, key) => {
+        obj[key] = SYS_FIELDS[key].format(snapshot[SYS_FIELDS[key].name]);
+        return obj;
+    }, { ...snapshot.data() });
+}
+
+/** returns new object without SYS_FIELDS */
+function _crearSysFields(data) {
+    return Object.keys(SYS_FIELDS).reduce((acc, key) => {
+        delete acc[key];
+        return acc;
+    }, { ...data });
 }
 
 function _createData(collection, id, data) {
-    data.createdAt = Date.now();
-    return collection.doc(id).set(data);
+    const modifiedData = _crearSysFields({ ...data, createdAt: Date.now() });
+    return collection.doc(id).set(modifiedData);
 }
 
 function generateUserId() {
@@ -50,7 +65,8 @@ function addRequestToUser(id, requestId) {
 }
 
 function updateUser(id, fields) {
-    return USER_COLL.doc(id).update(fields);
+    const modifiedFields = _crearSysFields(fields);
+    return USER_COLL.doc(id).update(modifiedFields);
 }
 
 function createRequest(id, data) {
@@ -62,7 +78,12 @@ function createChat(id, data) {
 }
 
 function updateChat(id, fields) {
-    return CHAT_COLL.doc(id).update(fields);
+    const modifiedFields = _crearSysFields(fields);
+    return CHAT_COLL.doc(id).update(modifiedFields);
+}
+
+function deleteChatMember(id, userId) {
+    return CHAT_COLL.doc(id).update({ [`twilio.members.${userId}`]: FieldValue.delete() });
 }
 
 function getUserByEmail(email) {
@@ -95,6 +116,27 @@ function getRequestById(requestId) {
     .then(_snapShotToObject);
 }
 
+function getAdmins() {
+    return ROLES_COLL.doc('admin').get().then(doc => {
+        const data = _snapShotToObject(doc);
+        if (data) {
+            const userRefs = data.users.map(id => USER_COLL.doc(id));
+            return db.getAll(...userRefs);
+        }
+        return { empty: true };
+    })
+    .then(snapshot => {
+        if (snapshot.empty) {
+            return null;
+        }
+        const foundRecords = [];
+        snapshot.forEach(doc => {
+            foundRecords.push(_snapShotToObject(doc));
+        });
+        return foundRecords;
+    })
+}
+
 function _debugFetch(collection, itemId) {
     if (!itemId) {
         return db.collection(collection).get()
@@ -109,6 +151,41 @@ function _debugFetch(collection, itemId) {
     .then(_snapShotToObject);
 }
 
+function queryCollection(collection, filter, orderBy) {
+    /** https://cloud.google.com/firestore/docs/query-data/queries */
+    orderBy = orderBy || { key: 'createdAt', order: 'desc' };
+    filter = filter || [];
+    let query = collection;
+    filter.forEach(item => {
+        const { key, operator, operand } = item;
+        query = !query
+            ? collection.where(key, operator, operand)
+            : query.where(key, operator, operand);
+    });
+    return query.orderBy(orderBy.key, orderBy.order).get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                return null;
+            }
+            const foundRecords = [];
+            snapshot.forEach(doc => {
+                foundRecords.push(_snapShotToObject(doc));
+            });
+            return foundRecords;
+        });
+}
+
+function queryUsers(filter, orderBy) {
+    return queryCollection(USER_COLL, filter, orderBy);
+}
+
+function queryRequests(filter, orderBy) {
+    return queryCollection(REQUEST_COLL, filter, orderBy);
+}
+
+function queryChats(filter, orderBy) {
+    return queryCollection(CHAT_COLL, filter, orderBy);
+}
 
 module.exports = {
     generateUserId,
@@ -119,12 +196,19 @@ module.exports = {
     createUser,
     getUserByEmail,
     addRequestToUser,
+    deleteChatMember,
 
     getChatById,
     getRequestById,
     getUserById,
     updateUser,
     updateChat,
+
+    getAdmins,
+
+    queryUsers,
+    queryRequests,
+    queryChats,
 
     _debugFetch
 }

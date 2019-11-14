@@ -13,7 +13,8 @@ module.exports = {
         chatServiceId: process.env.TWILIO_CHAT_SERVICE_SID,
         userChannelRoleId: process.env.TWILIO_USER_CHANNEL_ROLE_SID,
         userDeploymentRoleId: process.env.TWILIO_USER_DEPLOYMENT_ROLE_SID,
-    }
+    },
+    adminToken: process.env.ADMIN_TOKEN,
 };
 
 

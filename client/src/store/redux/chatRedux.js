@@ -175,14 +175,14 @@ export const actions = dispatch => ({
 
 export const selectors = {
     request: state => { 
-        const { __selectedChatId: chatId, channels } = state.chat;
+        const { __selectedChatId: chatId, channels } = state.app.chat;
         if (chatId && channels[chatId]) {
             return channels[chatId].request;
         }
         return undefined;
     },
     status: state => { 
-        const { __selectedChatId: chatId, channels } = state.chat;
+        const { __selectedChatId: chatId, channels } = state.app.chat;
         if (chatId && channels[chatId]) {
             const { __status } = channels[chatId];
             return __status;
@@ -190,7 +190,7 @@ export const selectors = {
         return CHAT_STATUS.UNDEFINED;
     },
     messages: state => {
-        const { __selectedChatId: chatId, channels } = state.chat;
+        const { __selectedChatId: chatId, channels } = state.app.chat;
         if (chatId && channels[chatId]) {
             return channels[chatId].messages || [];
         }

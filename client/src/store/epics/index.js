@@ -7,5 +7,5 @@ export default combineEpics(
     createConnection,
     receiveMessages,
     sendMessage,
-    getPreviousMessages
+    getPreviousMessages,
 );

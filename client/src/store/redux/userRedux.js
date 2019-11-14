@@ -27,5 +27,5 @@ export const actions = {
 
 
 export const selectors = {
-    user: state => state.user,
+    user: state => state.app.user,
 };
