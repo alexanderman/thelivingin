@@ -33,9 +33,6 @@ function sendSmsAddedToChat(userId, templateId, userChatUrl) {
             store.registerSms(msgResource, userId),
             store.updateUser(userId, { 'last_notifications.sms': { sid, createdAt: Date.now() } })
         ]);
-    })
-    .then(() => {
-        return store.getUserById(userId);
     });
 }
 
