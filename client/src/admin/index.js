@@ -16,7 +16,6 @@ import RequestCard from './components/request';
 import ConnectChatDialog from './components/connect-chat-dialog';
 import ChatList from './components/chat-list';
 
-import SnackError from './components/common/snackbar-error';
 
 function getUrlParams() {
     return window.location.search.substr(1).split('&').reduce((acc, keyVal) => {
