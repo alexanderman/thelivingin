@@ -64,7 +64,7 @@ const ConnectChatDialog = props => {
                     } label="Send Email Notification"></FormControlLabel>
                     <FormControlLabel control={
                         <Switch disabled={inProcess} checked={!!notification.sms} onChange={_toggleNotification('sms')} color="secondary"></Switch>
-                    } label="Show Sms Notification"></FormControlLabel>
+                    } label="Send Sms Notification"></FormControlLabel>
                 </div>
                 {renderError()}
             </Fragment>

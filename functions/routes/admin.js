@@ -36,34 +36,37 @@ router.get('/chats/:id?', filterJson, fromPromise(
 router.get('/admins', fromPromise(store.getAdmins));
 
 router.post('/chats/addmember', fromPromise((req, res, next) => {
-    const { user, chat, request,
-        notification: { 
-            email: { templateId: emailTemplateId }, 
-            sms: { templateId: smsTemplateId } } 
-    } = req.body;    
+    const { user, chat, request, notification: { sms, email } } = req.body;    
 
     return Promise.all([
         store.getUserById(user._id),
-        store.getSmsTemplateById(smsTemplateId)
+        sms ? store.getSmsTemplateById(sms.templateId) : Promise.resolve()
     ]).then(([user, smsTemplate]) => {
-        if (!smsTemplate) {
+        if (sms && !smsTemplate) {
             throw new Error(`sms template "${smsTemplateId}" was not found`);
         }
         if (!user) {
             throw new Error(`user with id "${user._id}" was not found`);
         }
 
-        const { phone, name } = user;
-        const userChatUrl = generateClientChatUrl(user._id, chat._id, request._id);
-        let message = smsTemplate.text.replace(/\{\{user_name\}\}/gi, name);
-        message = message.replace(/\{\{chat_url\}\}/gi, userChatUrl);
+        if (smsTemplate) {
+            const { phone, name } = user;
+            const userChatUrl = generateClientChatUrl(user._id, chat._id, request._id);
+            let message = smsTemplate.text.replace(/\{\{user_name\}\}/gi, name);
+            message = message.replace(/\{\{chat_url\}\}/gi, userChatUrl);
+    
+            return Promise.all([
+                chatService.addUserToChat(user, chat),
+                (!isAdmin(user) ? twilio.sendSms(phone, message) : Promise.resolve()).catch(console.error)
+            ]);
+        }
 
         return Promise.all([
             chatService.addUserToChat(user, chat),
-            !isAdmin(user) ? twilio.sendSms(phone, message) : Promise.resolve()
         ]);
+
     }).then(([addUserToChatResult, msgResource]) => {
-        return msgResource ? store.registerSms(msgResource, user._id) : Promise.resolve()
+        return (msgResource ? store.registerSms(msgResource, user._id) : Promise.resolve()).catch(console.error)
     }).then(() => {
         return store.getChatById(chat._id);
     });
