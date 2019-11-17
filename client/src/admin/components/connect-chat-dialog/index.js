@@ -5,6 +5,9 @@ import { Button, Typography, Switch, FormControlLabel } from '@material-ui/core'
 import './connect-chat-dialog.scss';
 import { actions as connectActions, selectors as connectSelectors } from '../../store/redux/connectChatRedux';
 
+function isAdmin(user) {
+    return (user.roles && user.roles.indexOf('admin') > -1);
+}
 
 const ConnectChatDialog = props => {
     const { 
@@ -19,7 +22,12 @@ const ConnectChatDialog = props => {
     const buttonText = isAddUser ? 'Add' : 'Remove';
     
     useEffect(() => {
-        isAddUser ? setNotificationsON() : setNotificationsOFF();
+        if (isAdmin(user)) {
+            setNotificationsOFF();
+        }
+        else {
+            isAddUser ? setNotificationsON() : setNotificationsOFF();
+        }
     }, [user, chat]);
     
     const isOpen = isAllSet;

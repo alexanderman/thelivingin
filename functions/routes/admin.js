@@ -13,10 +13,6 @@ function generateClientChatUrl(userId, chatId, requestId) {
     return `${config.clientChatUrl}?chatId=${chatId}&userId=${userId}&requestId=${requestId}&sig=${sig}`;
 }
 
-function isAdmin(user) {
-    return user && user.roles && user.roles.indexOf('admin') > -1;
-}
-
 router.get('/', (req, res) => res.send('ok admin'));
 router.use(validateToken);
 
@@ -49,7 +45,6 @@ router.post('/chats/removemember', fromPromise((req, res, next) => {
 }));
 
 
-/** UNFINISHED */
 router.post('/notify-added-to-chat', fromPromise(req => {
     const { userId, chatId, requestId, notification: { sms, email } } = req.body;
     if (!sms /*&& !email*/) {
