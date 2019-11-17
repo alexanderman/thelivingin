@@ -18,12 +18,14 @@ const INITIAL_STATE = {
     user: undefined,
     request: undefined,
     chat: undefined,
-    error: undefined,
+    error: undefined, /** connect error */
     notification: {
         email: true,
         application: true,
     },
-    __inProcess: false,
+    __sendingConnect: false,
+    __sendingNotification: false,
+    notificationError: undefined,
 };
 
 
@@ -44,6 +46,10 @@ export const types = {
     SEND_DICSONNECT: 'admin-connect-chat-user-SEND_DICSONNECT',
     SEND_DICSONNECT_SUCCESS: 'admin-connect-chat-user-SEND_DICSONNECT_SUCCESS',
     SEND_DICSONNECT_ERROR: 'admin-connect-chat-user-SEND_DICSONNECT_ERROR',
+
+    SEND_NOTIFICATION: 'admin-connect-chat-user-SEND_NOTIFICATION',
+    SEND_NOTIFICATION_SUCCESS: 'admin-connect-chat-user-SEND_NOTIFICATION_SUCCESS',
+    SEND_NOTIFICATION_ERROR: 'admin-connect-chat-user-SEND_NOTIFICATION_ERROR',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -89,33 +95,50 @@ export default (state = INITIAL_STATE, action) => {
 
         case types.SEND_CONNECT: {
             console.log('## ', types.SEND_CONNECT, payload);
-            return { ...state, __inProcess: true, error: undefined };
+            return { ...state, __sendingConnect: true, error: undefined };
         }
 
         case types.SEND_CONNECT_SUCCESS: { /** does nothing */
             console.log('## ', types.SEND_CONNECT_SUCCESS, payload);
-            return { ...state, __inProcess: false };
+            return { ...state, __sendingConnect: false };
         }
 
         case types.SEND_CONNECT_ERROR: {
             console.log('## ', types.SEND_CONNECT_ERROR, payload);
-            return { ...state, __inProcess: false, error: payload };
+            return { ...state, __sendingConnect: false, error: payload };
         }
 
         case types.SEND_DICSONNECT: {
             console.log('## ', types.SEND_DICSONNECT, payload);
-            return { ...state, __inProcess: true, error: undefined };
+            return { ...state, __sendingConnect: true, error: undefined };
         }
 
         case types.SEND_DICSONNECT_SUCCESS: {
             console.log('## ', types.SEND_DICSONNECT_SUCCESS, payload);
-            return { ...state, __inProcess: false };
+            return { ...state, __sendingConnect: false };
         }
 
         case types.SEND_DICSONNECT_ERROR: {
             console.log('## ', types.SEND_DICSONNECT_ERROR, payload);
-            return { ...state, __inProcess: false, error: payload };
+            return { ...state, __sendingConnect: false, error: payload };
         }
+
+        case types.SEND_NOTIFICATION: {
+            console.log('## ', types.SEND_NOTIFICATION, payload);
+            return { ...state, __sendingNotification: true, notificationError: undefined };
+        }
+
+        case types.SEND_NOTIFICATION_SUCCESS: {
+            console.log('## ', types.SEND_NOTIFICATION_SUCCESS, payload);
+            return { ...state, __sendingNotification: false, notificationError: undefined };
+        }
+
+        case types.SEND_NOTIFICATION_ERROR: {
+            console.log('## ', types.SEND_NOTIFICATION_ERROR, payload);
+            return { ...state, __sendingNotification: false, notificationError: undefined };
+        }
+
+        
 
     }
     return state;
@@ -133,6 +156,8 @@ export const actions = dispatch => ({
     
     sendConnect: payload => dispatch({ type: types.SEND_CONNECT, payload }),
     sendDisconnect: payload => dispatch({ type: types.SEND_DICSONNECT, payload }),
+
+    sendNotification: payload => dispatch({ type: types.SEND_NOTIFICATION, payload }),
 });
 
 function getSelectedChatMembers(selectedChat) {
@@ -148,8 +173,11 @@ export const selectors = state => ({
     chat: state.admin.connectChat.chat,
     chatMembers: getSelectedChatMembers(state.admin.connectChat.chat),
     request: state.admin.connectChat.request,
-    inProcess: state.admin.connectChat.__inProcess,
+    sendingConnect: state.admin.connectChat.__sendingConnect,
+    sendingNotification: state.admin.connectChat.__sendingNotification,
+    inProcess: state.admin.connectChat.__sendingConnect || state.admin.connectChat.__sendingNotification,
     notification: state.admin.connectChat.notification,
     isAllSet: !!(state.admin.connectChat.user && state.admin.connectChat.chat && state.admin.connectChat.request),
-    error: state.admin.connectChat.error,
+    errors: state.admin.connectChat.error,
+    notificationError: state.admin.connectChat.notificationError,
 });

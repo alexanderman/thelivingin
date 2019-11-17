@@ -10,8 +10,8 @@ const ConnectChatDialog = props => {
     const { 
         /** redux props */
         user, chat, request, setUser, isAllSet, notification, toggleNotification, 
-        setNotificationsON, setNotificationsOFF,
-        inProcess, sendConnect, sendDisconnect, error,
+        setNotificationsON, setNotificationsOFF, sendNotification,
+        inProcess, sendConnect, sendDisconnect, error, notificationError,
         /** parent component props */
         isAddUser,
     } = props;
@@ -31,8 +31,10 @@ const ConnectChatDialog = props => {
 
     const handleAction = () => {
         if (!inProcess) {
-            if (isAddUser) 
+            if (isAddUser) {
                 sendConnect();
+                sendNotification();
+            }
             else    
                 sendDisconnect();
         }
@@ -74,6 +76,7 @@ const ConnectChatDialog = props => {
     const renderError = () => {
         if (!error) return null;        
         return (
+            <Fragment>
             <div className="connect-chat-dialog_error">
                 <ul>
                     {Object.keys(error).filter(k => k !== '_err').map(key => <li key={key}>{key}: {error[key]}</li>)}
@@ -82,6 +85,7 @@ const ConnectChatDialog = props => {
                     </ul>
                 </ul>
             </div>
+            </Fragment>
         );
     }
         
