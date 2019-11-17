@@ -2,10 +2,10 @@ const mock_users = require('../../../._mocks-copy/users.json');
 
 const NOTIFICATION_ON_STATE = {
     email: {
-        templateId: 'user_added_to_chat'
+        templateId: 'chat_helper_added'
     },
     sms: {
-        templateId: 'user_added_to_chat'
+        templateId: 'chat_helper_added'
     },
 }
 

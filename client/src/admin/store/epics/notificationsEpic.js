@@ -14,7 +14,7 @@ export const sendNotificationConnectToChat = (action$, state$) => action$.pipe(
             request: { _id: requestId },
             notification
         } = selectors(state$.value).state;
-        return postJSON(state$, 'notify-added-to-chat', { userId, chatId, requestId, notification });
+        return postJSON(state$, 'notify-chat', { userId, chatId, requestId, notification });
     }),
     mergeMap(data => {
         if (data.error) {

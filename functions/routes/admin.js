@@ -32,20 +32,20 @@ router.get('/chats/:id?', filterJson, fromPromise(
 
 router.get('/admins', fromPromise(store.getAdmins));
 
-router.post('/chats/addmember', fromPromise((req, res, next) => {
+router.post('/chats/addmember', fromPromise(req => {
     const { user, chat } = req.body;    
     return chatService.addUserToChat(user, chat)
         .then(() => store.getChatById(chat._id));
 }));
 
-router.post('/chats/removemember', fromPromise((req, res, next) => {
+router.post('/chats/removemember', fromPromise(req => {
     const { user, chat } = req.body;    
     return chatService.removeMember(user, chat)
         .then(() => store.getChatById(chat._id));
 }));
 
 
-router.post('/notify-added-to-chat', fromPromise(req => {
+router.post('/notify-chat', fromPromise(req => {
     const { userId, chatId, requestId, notification: { sms, email } } = req.body;
     if (!sms /*&& !email*/) {
         return Promise.reject(new Error('must specify at least one notification type'));
