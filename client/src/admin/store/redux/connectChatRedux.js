@@ -1,13 +1,17 @@
 const mock_users = require('../../../._mocks-copy/users.json');
 
-const NOTIFICATION_TO_ADD = {
-    email: true,
-    application: true,
+const NOTIFICATION_ON_STATE = {
+    email: {
+        templateId: 'user_added_to_chat'
+    },
+    sms: {
+        templateId: 'user_added_to_chat'
+    },
 }
 
-const NOTIFICATION_TO_REMOVE = {
-    email: false,
-    application: false,
+const NOTIFICATION_OFF_STATE = {
+    email: undefined,
+    sms: undefined
 }
 
 const INITIAL_STATE = {
@@ -28,10 +32,10 @@ export const types = {
 
     SET_REQUEST: 'admin-connect-chat-user-SET_REQUEST',
     SET_CHAT: 'admin-connect-chat-user-SET_CHAT',
-    SET_NOTIFICATIONS: 'admin-connect-chat-user-SET_NOTIFICATIONS',    
+    TOGGLE_NOTIFICATION: 'admin-connect-chat-user-TOGGLE_NOTIFICATION',    
     /** to set defaults for each action */
-    SET_NOTIFICATIONS_ADD: 'admin-connect-chat-user-SET_NOTIFICATIONS_ADD',    
-    SET_NOTIFICATIONS_REMOVE: 'admin-connect-chat-user-SET_NOTIFICATIONS_REMOVE',    
+    SET_NOTIFICATIONS_ON: 'admin-connect-chat-user-SET_NOTIFICATIONS_ON',    
+    SET_NOTIFICATIONS_OFF: 'admin-connect-chat-user-SET_NOTIFICATIONS_OFF',    
 
     SEND_CONNECT: 'admin-connect-chat-user-SEND_CONNECT',
     SEND_CONNECT_SUCCESS: 'admin-connect-chat-user-SEND_CONNECT_SUCCESS',
@@ -61,19 +65,26 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, request: payload, error: undefined };
         }
 
-        case types.SET_NOTIFICATIONS: {
-            console.log('## ', types.SET_NOTIFICATIONS, payload);
-            return { ...state, notification: payload };
+        case types.TOGGLE_NOTIFICATION: {
+            console.log('## ', types.TOGGLE_NOTIFICATION, payload);
+            const { key, isOn } = payload;
+            return { ...state, notification: 
+                { ...state.notification, 
+                    [key]: isOn 
+                        ? NOTIFICATION_ON_STATE[key] 
+                        : NOTIFICATION_OFF_STATE[key]
+                } 
+            };
         }
 
-        case types.SET_NOTIFICATIONS_ADD: {
-            console.log('## ', types.SET_NOTIFICATIONS_ADD, payload);
-            return { ...state, notification: { ...NOTIFICATION_TO_ADD } };
+        case types.SET_NOTIFICATIONS_ON: {
+            console.log('## ', types.SET_NOTIFICATIONS_ON, payload);
+            return { ...state, notification: { ...NOTIFICATION_ON_STATE } };
         }
 
-        case types.SET_NOTIFICATIONS_REMOVE: {
-            console.log('## ', types.SET_NOTIFICATIONS_REMOVE, payload);
-            return { ...state, notification: { ...NOTIFICATION_TO_REMOVE } };
+        case types.SET_NOTIFICATIONS_OFF: {
+            console.log('## ', types.SET_NOTIFICATIONS_OFF, payload);
+            return { ...state, notification: { ...NOTIFICATION_OFF_STATE } };
         }
 
         case types.SEND_CONNECT: {
@@ -115,9 +126,11 @@ export const actions = dispatch => ({
     setUser: user => dispatch({ type: types.SET_USER, payload: user }),
     setRequest: request => dispatch({ type: types.SET_REQUEST, payload: request }),
     setChat: chat => dispatch({ type: types.SET_CHAT, payload: chat }),
-    setNotifications: payload => dispatch({ type: types.SET_NOTIFICATIONS, payload }),
-    setNotificationsToAdd: payload => dispatch({ type: types.SET_NOTIFICATIONS_ADD, payload }),
-    setNotificationsToRemove: payload => dispatch({ type: types.SET_NOTIFICATIONS_REMOVE, payload }),
+    
+    toggleNotification: (key, isOn) => dispatch({ type: types.TOGGLE_NOTIFICATION, payload: { key, isOn } }),
+    setNotificationsON: payload => dispatch({ type: types.SET_NOTIFICATIONS_ON, payload }),
+    setNotificationsOFF: payload => dispatch({ type: types.SET_NOTIFICATIONS_OFF, payload }),
+    
     sendConnect: payload => dispatch({ type: types.SEND_CONNECT, payload }),
     sendDisconnect: payload => dispatch({ type: types.SEND_DICSONNECT, payload }),
 });

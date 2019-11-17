@@ -35,7 +35,7 @@ function ensureMember(user, chat, options = { updateDb: true }) {
         return Promise.resolve(chat.twilio.members[user._id].sid);
     }
 
-    return twilioService.createMember(chat.twilio.sid, user._id)
+    return twilioService.ensureMember(chat.twilio.sid, user._id)
         .then(member => {
             if (options.updateDb) {
                 const key = `twilio.members.${user._id}`;

@@ -12,11 +12,11 @@
             "cwd": "${workspaceFolder}/functions"
         },
         {
+            "name": "Attach",
             "type": "node",
             "request": "attach",
-            // "protocol": "inspector",
-            "name": "Attach",
             "port": 8080
+            // "processId": "${command:PickProcess}"
         }
     ]
 }

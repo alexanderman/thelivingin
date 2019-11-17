@@ -3,6 +3,7 @@ const cors = require('cors');
 const tildaRouter = require('./routes/tilda');
 const clientRouter = require('./routes/client');
 const adminRouter = require('./routes/admin');
+const twilioWebhook = require('./routes/twilio-webhook');
 require('./config'); /** preloading configuration */
 
 const app = express();
@@ -13,6 +14,7 @@ app.get('/', (req, res) => res.send('v0.0.1'));
 app.use('/tilda', tildaRouter);
 app.use('/client', clientRouter);
 app.use('/admin', adminRouter);
+app.use('/twilio-webhook', twilioWebhook);
 
 app.use((err, req, res, next) => {
     console.log(err);

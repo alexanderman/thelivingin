@@ -8,8 +8,8 @@ import { types as requestChatsTypes } from '../redux/requestChatsRedux';
 export const sendConnectUserToChat = (action$, state$) => action$.pipe(
     ofType(types.SEND_CONNECT),
     mergeMap(action => {
-        const { user, chat, notification } = selectors(state$.value).state;
-        return postJSON(state$, 'chats/addmember', { user, chat, notification });
+        const { user, chat, notification, request } = selectors(state$.value).state;
+        return postJSON(state$, 'chats/addmember', { user, chat, request, notification });
     }),
     mergeMap(data => {
         if (data.error) {

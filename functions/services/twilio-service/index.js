@@ -66,12 +66,26 @@ function fetchUser(identity) {
     return client.chat.services(config.chatServiceId).users(identity).fetch();
 }
 
+function fetchMember(channelSid, identity) {
+    return client.chat.services(config.chatServiceId).channels(channelSid).members(identity).fetch();
+}
+
 /** if user with this identity already exists, fetch it */
 function ensureUser(identity, attributes) {
     return createUser(identity, attributes)
     .catch(err => {
         if (err.status === 409 && err.code === 50201) {
             return fetchUser(identity);
+        }
+        throw err;
+    });
+}
+
+function ensureMember(channelSid, identity, attributes) {
+    return createMember(channelSid, identity, attributes)
+    .catch(err => {
+        if (err.status === 409 && err.code === 50404) {
+            return fetchMember(channelSid, identity);
         }
         throw err;
     });
@@ -99,6 +113,16 @@ function deleteMember(channelSid, memberSid) {
         .channels(channelSid).members(memberSid).remove();
 }
 
+function sendSms(to, body) {
+    console.log('sms to', to);
+    return client.messages.create({
+        from: config.sms_from_phone,
+        to,
+        body,
+        statusCallback: config.webhook_url,
+    });
+}
+
 
 module.exports = {
     generateToken,
@@ -108,5 +132,8 @@ module.exports = {
 
     fetchUser,
     ensureUser,
+    ensureMember,
     deleteMember,
+
+    sendSms,
 }

@@ -9,8 +9,8 @@ import { actions as connectActions, selectors as connectSelectors } from '../../
 const ConnectChatDialog = props => {
     const { 
         /** redux props */
-        user, chat, request, setUser, isAllSet, notification, setNotifications, 
-        setNotificationsToAdd, setNotificationsToRemove,
+        user, chat, request, setUser, isAllSet, notification, toggleNotification, 
+        setNotificationsON, setNotificationsOFF,
         inProcess, sendConnect, sendDisconnect, error,
         /** parent component props */
         isAddUser,
@@ -19,7 +19,7 @@ const ConnectChatDialog = props => {
     const buttonText = isAddUser ? 'Add' : 'Remove';
     
     useEffect(() => {
-        isAddUser ? setNotificationsToAdd() : setNotificationsToRemove();
+        isAddUser ? setNotificationsON() : setNotificationsOFF();
     }, [user, chat]);
     
     const isOpen = isAllSet;
@@ -49,8 +49,8 @@ const ConnectChatDialog = props => {
         );
     }
 
-    const toggleNotification = key => event => {
-        setNotifications({ ...notification, [key]: event.target.checked });
+    const _toggleNotification = key => event => {
+        toggleNotification(key, event.target.checked);
     }
 
     const renderRequestInfo = () => {
@@ -60,11 +60,11 @@ const ConnectChatDialog = props => {
                 <Typography variant="body2" color="textSecondary">{requestText}</Typography>
                 <div style={{ marginTop: '1em' }} className="connect-chat-dialog-controls">
                     <FormControlLabel control={
-                        <Switch disabled={inProcess} checked={notification.email} onChange={toggleNotification('email')} color="secondary"></Switch>
+                        <Switch disabled={inProcess} checked={!!notification.email} onChange={_toggleNotification('email')} color="secondary"></Switch>
                     } label="Send Email Notification"></FormControlLabel>
                     <FormControlLabel control={
-                        <Switch disabled={inProcess} checked={notification.application} onChange={toggleNotification('application')} color="secondary"></Switch>
-                    } label="Show Application Notification"></FormControlLabel>
+                        <Switch disabled={inProcess} checked={!!notification.sms} onChange={_toggleNotification('sms')} color="secondary"></Switch>
+                    } label="Show Sms Notification"></FormControlLabel>
                 </div>
                 {renderError()}
             </Fragment>
