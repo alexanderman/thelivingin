@@ -205,9 +205,11 @@ function registerSms(messageResource, userId) {
     }, {});
 
     const { sid } = messageResource;
-    const userPromise = updateUser(userId, { 'last_notifications.sms': { sid, createdAt: Date.now() } });
-    const smsPromise = _createData(SMS_LOGS_COLL, sid, { ...smsLog, userId });
-    return Promise.all([userPromise, smsPromise]);
+    return _createData(SMS_LOGS_COLL, sid, { ...smsLog, userId });
+    /** TODO: remove this shit */
+    // const userPromise = updateUser(userId, { 'last_notifications.sms': { sid, createdAt: Date.now() } });
+    // const smsPromise = _createData(SMS_LOGS_COLL, sid, { ...smsLog, userId });
+    // return Promise.all([userPromise, smsPromise]);
 }
 
 /** used by twilio-webhook to update sent sms statuses */

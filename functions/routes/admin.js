@@ -4,6 +4,7 @@ const router = express.Router();
 const config = require('../config');
 const store = require('../database/firestore');
 const twilio = require('../services/twilio-service');
+const notificationsService = require('../services/twilio-service/notifications-service');
 const { fromPromise, filterJson, validateToken } = require('../middleware/utils-middleware');
 const chatService = require('../services/twilio-service/chat-service');
 
@@ -80,29 +81,13 @@ router.post('/chats/removemember', fromPromise((req, res, next) => {
 
 
 /** UNFINISHED */
-router.post('/notify', fromPromise(req => {
-    const { userId, chatId, requestId, 
-        notification: { 
-            email: { templateId: emailTemplateId }, 
-            sms: { templateId: smsTemplateId } } 
-    } = req.body;
-    
-    Promise.all([
-        store.getUserById(userId),
-        store.getSmsTemplateById(smsTemplateId),
-    ])
-    .then(([user, smsTemplate]) => {
-        const { phone, name } = user;
-        const userChatUrl = generateClientChatUrl(userId, chatId, requestId);
-        let message = smsTemplate.text.replace(/\{\{user_name\}\}/gi, name);
-        message = message.replace(/\{\{chat_url\}\}/gi, userChatUrl);
-
-        twilio.sendSms(phone, message).then(msgResource => {
-            return store.registerSms(msgResource, userId);
-        });
-        
-    });
-
+router.post('/notify-added-to-chat', fromPromise(req => {
+    const { userId, chatId, requestId, notification: { sms, email } } = req.body;
+    if (!sms /*&& !email*/) {
+        return Promise.reject(new Error('must specify at least one notification type'));
+    }
+    const userChatUrl = generateClientChatUrl(userId, chatId, requestId);
+    return notificationsService.sendSmsAddedToChat(userId, sms.templateId, userChatUrl);
 }));
 
 
@@ -123,10 +108,6 @@ router.get('/__db/:collection/:id?', (req, res, next) => {
     .catch(next);
 });
 
-router.post('/__sms', fromPromise((req, res, next) => {
-    const { to, message } = req.body;
-    return twilio.sendSms(to, message);
-}));
 /*************************************************/
 
 
