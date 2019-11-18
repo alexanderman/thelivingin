@@ -97,6 +97,7 @@ const Admin = props => {
                     showLoading={showUsersLoading} 
                     disableSelection={showUsersLoading}
                     onSelectClick={onUserSelectClick} 
+                    onActionNotifyClick={console.log}
                 />
                 
                 <MessageDialog handleClose={() => setMessage({ open: false })} message={messageData.text} isOpen={messageData.open} />

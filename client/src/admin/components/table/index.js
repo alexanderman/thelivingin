@@ -9,6 +9,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ActionNotify from './action-notify';
 
 
 const useStyles = makeStyles({
@@ -42,13 +43,15 @@ const useStyles = makeStyles({
 export default function MyTable(props) {
     const { columns, rows, showLoading, 
         rowClickable, onRowClick, 
-        selectable, onSelectClick, isUserSelected, disableSelection
+        selectable, onSelectClick, isRowSelected, disableSelection,
+        showActionNotify, onActionNotifyClick, actionNotifyDisabled,
     } = props;
-    const isRowSelected = row => selectable && isUserSelected(row);
+    
+    const _isRowSelected = row => selectable && isRowSelected(row);
 
     const classes = useStyles();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(100);
 
     useEffect(() => {
         setPage(0); /** will reset the pager when the data changes */
@@ -90,6 +93,12 @@ export default function MyTable(props) {
                     ? <TableCell></TableCell>
                     : null 
                 }
+
+                {showActionNotify
+                    ? <TableCell></TableCell>
+                    : null 
+                }
+
                 {columns.map(column => (
                     <TableCell
                     key={column.id}
@@ -104,11 +113,18 @@ export default function MyTable(props) {
             <TableBody>
                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
                 return (
-                    <TableRow style={{cursor: rowClickable ? 'pointer' : 'default'}} selected={isRowSelected(row)} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
+                    <TableRow style={{cursor: rowClickable ? 'pointer' : 'default'}} selected={_isRowSelected(row)} hover onClick={() => handleRowClick(row, index)} role="checkbox" tabIndex={-1} key={row._id}>
                     
                     {selectable
-                        ? <TableCell><Checkbox disabled={disableSelection} color="primary" onClick={() => handleRowSelect(row)} checked={isRowSelected(row)} /></TableCell>
+                        ? <TableCell><Checkbox disabled={disableSelection} color="primary" onClick={() => handleRowSelect(row)} checked={_isRowSelected(row)} /></TableCell>
                         : null
+                    }
+
+                    {showActionNotify
+                        ? <TableCell>
+                            <ActionNotify onClick={() => onActionNotifyClick(row)} disabled={!_isRowSelected(row)} />
+                        </TableCell>
+                        : null 
                     }
 
                     {columns.map(column => {

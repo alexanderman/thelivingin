@@ -4,6 +4,7 @@ import Dialog from '../common/dialog';
 import { Button, Typography, Switch, FormControlLabel } from '@material-ui/core';
 import './connect-chat-dialog.scss';
 import { actions as connectActions, selectors as connectSelectors } from '../../store/redux/connectChatRedux';
+import { actions as notificationsActions, selectors as notificationsSelectors } from '../../store/redux/chatNotificationsRedux';
 
 function isAdmin(user) {
     return (user.roles && user.roles.indexOf('admin') > -1);
@@ -11,69 +12,75 @@ function isAdmin(user) {
 
 const ConnectChatDialog = props => {
     const { 
-        /** redux props */
-        user, chat, request, setUser, isAllSet, notification, toggleNotification, 
-        setNotificationsON, setNotificationsOFF, sendNotification,
-        inProcess, sendConnect, sendDisconnect, error, notificationError,
+        connectSelectors, connectActions, 
+        notificationsSelectors, notificationsActions,
         /** parent component props */
         isAddUser,
     } = props;
-
-    const buttonText = isAddUser ? 'Add' : 'Remove';
     
+    const buttonText = isAddUser ? 'Add' : 'Remove';
+    console.log('notificationsSelectors', notificationsSelectors)
+    console.log('connectSelectors', connectSelectors)
+
     useEffect(() => {
-        if (isAdmin(user)) {
-            setNotificationsOFF();
+        if (isAdmin(connectSelectors.user)) {
+            notificationsActions.setNotificationsOFF();
         }
         else {
-            isAddUser ? setNotificationsON() : setNotificationsOFF();
+            isAddUser ? notificationsActions.setNotificationsON() : notificationsActions.setNotificationsOFF();
         }
-    }, [user, chat]);
+    }, [connectSelectors.user, connectSelectors.chat]);
     
-    const isOpen = isAllSet;
+    const isOpen = connectSelectors.isAllSet;
 
     const handleClose = (ev, reason) => {
-        if (!inProcess)
-            setUser(undefined);
+        if (!connectSelectors.inProcess)
+            connectActions.setUser(undefined);
     }
 
     const handleAction = () => {
-        if (!inProcess) {
+        if (!connectSelectors.inProcess) {
             if (isAddUser) {
-                sendConnect();
-                sendNotification();
+                connectActions.sendConnect();
+                notificationsActions.sendNotification();
             }
             else    
-                sendDisconnect();
+                connectActions.sendDisconnect();
         }
     }
 
     const renderTitle = () => {
         if (!isAddUser) {
             return (
-                <span>Removing <b>{user.name}</b> from request</span>
+                <span>Removing <b>{connectSelectors.user.name}</b> from request</span>
             );
         }
         return (
-            <span>Adding <b>{user.name}</b> to request</span>
+            <span>Adding <b>{connectSelectors.user.name}</b> to request</span>
         );
     }
 
     const _toggleNotification = key => event => {
-        toggleNotification(key, event.target.checked);
+        notificationsActions.toggleNotification(key, event.target.checked);
     }
 
     const renderRequestInfo = () => {
-        const requestText = (request.textarea || '').substr(0, 200) + '...';
+        const requestText = (connectSelectors.request.textarea || '').substr(0, 200) + '...';
         return (
             <Fragment>
                 <Typography variant="body2" color="textSecondary">{requestText}</Typography>
                 <div style={{ marginTop: '1em' }} className="connect-chat-dialog-controls">
                     <FormControlLabel control={
-                        <Switch disabled={inProcess} checked={!!notification.email} onChange={_toggleNotification('email')} color="secondary"></Switch>
+                        <Switch disabled={connectSelectors.inProcess} 
+                        checked={!!notificationsSelectors.email} 
+                        onChange={_toggleNotification('email')} color="secondary"
+                        ></Switch>
                     } label="Send Email Notification"></FormControlLabel>
                     <FormControlLabel control={
-                        <Switch disabled={inProcess} checked={!!notification.sms} onChange={_toggleNotification('sms')} color="secondary"></Switch>
+                        <Switch disabled={connectSelectors.inProcess} 
+                        checked={!!notificationsSelectors.sms} 
+                        onChange={_toggleNotification('sms')} color="secondary"
+                        ></Switch>
                     } label="Send Sms Notification"></FormControlLabel>
                 </div>
                 {renderError()}
@@ -82,6 +89,7 @@ const ConnectChatDialog = props => {
     }
 
     const renderError = () => {
+        const error = connectSelectors.error;
         if (!error) return null;        
         return (
             <Fragment>
@@ -99,15 +107,15 @@ const ConnectChatDialog = props => {
         
     const renderActions = () => (
         <Fragment>
-            <Button disabled={inProcess} variant="text" onClick={handleClose}>Cancel</Button>
-            <Button disabled={inProcess} variant="contained" style={{ width: '12em' }} color="primary" onClick={handleAction}>{buttonText}</Button>
+            <Button disabled={connectSelectors.inProcess} variant="text" onClick={handleClose}>Cancel</Button>
+            <Button disabled={connectSelectors.inProcess} variant="contained" style={{ width: '12em' }} color="primary" onClick={handleAction}>{buttonText}</Button>
         </Fragment>
     );
 
 
     return (
         <Dialog isOpen={isOpen} 
-            showProgress={inProcess}
+            showProgress={connectSelectors.inProcess}
             title={renderTitle}
             handleClose={handleClose} 
             renderActions={renderActions} 
@@ -117,7 +125,14 @@ const ConnectChatDialog = props => {
     );
 }
 
-const mapStateToProps = connectSelectors;
-const mapDispatchToProps = connectActions;
+const mapStateToProps = state => ({
+    connectSelectors: connectSelectors(state),
+    notificationsSelectors: notificationsSelectors(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+    connectActions: connectActions(dispatch),
+    notificationsActions: notificationsActions(dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConnectChatDialog);

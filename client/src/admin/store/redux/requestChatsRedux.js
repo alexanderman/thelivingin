@@ -1,6 +1,8 @@
+const mock_chats = require('../../../._mocks-copy/chats.json');
+
 /** holds chats of selected request */
 const INITIAL_STATE = {
-    list: undefined,
+    list: [],
     error: undefined,
     __isFetching: false,
 };

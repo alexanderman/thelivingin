@@ -3,7 +3,7 @@ import { fetchRequests } from './requestsEpic';
 import { fetchUsers } from './usersEpic';
 import { fetchChatsByRequestId, listenToSelectedRequest } from './chatEpic';
 import { sendConnectUserToChat, sendDisconnectUserFromChat } from './connectChatEpic';
-import { sendNotificationConnectToChat } from './notificationsEpic';
+import { sendNotificationConnectToChat } from './chatNotificationsEpic';
 
 export default combineEpics(
     fetchRequests,
