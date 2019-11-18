@@ -4,8 +4,8 @@ const mock_requests = require('../../../._mocks-copy/requests.json');
 
 const INITIAL_STATE = {
     user: undefined,
-    request: undefined, //mock_requests[1],
-    chat: undefined, // mock_chats[1],
+    request: undefined, 
+    chat: undefined,
     error: undefined, /** connect error */
     __inProcess: false,
 };

@@ -24,6 +24,7 @@ const vlidateSignature = (req, res, next) => {
 }
 
 router.post('/', vlidateSignature, (req, res, next) => {
+    console.log('twilio-webhook call');
     store.updateSmsStatus(req.body)
     .then(docId => res.status(200).send(docId))
     .catch(res.status(500).send);
