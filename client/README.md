@@ -1,5 +1,11 @@
 ## Development
  - `npm start`
+ - during development, client uses `.env.development.local`
+
+before building for staging/production environments make sure config is correct
+
+## Config
+ - set correct urls in `.env`
 
 ## Deploy
  - `cd client`
