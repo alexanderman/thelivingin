@@ -1,7 +1,7 @@
 const mock_requests = require('../../../._mocks-copy/requests.json');
 
 const INITIAL_STATE = {
-    list: [], //mock_requests,
+    list: [],
     filter: undefined,
     orderBy: undefined,
     error: undefined,

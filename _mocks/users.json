@@ -67,5 +67,25 @@
         "_createTime": "2019-11-11T12:58:42.611Z",
         "_updateTime": "2019-11-11T14:14:15.088Z",
         "_readTime": "2019-11-11T15:04:16.205Z"
+    },
+    {
+        "last_notifications": {
+            "sms": {
+                "sid": "SM60466bf7f4a446ac89fce9cb8084b4af",
+                "createdAt": 1573998131587
+            }
+        },
+        "canHelp": false,
+        "createdAt": 1573130634387,
+        "phone": "+972-5-456-83784",
+        "name": "Alexander Shnirman",
+        "twilio": {
+            "sid": "USe5cf59e7a8cc4e11aadaa1775a2b66a5"
+        },
+        "email": "alexander.shnirman@gmail.com",
+        "_id": "0JAdPKkvPFpjy1oPSg5d",
+        "_createTime": "2019-11-17T13:31:51.938Z",
+        "_updateTime": "2019-11-17T13:42:11.614Z",
+        "_readTime": "2019-11-17T13:45:55.445Z"
     }
 ]

@@ -1,24 +1,12 @@
 const mock_users = require('../../../._mocks-copy/users.json');
-
-const NOTIFICATION_TO_ADD = {
-    email: true,
-    application: true,
-}
-
-const NOTIFICATION_TO_REMOVE = {
-    email: false,
-    application: false,
-}
+const mock_chats = require('../../../._mocks-copy/chats.json');
+const mock_requests = require('../../../._mocks-copy/requests.json');
 
 const INITIAL_STATE = {
     user: undefined,
-    request: undefined,
+    request: undefined, 
     chat: undefined,
-    error: undefined,
-    notification: {
-        email: true,
-        application: true,
-    },
+    error: undefined, /** connect error */
     __inProcess: false,
 };
 
@@ -28,10 +16,6 @@ export const types = {
 
     SET_REQUEST: 'admin-connect-chat-user-SET_REQUEST',
     SET_CHAT: 'admin-connect-chat-user-SET_CHAT',
-    SET_NOTIFICATIONS: 'admin-connect-chat-user-SET_NOTIFICATIONS',    
-    /** to set defaults for each action */
-    SET_NOTIFICATIONS_ADD: 'admin-connect-chat-user-SET_NOTIFICATIONS_ADD',    
-    SET_NOTIFICATIONS_REMOVE: 'admin-connect-chat-user-SET_NOTIFICATIONS_REMOVE',    
 
     SEND_CONNECT: 'admin-connect-chat-user-SEND_CONNECT',
     SEND_CONNECT_SUCCESS: 'admin-connect-chat-user-SEND_CONNECT_SUCCESS',
@@ -59,21 +43,6 @@ export default (state = INITIAL_STATE, action) => {
         case types.SET_REQUEST: {
             console.log('## ', types.SET_REQUEST, payload);
             return { ...state, request: payload, error: undefined };
-        }
-
-        case types.SET_NOTIFICATIONS: {
-            console.log('## ', types.SET_NOTIFICATIONS, payload);
-            return { ...state, notification: payload };
-        }
-
-        case types.SET_NOTIFICATIONS_ADD: {
-            console.log('## ', types.SET_NOTIFICATIONS_ADD, payload);
-            return { ...state, notification: { ...NOTIFICATION_TO_ADD } };
-        }
-
-        case types.SET_NOTIFICATIONS_REMOVE: {
-            console.log('## ', types.SET_NOTIFICATIONS_REMOVE, payload);
-            return { ...state, notification: { ...NOTIFICATION_TO_REMOVE } };
         }
 
         case types.SEND_CONNECT: {
@@ -115,9 +84,6 @@ export const actions = dispatch => ({
     setUser: user => dispatch({ type: types.SET_USER, payload: user }),
     setRequest: request => dispatch({ type: types.SET_REQUEST, payload: request }),
     setChat: chat => dispatch({ type: types.SET_CHAT, payload: chat }),
-    setNotifications: payload => dispatch({ type: types.SET_NOTIFICATIONS, payload }),
-    setNotificationsToAdd: payload => dispatch({ type: types.SET_NOTIFICATIONS_ADD, payload }),
-    setNotificationsToRemove: payload => dispatch({ type: types.SET_NOTIFICATIONS_REMOVE, payload }),
     sendConnect: payload => dispatch({ type: types.SEND_CONNECT, payload }),
     sendDisconnect: payload => dispatch({ type: types.SEND_DICSONNECT, payload }),
 });
@@ -136,7 +102,6 @@ export const selectors = state => ({
     chatMembers: getSelectedChatMembers(state.admin.connectChat.chat),
     request: state.admin.connectChat.request,
     inProcess: state.admin.connectChat.__inProcess,
-    notification: state.admin.connectChat.notification,
     isAllSet: !!(state.admin.connectChat.user && state.admin.connectChat.chat && state.admin.connectChat.request),
     error: state.admin.connectChat.error,
 });

@@ -5,6 +5,7 @@ import { actions as usersActions, selectors as usersSelectors } from './store/re
 import { actions as requestsActions, selectors as requestsSelectors } from './store/redux/requestsRedux';
 import { selectors as connectSelectors, actions as connectActions } from './store/redux/connectChatRedux';
 import { selectors as requestChats } from './store/redux/requestChatsRedux';
+import { selectors as chatNotificationsSelectors, actions as chatNotficationsActions } from './store/redux/chatNotificationsRedux';
 import { actions as adminActions } from './store/redux/adminUserRedux';
 import DialogFullScreen from './components/common/dialog-full-screen';
 import MessageDialog from './components/common/dialog-message';
@@ -15,8 +16,8 @@ import RequestsList from './components/requests-list';
 import RequestCard from './components/request';
 import ConnectChatDialog from './components/connect-chat-dialog';
 import ChatList from './components/chat-list';
+import NotifyChatDialog from './components/notify-chat-dialog';
 
-import SnackError from './components/common/snackbar-error';
 
 function getUrlParams() {
     return window.location.search.substr(1).split('&').reduce((acc, keyVal) => {
@@ -30,7 +31,10 @@ function getUrlParams() {
 }
 
 const Admin = props => {
-    const { adminActions, usersActions, requestsActions, connectSelectors, connectActions, requestChats } = props;
+    const { 
+        adminActions, usersActions, requestsActions, connectSelectors, connectActions, requestChats,
+        chatNotificationsSelectors, chatNotficationsActions,
+    } = props;
     const { isFetching: showUsersLoading } = requestChats;
     const { token } = getUrlParams();
     const [isRequestsOpen, setIsRequestsOpen] = useState(false);
@@ -98,6 +102,7 @@ const Admin = props => {
                     showLoading={showUsersLoading} 
                     disableSelection={showUsersLoading}
                     onSelectClick={onUserSelectClick} 
+                    onActionNotifyClick={chatNotficationsActions.setUser}
                 />
                 
                 <MessageDialog handleClose={() => setMessage({ open: false })} message={messageData.text} isOpen={messageData.open} />
@@ -106,6 +111,12 @@ const Admin = props => {
                     ? <ConnectChatDialog isAddUser={isAddUser} />
                     : null
                 }
+
+                {connectSelectors.chat && connectSelectors.request && chatNotificationsSelectors.user
+                    ? <NotifyChatDialog />
+                    : null
+                }
+
 
             </div>
 
@@ -119,6 +130,7 @@ const mapStateToProps = state => ({
     usersSelectors: usersSelectors(state),
     connectSelectors: connectSelectors(state),
     requestChats: requestChats(state),
+    chatNotificationsSelectors: chatNotificationsSelectors(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -126,6 +138,7 @@ const mapDispatchToProps = dispatch => ({
     requestsActions: requestsActions(dispatch),
     adminActions: adminActions(dispatch),
     connectActions: connectActions(dispatch),
+    chatNotficationsActions: chatNotficationsActions(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Admin);

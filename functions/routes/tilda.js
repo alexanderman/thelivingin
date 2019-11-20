@@ -22,7 +22,7 @@ router.post('/request', allowTildaTest, requestValidator, (req, res, next) => {
     .catch(next);
 });
 
-router.post('/helper', allowTildaTest, helperValidator, (req, res) => {
+router.post('/helper', allowTildaTest, helperValidator, (req, res, next) => {
     helpersService.registerHelper(req.body)
     .then(result => res.json(result))
     .catch(next);

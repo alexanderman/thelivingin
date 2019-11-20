@@ -1,7 +1,7 @@
 const mock_users = require('../../../._mocks-copy/users.json');
 
 const INITIAL_STATE = {
-    list: [], //mock_users,
+    list: [],
     filter: undefined,
     orderBy: undefined,
     error: undefined,
@@ -15,14 +15,19 @@ export const types = {
     FETCH_ERROR: 'admin-users-FETCH_ERROR',
     SET_FILTER: 'admin-users-SET_FILTER',
     SET_ORDERBY: 'admin-users-SET_ORDERBY',
+
+    UPDATE_USER: 'admin-users-UPDATE_USER',  /** updates single user in existing list */
     
+    /** not in use */
     SET_SELECTED: 'admin-users-SET_SELECTED',   /** for selected list from api, overrides entire list */
     UPDATE_SELECTED: 'admin-users-UPDATE_SELECTED',   /** used by users table to modify selected users */
+    
 };
 
 const isEqual = (u1, u2) => u1._id === u2._id;
 const isInList = (list, user) => !!list.filter(u => isEqual(u, user))[0];
 const removeFromList = (list, user) => list.filter(u => !isEqual(u, user));
+const replaceUser = (list, user) => list.map(u => u._id === user._id ? user : u);
 
 export default (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
@@ -53,6 +58,12 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, orderBy: payload };
         }
 
+        case types.UPDATE_USER: {
+            console.log('## ', types.UPDATE_USER, payload);
+            return { ...state, list: replaceUser(state.list, payload) };
+        }
+        
+        /** not in use */
         case types.SET_SELECTED: {  /** overrides the selected list */
             console.log('## ', types.SET_SELECTED, payload);
             return { ...state, selected: payload };

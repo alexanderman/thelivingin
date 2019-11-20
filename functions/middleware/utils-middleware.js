@@ -16,7 +16,6 @@ const validateToken = (req, res, next) => {
     let bearer = req.header('Authorization');
     if (bearer) {
         bearer = bearer.replace('bearer ', '');
-        console.log(bearer, adminToken);
         if (bearer === adminToken) {
             return next();
         }

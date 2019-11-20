@@ -10,6 +10,9 @@ const USER_COLL = db.collection('users');
 const REQUEST_COLL = db.collection('requests');
 const CHAT_COLL = db.collection('chats');
 const ROLES_COLL = db.collection('roles');
+const SMS_LOGS_COLL = db.collection('sms_logs');
+const SMS_TEMPLATES_COLL = db.collection('sms_templates');
+
 
 /** names of DTOs firestore internal fields, prevent from saving/updating them */
 const SYS_FIELDS = {
@@ -30,7 +33,7 @@ function _snapShotToObject(snapshot) {
 }
 
 /** returns new object without SYS_FIELDS */
-function _crearSysFields(data) {
+function _clearSysFields(data) {
     return Object.keys(SYS_FIELDS).reduce((acc, key) => {
         delete acc[key];
         return acc;
@@ -38,7 +41,7 @@ function _crearSysFields(data) {
 }
 
 function _createData(collection, id, data) {
-    const modifiedData = _crearSysFields({ ...data, createdAt: Date.now() });
+    const modifiedData = _clearSysFields({ ...data, createdAt: Date.now() });
     return collection.doc(id).set(modifiedData);
 }
 
@@ -65,7 +68,7 @@ function addRequestToUser(id, requestId) {
 }
 
 function updateUser(id, fields) {
-    const modifiedFields = _crearSysFields(fields);
+    const modifiedFields = _clearSysFields(fields);
     return USER_COLL.doc(id).update(modifiedFields);
 }
 
@@ -78,7 +81,7 @@ function createChat(id, data) {
 }
 
 function updateChat(id, fields) {
-    const modifiedFields = _crearSysFields(fields);
+    const modifiedFields = _clearSysFields(fields);
     return CHAT_COLL.doc(id).update(modifiedFields);
 }
 
@@ -187,6 +190,44 @@ function queryChats(filter, orderBy) {
     return queryCollection(CHAT_COLL, filter, orderBy);
 }
 
+/** saves new object for requested sms send */
+function registerSms(messageResource, userId) {
+    /** fix for: messageResource Couldn't serialize object of type "V2010"
+     * for some reason messageResource comes not as a plain object (with methods) */
+    const model = [
+        'priceUnit', 'numSegments', 'errorMessage', 'errorCode', 'body', 'uri', 
+        'dateUpdated', 'sid', 'apiVersion', 'dateCreated', 'messagingServiceSid', 'price',
+        'subresourceUris', 'numMedia', 'from', 'to', 'accountSid', 'dateSent', 'direction', 'status'
+    ];  
+    const smsLog = model.reduce((acc, key) => {
+        acc[key] = messageResource[key];
+        return acc;
+    }, {});
+
+    const { sid } = messageResource;
+    return _createData(SMS_LOGS_COLL, sid, { ...smsLog, userId });
+}
+
+/** used by twilio-webhook to update sent sms statuses */
+function updateSmsStatus(statusData) {
+    const { SmsSid } = statusData;
+    return SMS_LOGS_COLL.doc(SmsSid).update({ updates: FieldValue.arrayUnion(statusData) }, { create: true });
+}
+
+function createSmsTemplate(templateId, data) {
+    return _createData(SMS_TEMPLATES_COLL, templateId, data);
+}
+
+function updateSmsTemplate(templateId, fields) {
+    const modifiedFields = _clearSysFields(fields);
+    return SMS_TEMPLATES_COLL.doc(templateId).update(modifiedFields);
+}
+
+function getSmsTemplateById(templateId) {
+    return SMS_TEMPLATES_COLL.doc(templateId).get()
+    .then(_snapShotToObject);
+}
+
 module.exports = {
     generateUserId,
     generateChatId,
@@ -210,5 +251,11 @@ module.exports = {
     queryRequests,
     queryChats,
 
-    _debugFetch
+    registerSms,
+    updateSmsStatus,
+    createSmsTemplate,
+    updateSmsTemplate,
+    getSmsTemplateById,
+
+    _debugFetch,
 }

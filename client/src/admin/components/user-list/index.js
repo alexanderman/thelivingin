@@ -49,15 +49,16 @@ const columns = [{
 function UserList(props) {
     const { users, isFetching, /** actions from usersredux */
         showLoading, onSelectClick, selectable, isUserSelected, /** from parent component */
-        disableSelection
+        disableSelection, onActionNotifyClick
     } = props;
 
     return (
         <Fragment>
             <Table className="user-list" columns={columns} rows={users} showLoading={isFetching || showLoading} 
                 selectable={selectable} onSelectClick={onSelectClick}
-                isUserSelected={isUserSelected}
+                isRowSelected={isUserSelected}
                 disableSelection={disableSelection}
+                showActionNotify={true} onActionNotifyClick={onActionNotifyClick}
             />
         </Fragment>
     );
